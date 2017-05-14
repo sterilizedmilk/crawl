@@ -730,7 +730,7 @@ static void _unequip_weapon_effect(item_def& real_item, bool showMsgs,
                 break;
             }
 
-            if (you.duration[DUR_WEAPON_BRAND])
+            if (you.duration[DUR_EXCRUCIATING_WOUNDS])
             {
                 ASSERT(real_item.defined());
                 end_weapon_brand(real_item, true);
@@ -1208,6 +1208,9 @@ static void _equip_jewellery_effect(item_def &item, bool unmeld,
             mprf("You feel slightly %sjumpy.",
                  (player_teleport(false) > 8) ? "more " : "");
         break;
+	case RING_WILD:
+		mpr("You feel a strong urge to bite something.");
+		break;
 
     case AMU_FAITH:
         if (you.species == SP_DEMIGOD)
@@ -1347,7 +1350,9 @@ static void _unequip_jewellery_effect(item_def &item, bool mesg, bool meld,
     case RING_MAGICAL_POWER:
         canned_msg(MSG_MANA_DECREASE);
         break;
-
+	case RING_WILD:
+		mpr("You feel more civilized.");
+		break;
     case AMU_THE_GOURMAND:
         you.duration[DUR_GOURMAND] = 0;
         break;

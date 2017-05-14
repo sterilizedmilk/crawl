@@ -1621,6 +1621,17 @@ static const struct spell_desc spelldata[] =
 },
 
 {
+    SPELL_EXCRUCIATING_WOUNDS, "Excruciating Wounds",
+    SPTYP_CHARMS | SPTYP_NECROMANCY,
+    SPFLAG_HELPFUL,
+    5,
+    200,
+    -1, -1,
+    4, 15,
+    TILEG_EXCRUCIATING_WOUNDS,
+},
+
+{
     SPELL_PORTAL_PROJECTILE, "Portal Projectile",
     SPTYP_TRANSLOCATION | SPTYP_HEXES,
     SPFLAG_NONE,
@@ -3906,17 +3917,6 @@ static const struct spell_desc spelldata[] =
     -1, -1,
     8, 0,
     TILEG_IGNITION,
-},
-
-{
-    SPELL_BRAND_WEAPON, "Brand Weapon",
-    SPTYP_CHARMS | SPTYP_NONE,
-    SPFLAG_HELPFUL,
-    5,
-    200,
-    -1, -1,
-    4, 0,
-    TILEG_INFUSION,
 },
 
 {

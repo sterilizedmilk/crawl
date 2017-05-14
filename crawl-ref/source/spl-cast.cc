@@ -1796,8 +1796,8 @@ static spret_type _do_cast(spell_type spell, int powc, const dist& spd,
     case SPELL_AURA_OF_ABJURATION:
         return cast_aura_of_abjuration(powc, fail);
 
-    case SPELL_BRAND_WEAPON:
-        return brand_weapon(affined_brand(), powc, fail);
+    case SPELL_EXCRUCIATING_WOUNDS:
+        return cast_excruciating_wounds(powc, fail);
 
     // Transformations.
     case SPELL_BEASTLY_APPENDAGE:
