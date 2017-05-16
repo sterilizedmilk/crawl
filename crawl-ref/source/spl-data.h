@@ -3911,7 +3911,7 @@ static const struct spell_desc spelldata[] =
 {
     SPELL_BRAND_WEAPON, "Brand Weapon",
     SPTYP_CHARMS | SPTYP_NONE,
-    SPFLAG_HELPFUL,
+    SPFLAG_HELPFUL | SPFLAG_NO_GHOST,
     5,
     200,
     -1, -1,

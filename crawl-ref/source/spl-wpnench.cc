@@ -19,7 +19,7 @@
 
 brand_type affined_brand()
 {
-    switch (affined_school())
+    switch (affined_school(SPELL_BRAND_WEAPON))
     {
     case SK_FIRE_MAGIC:       return SPWPN_FLAMING;
     case SK_ICE_MAGIC:        return SPWPN_FREEZING;
@@ -149,6 +149,7 @@ int _get_brand_duration(brand_type which_brand)
     case SPWPN_DRAINING:
         return 12;
     case SPWPN_DISTORTION:
+    case SPWPN_ELECTROCUTION:
         return 5;
     case SPWPN_PAIN:
         return 8;

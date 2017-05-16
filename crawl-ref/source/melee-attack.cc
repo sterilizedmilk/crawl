@@ -3465,42 +3465,29 @@ bool melee_attack::_extra_aux_attack(unarmed_attack_type atk)
 
 bool melee_attack::aux_successful(unarmed_attack_type atk)
 {	
-    int wildlevel = you.wild_level();
-    if (atk != UNAT_CONSTRICT && (you.strength() + you.dex() + wildlevel * 10) <= random2(50))
-        return false;    
-
-    bool successful;
-    unsigned int aux_roll_count = 1 + wildlevel;
-    for (unsigned int i = 0; i < aux_roll_count; ++i)
-    {		
-        switch (atk)
-        {
-        case UNAT_PECK:
-        case UNAT_HEADBUTT:
-        case UNAT_PSEUDOPODS:
-        case UNAT_TENTACLES:
-            successful = !one_chance_in(3);
-            break;
-        case UNAT_TAILSLAP:
-            successful = coinflip();
-            break;
-        case UNAT_BITE:
-            successful = x_chance_in_y(2, 5);
-            break;
-        case UNAT_PUNCH:
-            successful = x_chance_in_y(you.species == SP_OCTOPODE ? 3 : 2, 6);
-            break;
-        default:
-            successful = true;
-            break;
-        }
-
-        if (successful)
-        {			
-            return true;
-        }
-	}	
-    return false;
+    if (atk != UNAT_CONSTRICT && you.strength() + you.dex() <= random2(50))
+        return false;
+    
+    switch (atk)
+    {
+    case UNAT_PECK:
+    case UNAT_HEADBUTT:
+    case UNAT_PSEUDOPODS:
+    case UNAT_TENTACLES:
+         return !one_chance_in(3);
+ 
+    case UNAT_TAILSLAP:
+         return coinflip();
+ 
+    case UNAT_BITE:
+         return x_chance_in_y(2,5);
+ 
+    case UNAT_PUNCH:
+         return x_chance_in_y(you.species == SP_OCTOPODE ? 3 : 2, 6);
+    
+    default:
+        return true;
+    }
 }
 
 //maybe... this can be merged with _extra_aux_attack()
@@ -3514,7 +3501,7 @@ int melee_attack::get_aux_count(unarmed_attack_type atk)
     {
         count = you.has_usable_offhand() ? 2 : 0;
         item_def* wp = you.slot_item(EQ_WEAPON);
-        count += you.hands_reqd(*wp) == HANDS_TWO ? 0 : 1;		
+        count += you.hands_reqd(*wp) == HANDS_TWO ? 0 : 1;
     }
 
     return count;

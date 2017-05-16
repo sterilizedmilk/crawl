@@ -531,8 +531,12 @@ bool spell_typematch(spell_type which_spell, spschool_flag_type which_disc)
 }
 
 //jmf: next two for simple bit handling
+// @param book   spell is being generated?
 spschools_type get_spell_disciplines(spell_type spell)
 {
+    if (spell == SPELL_BRAND_WEAPON)
+        return SPTYP_CHARMS | skill2spell_type(affined_school(spell));
+    
     return _seekspell(spell)->disciplines;
 }
 
@@ -1179,7 +1183,7 @@ string spell_uselessness_reason(spell_type spell, bool temp, bool prevent,
             return "you're too dead to regenerate.";
         break;
 
-    case SPELL_EXCRUCIATING_WOUNDS:
+    case SPELL_BRAND_WEAPON:
         if (temp
             && (!you.weapon()
                 || you.weapon()->base_type != OBJ_WEAPONS
@@ -1187,6 +1191,8 @@ string spell_uselessness_reason(spell_type spell, bool temp, bool prevent,
         {
             return "you aren't wielding a brandable weapon.";
         }
+        if (affined_school(SPELL_BRAND_WEAPON) == SK_SPELLCASTING)
+            return "you have no knowledge of brandable energy.";
         // intentional fallthrough
     case SPELL_PORTAL_PROJECTILE:
     case SPELL_SPECTRAL_WEAPON:
@@ -1570,4 +1576,64 @@ const vector<spell_type> *soh_breath_spells(spell_type spell)
     };
 
     return map_find(soh_breaths, spell);
+}
+
+skill_type affined_school(spell_type spell)
+{
+    skill_type min_skill = SK_FIRST_MAGIC_SCHOOL;
+    skill_type max_skill = SK_LAST_MAGIC;
+
+    skill_type ret = SK_SPELLCASTING;
+    unsigned int best_skill_level = 0;
+    unsigned int best_position = 1000;
+
+    for (int i = min_skill; i <= max_skill; i++)
+    {
+        skill_type sk = static_cast<skill_type>(i);
+
+        if (!school_relative(spell, sk))
+            continue;
+
+        const unsigned int skill_level = you.skill(sk, 10, true);
+
+        if (skill_level == 0)
+            continue;
+
+        if (skill_level > best_skill_level)
+        {
+            ret = sk;
+            best_skill_level = skill_level;
+            best_position = you.skill_order[sk];
+
+        }
+        else if (skill_level == best_skill_level
+                 && you.skill_order[sk] < best_position)
+        {
+            ret = sk;
+            best_position = you.skill_order[sk];
+        }
+    }
+
+    return ret;
+}
+
+bool school_relative(spell_type spell, skill_type sk)
+{
+    if (spell == SPELL_BRAND_WEAPON)
+    {
+        switch (sk)
+        {
+        case SK_NECROMANCY:
+        case SK_TRANSLOCATIONS:
+        case SK_FIRE_MAGIC:
+        case SK_ICE_MAGIC:
+        case SK_AIR_MAGIC:
+        case SK_POISON_MAGIC:
+            return true;
+
+        default:
+            return false;
+        }
+    }    
+    return false;
 }
