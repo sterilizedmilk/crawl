@@ -675,13 +675,13 @@ static void _generate_missile_item(item_def& item, int force_type,
     if (item.sub_type == MI_LARGE_ROCK)
     {
         item.quantity = 2 + random2avg(5,2);
-        item.quantity *= ammo_type_destroy_chance(item->sub_type);
+        item.quantity *= ammo_type_destroy_chance(item.sub_type);
         return;
     }
     else if (item.sub_type == MI_STONE)
     {
         item.quantity = 1 + random2(7) + random2(10) + random2(12) + random2(10);
-        ammo_type_destroy_chance(item->sub_type);
+        item.quantity *= ammo_type_destroy_chance(item.sub_type);
         return;
     }
     else if (item.sub_type == MI_THROWING_NET) // no fancy nets, either
@@ -708,11 +708,12 @@ static void _generate_missile_item(item_def& item, int force_type,
     else
         item.quantity = 1 + random2(7) + random2(10) + random2(10) + random2(12);
 
-    if (brand != SPMSL_CHAOS && brand != SPMSL_DISPERSAL && brand != SPMSL_EXPLODING)
-        item.quantity *= ammo_type_destroy_chance(item->sub_type);
+    if (get_ammo_brand(item) != SPMSL_CHAOS && get_ammo_brand(item) != SPMSL_DISPERSAL
+                                            && get_ammo_brand(item) != SPMSL_EXPLODING)
+        item.quantity *= ammo_type_destroy_chance(item.sub_type);
 
-    if (brand == SPMSL_CURARE)
-        item.quantity == div_rand_round(item.quantity, 2)
+    if (get_ammo_brand(item) == SPMSL_CURARE)
+        item.quantity = div_rand_round(item.quantity, 2);
 }
 
 static bool _try_make_armour_artefact(item_def& item, int force_type,
