@@ -1136,6 +1136,8 @@ bool thrown_object_destroyed(item_def *item, const coord_def& where)
     if (ammo_never_destroyed(*item))
         return false;
 
+    return true;
+
     const int base_chance = ammo_type_destroy_chance(item->sub_type);
     const int brand = get_ammo_brand(*item);
 
