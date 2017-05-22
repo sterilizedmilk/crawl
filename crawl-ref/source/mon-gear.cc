@@ -1352,7 +1352,7 @@ static void _give_ammo(monster* mon, int level, bool mons_summoned)
                                                          : SPMSL_POISONED);
 
                 if (get_ammo_brand(mitm[thing_created]) == SPMSL_CURARE)
-                    mitm[thing_created].quantity = random_range(2, 8) / 2;
+                    mitm[thing_created].quantity = random_range(2, 8);
             }
         }
         else
@@ -1381,8 +1381,6 @@ static void _give_ammo(monster* mon, int level, bool mons_summoned)
             default:
                 break;
         }
-
-        mitm[thing_created].quantity *= ammo_type_destroy_chance(xitt);
 
         give_specific_item(mon, thing_created);
     }
@@ -1486,9 +1484,6 @@ static void _give_ammo(monster* mon, int level, bool mons_summoned)
             return;
 
         const int thing_created = items(false, OBJ_MISSILES, weap_type, level);
-
-        if (weap_type != MI_THROWING_NET)
-            qty *= ammo_type_destroy_chance(weap_type);
 
         if (thing_created != NON_ITEM)
         {
