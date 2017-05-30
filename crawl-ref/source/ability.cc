@@ -182,6 +182,8 @@ skill_type invo_skill(god_type god)
             return SK_NECROMANCY;
         case GOD_PAKELLAS:
             return SK_EVOCATIONS;
+		case GOD_SIF_MUNA:
+			return SK_SPELLCASTING;
         case GOD_ASHENZARI:
         case GOD_JIYVA:
         case GOD_GOZAG:
