@@ -1,4 +1,4 @@
-%%%%
+﻿%%%%
 No ability ability
 
 If you get this description, it is a bug.
@@ -308,7 +308,7 @@ spells without sufficient magical reserves.
 Channel Magic ability
 
 Dramatically increases the user's regeneration of magical power for a duration
-that increases with Invocations skill.
+that increases with Spell casting skill.
 %%%%
 Forget Spell ability
 
