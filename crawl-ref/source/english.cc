@@ -448,7 +448,7 @@ string get_desc_quantity(const int quant, const int total, string whose)
 // find correct josa for name
 static string _josa(string name, string postposition)
 {
-    if (postposition.length() != 3)
+    if (postposition.length() != 3 || name == "")
         return "";
 
     static const string array = "은는이가을를과와아야";

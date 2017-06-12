@@ -8112,7 +8112,7 @@ string player::hands_act(const string &plural_verb,
                          const string &object) const
 {
     const bool space = !object.empty() && !_is_end_punct(object[0]);
-    return "Your " + hands_verb(plural_verb) + (space ? " " : "") + object;
+    return "당신의 " + josa(hand_name(true), "이") + (space ? " " : "") + josa(object, "을") + plural_verb;
 }
 
 int player::inaccuracy() const
