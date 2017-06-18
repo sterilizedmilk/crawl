@@ -522,10 +522,10 @@ namespace arena
         int orig_b = faction_b.active_members;
 
         if (orig_a < 0)
-            mprf(MSGCH_ERROR, "Book-keeping says faction_a has negative active members.");
+            mprf(MSGCH_ERROR, "계산에 따르면 a팀의 팀원 수가 음수이다.");
 
         if (orig_b < 0)
-            mprf(MSGCH_ERROR, "Book-keeping says faction_b has negative active members.");
+            mprf(MSGCH_ERROR, "계산에 따르면 b팀의 팀원 수가 음수이다.");
 
         faction_a.active_members = 0;
         faction_b.active_members = 0;
@@ -543,10 +543,10 @@ namespace arena
         if (orig_a != faction_a.active_members
             || orig_b != faction_b.active_members)
         {
-            mprf(MSGCH_ERROR, "Book-keeping error in faction member count: "
-                              "%d:%d instead of %d:%d",
-                              orig_a, orig_b,
-                              faction_a.active_members, faction_b.active_members);
+            mprf(MSGCH_ERROR, "팀원 수 계산에서 오류 발생: "
+                              "%d:%d 대신 %d:%d",
+                              faction_a.active_members, faction_b.active_members,
+                              orig_a, orig_b);
 
             if (faction_a.active_members > 0
                 && faction_b.active_members <= 0)
@@ -570,7 +570,7 @@ namespace arena
         {
             if (faction_a.won || faction_b.won)
             {
-                mprf(MSGCH_ERROR, "Both factions alive but one declared the winner.");
+                mprf(MSGCH_ERROR, "양팀이 모두 살아남았기에 승자를 가릴 수 없다.");
                 faction_a.won = false;
                 faction_b.won = false;
             }
@@ -647,8 +647,8 @@ namespace arena
 
         if (faction_a.active_members == 0 || faction_b.active_members == 0)
         {
-            mprf(MSGCH_ERROR, "ERROR: Both sides have spawners, but the active "
-                 "member count of one side has been reduced to zero!");
+            mprf(MSGCH_ERROR, "오류: 양쪽 다 소환사가 있지만, 한쪽의 "
+                 "활성화된 팀원 수가 0이 되었다!");
             return;
         }
 
