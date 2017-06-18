@@ -304,7 +304,7 @@ bool remove_sanctuary(bool did_attack)
     if (did_attack)
     {
         if (seen_change)
-            simple_god_message(" revokes the gift of sanctuary.", GOD_ZIN);
+            simple_god_message("진이 성역을 거둬들였다.", GOD_ZIN);
         did_god_conduct(DID_ATTACK_IN_SANCTUARY, 3);
     }
 
@@ -334,7 +334,7 @@ void decrease_sanctuary_radius()
 
     if (you.running && is_sanctuary(you.pos()))
     {
-        mprf(MSGCH_DURATION, "The sanctuary starts shrinking.");
+        mprf(MSGCH_DURATION, "성역이 사라지기 시작했다.");
         stop_running();
     }
 
@@ -352,7 +352,7 @@ void decrease_sanctuary_radius()
     {
         _remove_sanctuary_property(env.sanctuary_pos);
         if (you.see_cell(env.sanctuary_pos))
-            mprf(MSGCH_DURATION, "The sanctuary disappears.");
+            mprf(MSGCH_DURATION, "성역이 사라졌다.");
     }
 }
 
@@ -450,21 +450,19 @@ void create_sanctuary(const coord_def& center, int time)
 
     // Messaging.
     if (trap_count > 0)
-        mprf(MSGCH_GOD, "By Zin's power, hidden traps are revealed to you.");
+        mprf(MSGCH_GOD, "진의 권능으로, 숨겨진 함정이 드러났다.");
 
     if (cloud_count == 1)
     {
-        mprf(MSGCH_GOD, "By Zin's power, the foul cloud within the sanctuary "
-                        "is swept away.");
+        mprf(MSGCH_GOD, "진의 권능으로, 성역 내의 악취 구름이 씻겨 나갔다.");
     }
     else if (cloud_count > 1)
     {
-        mprf(MSGCH_GOD, "By Zin's power, all foul fumes within the sanctuary "
-                        "are swept away.");
+        mprf(MSGCH_GOD, "진의 권능으로, 성역 내의 모든 악취 구름이 씻겨 나갔다.");
     }
 
     if (blood_count > 0)
-        mprf(MSGCH_GOD, "By Zin's power, all blood is cleared from the sanctuary.");
+        mprf(MSGCH_GOD, "진의 권능으로, 성역 내의 모든 피가 씻겨 나갔다.");
 
     if (scare_count == 1 && seen_mon != nullptr)
         simple_monster_message(*seen_mon, " turns to flee the light!");
