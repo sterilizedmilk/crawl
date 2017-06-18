@@ -1272,7 +1272,7 @@ static bool _check_ability_possible(const ability_def& abil,
         {
             if (!quiet)
             {
-                mprf("You cannot call out to %s while silenced.",
+                mprf("침묵 상태에서는 %s를 호출할 수 없다.",
                      god_name(you.religion).c_str());
             }
             return false;
@@ -1545,7 +1545,7 @@ static bool _check_ability_possible(const ability_def& abil,
         {
             if (!quiet)
             {
-                mprf("%s is still trapped in memory!",
+                mprf("%s는 아직 기억 속에 갇혀 있다!",
                      hepliaklqana_ally_name().c_str());
             }
             return false;
@@ -1597,8 +1597,8 @@ bool activate_talent(const talent& tal)
     {
         if (feat_dangerous_for_form(transformation::none, env.grid(you.pos())))
         {
-            mprf("Turning back right now would cause you to %s!",
-                 env.grid(you.pos()) == DNGN_LAVA ? "burn" : "drown");
+            mprf("지금 원 상태로 돌아온다면 당신은 %s 것이다!",
+                 env.grid(you.pos()) == DNGN_LAVA ? "타 죽을" : "빠져 죽을");
 
             crawl_state.zero_turns_taken();
             return false;
@@ -2144,7 +2144,7 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
             you.attribute[ATTR_RECITE_TYPE] = (recite_type) random2(NUM_RECITE_TYPES); // This is just flavor
             you.attribute[ATTR_RECITE_SEED] = random2(2187); // 3^7
             you.duration[DUR_RECITE] = 3 * BASELINE_DELAY;
-            mprf("You clear your throat and prepare to recite.");
+            mprf("당신은 목청을 가다듬고 설교를 할 준비를 했다.");
             you.increase_duration(DUR_RECITE_COOLDOWN,
                                   3 + random2(10) + random2(30));
         }
@@ -2290,7 +2290,7 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
             mpr("Another wave of unholy energy enters you.");
         else
         {
-            mprf("You offer yourself to %s, and are filled with unholy energy.",
+            mprf("당신은 당신을 %s에게 바쳤고, 당신의 몸은 불경한 에너지로 가득찼다.",
                  god_name(you.religion).c_str());
         }
         you.duration[DUR_MIRROR_DAMAGE] = 9 * BASELINE_DELAY
@@ -2374,8 +2374,8 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
     case ABIL_OKAWARU_HEROISM:
         fail_check();
         mprf(MSGCH_DURATION, you.duration[DUR_HEROISM]
-             ? "You feel more confident with your borrowed prowess."
-             : "You gain the combat prowess of a mighty hero.");
+             ? "당신은 영웅의 기상을 느끼며 자신감에 가득 찼다."
+             : "당신은 위대한 영웅의 기상을 잠시 얻었다.");
 
         you.increase_duration(DUR_HEROISM,
                               10 + random2avg(you.skill(SK_INVOCATIONS, 6), 2),
@@ -2393,7 +2393,7 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
                  you.hands_act("get", "new energy.").c_str());
         }
         else
-            mprf(MSGCH_DURATION, "You can now deal lightning-fast blows.");
+            mprf(MSGCH_DURATION, "당신은 이제 전광석화와 같은 속도로 공격할 수 있다.");
 
         you.increase_duration(DUR_FINESSE,
                               10 + random2avg(you.skill(SK_INVOCATIONS, 6), 2),
@@ -2537,7 +2537,7 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
             mpr("You renew your call for help.");
         else
         {
-            mprf("You beseech %s to protect your life.",
+            mprf("당신은 %s에게 당신의 생명을 보호해 줄 것을 간청했다.",
                  god_name(you.religion).c_str());
         }
         // Might be a decrease, this is intentional (like Yred).
@@ -2751,7 +2751,7 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
         const item_def* const weapon = you.weapon();
         const string msg = weapon ? weapon->name(DESC_YOUR)
                                   : ("your " + you.hand_name(true));
-        mprf(MSGCH_DURATION, "A thick mucus forms on %s.", msg.c_str());
+        mprf(MSGCH_DURATION, "%s 위에 두꺼운 점액층이 생겨났다.", msg.c_str());
         you.increase_duration(DUR_SLIMIFY,
                               random2avg(you.piety / 4, 2) + 3, 100);
         break;
@@ -2973,7 +2973,7 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
     {
         fail_check();
 
-        mprf(MSGCH_DURATION, "You feel a buildup of energy.");
+        mprf(MSGCH_DURATION, "당신은 에너지가 축적되는 것을 느꼈다.");
         you.increase_duration(DUR_DEVICE_SURGE,
                               random2avg(you.piety / 4, 2) + 3, 100);
         break;
@@ -3043,7 +3043,7 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
         take_note(Note(NOTE_ID_ITEM, 0, 0, wand.name(DESC_A).c_str(),
                   "supercharged by Pakellas"));
 
-        mprf(MSGCH_GOD, "Your %s glows brightly!",
+        mprf(MSGCH_GOD, "당신의 %s가 밝게 빛난다!",
              wand.name(DESC_QUALNAME).c_str());
 
         flash_view(UA_PLAYER, LIGHTGREEN);
@@ -3109,14 +3109,14 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
             return SPRET_ABORT;
         }
         fail_check();
-        mprf(MSGCH_GOD, "Your muscles tense, ready for explosive movement...");
+        mprf(MSGCH_GOD, "당신의 근육이 긴장되었고, 폭발적인 움직임을 할 준비를 마쳤다...");
         you.attribute[ATTR_SERPENTS_LASH] = 2;
         you.redraw_status_lights = true;
         return SPRET_SUCCESS;
 
     case ABIL_WU_JIAN_HEAVENLY_STORM:
         fail_check();
-        mprf(MSGCH_GOD, "The air is filled with shimmering golden clouds!");
+        mprf(MSGCH_GOD, "대기가 아른거리는 황금빛 구름으로 가득 찼다!");
         wu_jian_sifu_message(" says: The storm will not cease as long as you "
                              "keep fighting, disciple!");
 
