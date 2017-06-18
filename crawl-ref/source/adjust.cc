@@ -21,7 +21,7 @@ static void _adjust_ability();
 
 void adjust()
 {
-    mprf(MSGCH_PROMPT, "Adjust (i)tems, (s)pells, or (a)bilities? ");
+    mprf(MSGCH_PROMPT, "무엇의 단축키를 바꿀 것인가 아이템(i), 주문(s), 능력(a)? ");
 
     const int keyin = toalower(get_ch());
 
@@ -47,14 +47,14 @@ void adjust_item(int from_slot)
 
     if (from_slot == -1)
     {
-        from_slot = prompt_invent_item("Adjust which item?", MT_INVLIST, -1);
+        from_slot = prompt_invent_item("어떤 아이템의 단축키를 바꿀 것인가?", MT_INVLIST, -1);
         if (prompt_failed(from_slot))
             return;
 
         mprf_nocap("%s", you.inv[from_slot].name(DESC_INVENTORY_EQUIP).c_str());
     }
 
-    const int to_slot = prompt_invent_item("Adjust to which letter? ",
+    const int to_slot = prompt_invent_item("어떤 문자로 바꿀 것인가? ",
                                            MT_INVLIST,
                                            -1, OPER_ANY,
                                            invprompt_flag::unthings_ok
@@ -80,8 +80,8 @@ static void _adjust_spell()
     }
 
     // Select starting slot
-    mprf(MSGCH_PROMPT, "Adjust which spell? ");
-    int keyin = list_spells(false, false, false, "Adjust which spell?");
+    mprf(MSGCH_PROMPT, "어떤 주문의 단축키를 바꿀 것인가? ");
+    int keyin = list_spells(false, false, false, "어떤 주문의 단축키를 바꿀 것인가?");
 
     if (!isaalpha(keyin))
     {
@@ -106,7 +106,7 @@ static void _adjust_spell()
     keyin = 0;
     while (!isaalpha(keyin))
     {
-        mprf(MSGCH_PROMPT, "Adjust to which letter? ");
+        mprf(MSGCH_PROMPT, "어떤 문자로 바꿀 것인가? ");
         keyin = get_ch();
         if (key_is_escape(keyin))
         {
@@ -153,7 +153,7 @@ static void _adjust_ability()
         return;
     }
 
-    mprf(MSGCH_PROMPT, "Adjust which ability? ");
+    mprf(MSGCH_PROMPT, "어떤 능력의 단축키를 바꿀 것인가? ");
     int selected = choose_ability_menu(talents);
 
     // If we couldn't find anything, cancel out.
@@ -169,7 +169,7 @@ static void _adjust_ability()
 
     const int index1 = letter_to_index(old_key);
 
-    mprf(MSGCH_PROMPT, "Adjust to which letter?");
+    mprf(MSGCH_PROMPT, "어떤 문자로 바꿀 것인가?");
 
     const int keyin = get_ch();
 
