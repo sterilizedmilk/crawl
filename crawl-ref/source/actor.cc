@@ -437,9 +437,9 @@ bool actor::check_clinging(bool stepped, bool door)
     {
         if (you.can_see(*this))
         {
-            mprf("%s %s off the %s.", name(DESC_THE).c_str(),
-                 conj_verb("fall").c_str(),
-                 door ? "door" : "wall");
+            mprf("%s %s에서 %s.", name("은").c_str(),
+                 door ? "문" : "벽",
+                 conj_verb("떨어졌다").c_str());
         }
         apply_location_effects(pos());
     }
@@ -473,11 +473,10 @@ void actor::end_constriction(mid_t whom, bool intentional, bool quiet)
     if (!quiet && alive() && constrictee->alive()
         && (you.see_cell(pos()) || you.see_cell(constrictee->pos())))
     {
-        mprf("%s %s %s grip on %s.",
-                name(DESC_THE).c_str(),
-                conj_verb(intentional ? "release" : "lose").c_str(),
-                pronoun(PRONOUN_POSSESSIVE).c_str(),
-                constrictee->name(DESC_THE).c_str());
+        mprf("%s %s 움켜쥐던 힘을 %s.",
+                name("은").c_str(),
+                constrictee->name("를").c_str(),
+                conj_verb(intentional ? "release" : "lose").c_str());
     }
 
     if (constrictee->is_player())
@@ -681,29 +680,30 @@ void actor::handle_constriction()
 
         if (is_player() || you.can_see(*this))
         {
-            mprf("%s %s %s%s%s",
-                 (is_player() ? "You"
-                              : name(DESC_THE).c_str()),
-                 conj_verb("constrict").c_str(),
-                 defender->name(DESC_THE).c_str(),
+            mprf("%s %s %s %s.%s",
+                 (is_player() ? "당신"
+                              : name("은").c_str()),
+                 exclamations.c_str(),
+                 defender->name("를").c_str(),
+                 conj_verb("조였다").c_str(),
 #ifdef DEBUG_DIAGNOSTICS
-                 make_stringf(" for %d", damage).c_str(),
+                 make_stringf(" %d의 피해를 주었다.", damage).c_str(),
 #else
                  "",
 #endif
-                 exclamations.c_str());
+                 );
         }
         else if (you.can_see(*defender) || defender->is_player())
         {
-            mprf("%s %s constricted%s%s",
-                 defender->name(DESC_THE).c_str(),
-                 defender->conj_verb("are").c_str(),
+            mprf("%s %s 조여지고 있다. %s",
+                 defender->name("은").c_str(),
+                 exclamations.c_str(),
 #ifdef DEBUG_DIAGNOSTICS
                  make_stringf(" for %d", damage).c_str(),
 #else
                  "",
 #endif
-                 exclamations.c_str());
+                 );
         }
 
         dprf("constrict at: %s df: %s base %d dur %d ac %d tsc %d inf %d",
@@ -850,10 +850,11 @@ void actor::collide(coord_def newpos, const actor *agent, int pow)
             behaviour_event(other->as_monster(), ME_WHACK, agent);
         if (you.can_see(*this) || you.can_see(*other))
         {
-            mprf("%s %s with %s!",
-                 name(DESC_THE).c_str(),
-                 conj_verb("collide").c_str(),
-                 other->name(DESC_THE).c_str());
+            mprf("%s %s와 %s!",
+                 name("이").c_str(),
+                 other->name(DESC_PLAIN).c_str()
+                 conj_verb("충돌했다").c_str(),
+                 );
         }
         const string thisname = name(DESC_A, true);
         const string othername = other->name(DESC_A, true);
@@ -872,17 +873,18 @@ void actor::collide(coord_def newpos, const actor *agent, int pow)
     {
         if (!can_pass_through_feat(grd(newpos)))
         {
-            mprf("%s %s into %s!",
-                 name(DESC_THE).c_str(), conj_verb("slam").c_str(),
+            mprf("%s %s에 강하게 %s!",
+                 name("이").c_str(),
                  env.map_knowledge(newpos).known()
-                 ? feature_description_at(newpos, false, DESC_THE, false)
+                 ? feature_description_at(newpos, false, DESC_PLAIN, false)
                        .c_str()
-                 : "something");
+                 : "무언가",
+                 conj_verb("slam").c_str());
         }
         else
         {
-            mprf("%s violently %s moving!",
-                 name(DESC_THE).c_str(), conj_verb("stop").c_str());
+            mprf("%s 폭력적으로 움직임을 %s!",
+                 name("이").c_str(), conj_verb("멈췄다").c_str());
         }
     }
     hurt(agent, apply_ac(damage.roll()), BEAM_MISSILE,
