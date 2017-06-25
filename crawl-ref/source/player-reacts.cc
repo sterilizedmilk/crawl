@@ -1,7 +1,7 @@
 /**
- * @file player_reacts.cc
- * @brief Player functions called every turn, mostly handling enchantment durations/expirations.
- **/
+* @file player_reacts.cc
+* @brief Player functions called every turn, mostly handling enchantment durations/expirations.
+**/
 
 #include "AppHdr.h"
 
@@ -138,31 +138,30 @@
 #include "xom.h"
 
 /**
- * Decrement a duration by the given delay.
-
- * The midloss value should be either 0 or a number of turns where the delay
- * from those turns at normal speed is less than the duration's midpoint. The
- * use of midloss prevents the player from knowing the exact remaining duration
- * when the midpoint message is displayed.
- *
- * @param dur The duration type to be decremented.
- * @param delay The delay aut amount by which to decrement the duration.
- * @param endmsg The message to be displayed when the duration ends.
- * @param midloss A number of normal-speed turns by which to further decrement
- *                the duration if we cross the duration's midpoint.
- * @param endmsg The message to be displayed when the duration is decremented
- *               to a value under its midpoint.
- * @param chan The channel where the endmsg will be printed if the duration
- *             ends.
- *
- * @return  True if the duration ended, false otherwise.
- */
+* Decrement a duration by the given delay.
+* The midloss value should be either 0 or a number of turns where the delay
+* from those turns at normal speed is less than the duration's midpoint. The
+* use of midloss prevents the player from knowing the exact remaining duration
+* when the midpoint message is displayed.
+*
+* @param dur The duration type to be decremented.
+* @param delay The delay aut amount by which to decrement the duration.
+* @param endmsg The message to be displayed when the duration ends.
+* @param midloss A number of normal-speed turns by which to further decrement
+*                the duration if we cross the duration's midpoint.
+* @param endmsg The message to be displayed when the duration is decremented
+*               to a value under its midpoint.
+* @param chan The channel where the endmsg will be printed if the duration
+*             ends.
+*
+* @return  True if the duration ended, false otherwise.
+*/
 
 static bool _decrement_a_duration(duration_type dur, int delay,
-                                 const char* endmsg = nullptr,
-                                 int midloss = 0,
-                                 const char* midmsg = nullptr,
-                                 msg_channel_type chan = MSGCH_DURATION)
+    const char* endmsg = nullptr,
+    int midloss = 0,
+    const char* midmsg = nullptr,
+    msg_channel_type chan = MSGCH_DURATION)
 {
     ASSERT(you.duration[dur] >= 0);
     if (you.duration[dur] == 0)
@@ -171,8 +170,8 @@ static bool _decrement_a_duration(duration_type dur, int delay,
     ASSERT(!midloss || midmsg != nullptr);
     const int midpoint = duration_expire_point(dur);
     ASSERTM(!midloss || midloss * BASELINE_DELAY < midpoint,
-            "midpoint delay loss %d not less than duration midpoint %d",
-            midloss * BASELINE_DELAY, midpoint);
+        "midpoint delay loss %d not less than duration midpoint %d",
+        midloss * BASELINE_DELAY, midpoint);
 
     const int old_dur = you.duration[dur];
     you.duration[dur] -= delay;
@@ -214,11 +213,11 @@ static void _decrement_petrification(int delay)
         // implicit assumption: all races that can be petrified are made of
         // flesh when not petrified
         const string flesh_equiv = get_form()->flesh_equivalent.empty() ?
-                                            "flesh" :
-                                            get_form()->flesh_equivalent;
+            "flesh" :
+            get_form()->flesh_equivalent;
 
         mprf(MSGCH_DURATION, "You turn to %s and can move again.",
-             flesh_equiv.c_str());
+            flesh_equiv.c_str());
     }
 
     if (you.duration[DUR_PETRIFYING])
@@ -236,7 +235,7 @@ static void _decrement_petrification(int delay)
             you.fully_petrify(nullptr);
         }
         else if (dur < 15 && old_dur >= 15)
-            mpr("Your limbs are stiffening.");
+            mpr("당신의 손가락이 뻣뻣해졌다.");
     }
 }
 
@@ -253,7 +252,7 @@ static void _decrement_paralysis(int delay)
             mprf(MSGCH_DURATION, "You can move again.");
             you.redraw_evasion = true;
             you.duration[DUR_PARALYSIS_IMMUNITY] = roll_dice(1, 3)
-            * BASELINE_DELAY;
+                * BASELINE_DELAY;
             if (you.props.exists("paralysed_by"))
                 you.props.erase("paralysed_by");
         }
@@ -261,9 +260,9 @@ static void _decrement_paralysis(int delay)
 }
 
 /**
- * Check whether the player's ice (Ozocubu's) armour was melted this turn.
- * If so, print the appropriate message and clear the flag.
- */
+* Check whether the player's ice (Ozocubu's) armour was melted this turn.
+* If so, print the appropriate message and clear the flag.
+*/
 static void _maybe_melt_armour()
 {
     // We have to do the messaging here, because a simple wand of flame will
@@ -277,13 +276,13 @@ static void _maybe_melt_armour()
 }
 
 /**
- * How much horror does the player character feel in the current situation?
- *
- * (For Ru's MUT_COWARDICE.)
- *
- * Penalties are based on the "scariness" (threat level) of monsters currently
- * visible.
- */
+* How much horror does the player character feel in the current situation?
+*
+* (For Ru's MUT_COWARDICE.)
+*
+* Penalties are based on the "scariness" (threat level) of monsters currently
+* visible.
+*/
 static int _current_horror_level()
 {
     const coord_def& center = you.pos();
@@ -318,10 +317,10 @@ static int _current_horror_level()
 }
 
 /**
- * What was the player's most recent horror level?
- *
- * (For Ru's MUT_COWARDICE.)
- */
+* What was the player's most recent horror level?
+*
+* (For Ru's MUT_COWARDICE.)
+*/
 static int _old_horror_level()
 {
     if (you.duration[DUR_HORROR])
@@ -330,9 +329,9 @@ static int _old_horror_level()
 }
 
 /**
- * When the player should no longer be horrified, end the DUR_HORROR if it
- * exists & cleanup the corresponding prop.
- */
+* When the player should no longer be horrified, end the DUR_HORROR if it
+* exists & cleanup the corresponding prop.
+*/
 static void _end_horror()
 {
     if (!you.duration[DUR_HORROR])
@@ -343,9 +342,9 @@ static void _end_horror()
 }
 
 /**
- * Update penalties for cowardice based on the current situation, if the player
- * has Ru's MUT_COWARDICE.
- */
+* Update penalties for cowardice based on the current situation, if the player
+* has Ru's MUT_COWARDICE.
+*/
 static void _update_cowardice()
 {
     if (!you.has_mutation(MUT_COWARDICE))
@@ -376,11 +375,11 @@ static void _update_cowardice()
         return;
 
     if (horror_level >= HORROR_LVL_OVERWHELMING)
-        mpr("Monsters! Monsters everywhere! You have to get out of here!");
+        mpr("몬스터! 사방이 몬스터다! 이곳에서 당장 나가야 한다!");
     else if (horror_level >= HORROR_LVL_EXTREME)
-        mpr("You reel with horror at the sight of these foes!");
+        mpr("적들이 시야에 들어오는 순간 당신은 공포에 질려 비틀거렸다!");
     else
-        mpr("You feel a twist of horror at the sight of this foe.");
+        mpr("적들이 시야에 들어오는 순간 당신은 공포에 취해 일그러졌다.");
 }
 
 // Uskawyaw piety decays incredibly fast, but only to a baseline level of *.
@@ -409,7 +408,7 @@ static void _handle_uskayaw_piety(int time_taken)
         if (time_since_gain > 30)
         {
             int piety_lost = min(you.piety - piety_breakpoint(0),
-                    div_rand_round(time_since_gain, 10));
+                div_rand_round(time_since_gain, 10));
 
             if (piety_lost > 0)
                 lose_piety(piety_lost);
@@ -435,7 +434,7 @@ static void _handle_uskayaw_time(int time_taken)
     // timer down to a minimum of 0, at which point it becomes eligible to
     // trigger again.
     if (audience_timer == -1 || (you.piety >= piety_breakpoint(2)
-            && x_chance_in_y(time_taken, time_taken * 10 + audience_timer)))
+        && x_chance_in_y(time_taken, time_taken * 10 + audience_timer)))
     {
         uskayaw_prepares_audience();
     }
@@ -443,17 +442,17 @@ static void _handle_uskayaw_time(int time_taken)
         you.props[USKAYAW_AUDIENCE_TIMER] = max(0, audience_timer - time_taken);
 
     if (bond_timer == -1 || (you.piety >= piety_breakpoint(3)
-            && x_chance_in_y(time_taken, time_taken * 10 + bond_timer)))
+        && x_chance_in_y(time_taken, time_taken * 10 + bond_timer)))
     {
         uskayaw_bonds_audience();
     }
     else
-        you.props[USKAYAW_BOND_TIMER] =  max(0, bond_timer - time_taken);
+        you.props[USKAYAW_BOND_TIMER] = max(0, bond_timer - time_taken);
 }
 
 /**
- * Player reactions after monster and cloud activities in the turn are finished.
- */
+* Player reactions after monster and cloud activities in the turn are finished.
+*/
 void player_reacts_to_monsters()
 {
     // In case Maurice managed to steal a needed item for example.
@@ -501,8 +500,8 @@ static bool _check_recite()
 static void _handle_recitation(int step)
 {
     mprf("\"%s\"",
-         zin_recite_text(you.attribute[ATTR_RECITE_SEED],
-                         you.attribute[ATTR_RECITE_TYPE], step).c_str());
+        zin_recite_text(you.attribute[ATTR_RECITE_SEED],
+            you.attribute[ATTR_RECITE_TYPE], step).c_str());
 
     if (apply_area_visible(zin_recite_to_single_monster, you.pos()))
         viewwindow();
@@ -518,7 +517,7 @@ static void _handle_recitation(int step)
     {
         ostringstream speech;
         speech << zin_recite_text(you.attribute[ATTR_RECITE_SEED],
-                                  you.attribute[ATTR_RECITE_TYPE], -1);
+            you.attribute[ATTR_RECITE_TYPE], -1);
         speech << '.';
         if (one_chance_in(27))
         {
@@ -531,35 +530,35 @@ static void _handle_recitation(int step)
 }
 
 /**
- * Try to respawn the player's ancestor, if possible.
- */
+* Try to respawn the player's ancestor, if possible.
+*/
 static void _try_to_respawn_ancestor()
 {
-     monster *ancestor = create_monster(hepliaklqana_ancestor_gen_data());
-     if (!ancestor)
-         return;
+    monster *ancestor = create_monster(hepliaklqana_ancestor_gen_data());
+    if (!ancestor)
+        return;
 
     mprf("%s emerges from the mists of memory!",
-         ancestor->name(DESC_YOUR).c_str());
+        ancestor->name(DESC_YOUR).c_str());
     add_companion(ancestor);
-    check_place_cloud(CLOUD_MIST, ancestor->pos(), random_range(1,2),
-                      ancestor); // ;)
+    check_place_cloud(CLOUD_MIST, ancestor->pos(), random_range(1, 2),
+        ancestor); // ;)
 }
 
 
 /**
- * Take a 'simple' duration, decrement it, and print messages as appropriate
- * when it hits 50% and 0% remaining.
- *
- * @param dur       The duration in question.
- * @param delay     How much to decrement the duration by.
- */
+* Take a 'simple' duration, decrement it, and print messages as appropriate
+* when it hits 50% and 0% remaining.
+*
+* @param dur       The duration in question.
+* @param delay     How much to decrement the duration by.
+*/
 static void _decrement_simple_duration(duration_type dur, int delay)
 {
     if (_decrement_a_duration(dur, delay, duration_end_message(dur),
-                             duration_mid_offset(dur),
-                             duration_mid_message(dur),
-                             duration_mid_chan(dur)))
+        duration_mid_offset(dur),
+        duration_mid_message(dur),
+        duration_mid_chan(dur)))
     {
         duration_end_effect(dur);
     }
@@ -568,8 +567,8 @@ static void _decrement_simple_duration(duration_type dur, int delay)
 
 
 /**
- * Decrement player durations based on how long the player's turn lasted in aut.
- */
+* Decrement player durations based on how long the player's turn lasted in aut.
+*/
 static void _decrement_durations()
 {
     const int delay = you.time_taken;
@@ -590,10 +589,10 @@ static void _decrement_durations()
 
     const bool melted = you.props.exists(MELT_ARMOUR_KEY);
     if (_decrement_a_duration(DUR_ICY_ARMOUR, delay,
-                              "Your icy armour evaporates.",
-                              melted ? 0 : coinflip(),
-                              melted ? nullptr
-                              : "Your icy armour starts to melt."))
+        "Your icy armour evaporates.",
+        melted ? 0 : coinflip(),
+        melted ? nullptr
+        : "Your icy armour starts to melt."))
     {
         if (you.props.exists(ICY_ARMOUR_KEY))
             you.props.erase(ICY_ARMOUR_KEY);
@@ -628,7 +627,7 @@ static void _decrement_durations()
         }
 
         if (_decrement_a_duration(DUR_TRANSFORMATION, delay, nullptr, random2(3),
-                                  "Your transformation is almost over."))
+            "Your transformation is almost over."))
         {
             untransform();
         }
@@ -637,8 +636,8 @@ static void _decrement_durations()
     if (you.attribute[ATTR_SWIFTNESS] >= 0)
     {
         if (_decrement_a_duration(DUR_SWIFTNESS, delay,
-                                  "You feel sluggish.", coinflip(),
-                                  "You start to feel a little slower."))
+            "You feel sluggish.", coinflip(),
+            "You start to feel a little slower."))
         {
             // Start anti-swiftness.
             you.duration[DUR_SWIFTNESS] = you.attribute[ATTR_SWIFTNESS];
@@ -648,8 +647,8 @@ static void _decrement_durations()
     else
     {
         if (_decrement_a_duration(DUR_SWIFTNESS, delay,
-                                  "You no longer feel sluggish.", coinflip(),
-                                  "You start to feel a little faster."))
+            "You no longer feel sluggish.", coinflip(),
+            "You start to feel a little faster."))
         {
             you.attribute[ATTR_SWIFTNESS] = 0;
         }
@@ -710,7 +709,7 @@ static void _decrement_durations()
     {
         tornado_damage(&you, min(delay, you.duration[DUR_TORNADO]));
         if (_decrement_a_duration(DUR_TORNADO, delay,
-                                  "The winds around you start to calm down."))
+            "The winds around you start to calm down."))
         {
             you.duration[DUR_TORNADO_COOLDOWN] = random_range(35, 45);
         }
@@ -721,7 +720,7 @@ static void _decrement_durations()
         if (!you.permanent_flight())
         {
             if (_decrement_a_duration(DUR_FLIGHT, delay, nullptr, random2(6),
-                                      "You are starting to lose your buoyancy."))
+                "You are starting to lose your buoyancy."))
             {
                 land_player();
             }
@@ -747,7 +746,7 @@ static void _decrement_durations()
     }
 
     if (_decrement_a_duration(DUR_CLOUD_TRAIL, delay,
-            "Your trail of clouds dissipates."))
+        "Your trail of clouds dissipates."))
     {
         you.props.erase(XOM_CLOUD_TRAIL_TYPE_KEY);
     }
@@ -755,7 +754,7 @@ static void _decrement_durations()
     if (you.duration[DUR_DARKNESS] && you.haloed())
     {
         you.duration[DUR_DARKNESS] = 0;
-        mpr("The divine light dispels your darkness!");
+        mpr("신성한 빛이 당신의 어둠을 몰아냈다!");
         update_vision_range();
     }
 
@@ -786,7 +785,7 @@ static void _decrement_durations()
     if (you.duration[DUR_TOXIC_RADIANCE])
     {
         const int ticks = (you.duration[DUR_TOXIC_RADIANCE] / 10)
-                          - ((you.duration[DUR_TOXIC_RADIANCE] - delay) / 10);
+            - ((you.duration[DUR_TOXIC_RADIANCE] - delay) / 10);
         toxic_radiance_effect(&you, ticks);
     }
 
@@ -843,8 +842,8 @@ static void _decrement_durations()
 
     // these should be after decr_ambrosia, transforms, liquefying, etc.
     for (int i = 0; i < NUM_DURATIONS; ++i)
-        if (duration_decrements_normally((duration_type) i))
-            _decrement_simple_duration((duration_type) i, delay);
+        if (duration_decrements_normally((duration_type)i))
+            _decrement_simple_duration((duration_type)i, delay);
 }
 
 
@@ -870,8 +869,8 @@ static void _check_equipment_conducts()
 }
 
 /**
- * Handles player ghoul rotting over time.
- */
+* Handles player ghoul rotting over time.
+*/
 static void _rot_ghoul_players()
 {
     if (you.species != SP_GHOUL)
@@ -900,7 +899,7 @@ static void _handle_emergency_flight()
 
     if (!is_feat_dangerous(orig_terrain(you.pos()), true, false))
     {
-        mpr("You float gracefully downwards.");
+        mpr("당신은 공중에서 부드럽게 착지했다.");
         land_player();
         you.props.erase(EMERGENCY_FLIGHT_KEY);
     }
@@ -994,7 +993,7 @@ void player_reacts()
     {
         if (you.duration[DUR_SONG_OF_SLAYING])
         {
-            mpr("The silence causes your song to end.");
+            mpr("침묵이 당신이 부르던 노래를 중단시켰다.");
             _decrement_a_duration(DUR_SONG_OF_SLAYING, you.duration[DUR_SONG_OF_SLAYING]);
         }
     }
@@ -1010,13 +1009,13 @@ void player_reacts()
         if (teleportitis_level > 0 && one_chance_in(100 / teleportitis_level))
             you_teleport_now(false, true);
         else if (player_in_branch(BRANCH_ABYSS) && one_chance_in(80)
-                 && (!map_masked(you.pos(), MMT_VAULT) || one_chance_in(3)))
+            && (!map_masked(you.pos(), MMT_VAULT) || one_chance_in(3)))
         {
             you_teleport_now(); // to new area of the Abyss
 
-            // It's effectively a new level, make a checkpoint save so eventual
-            // crashes lose less of the player's progress (and fresh new bad
-            // mutations).
+                                // It's effectively a new level, make a checkpoint save so eventual
+                                // crashes lose less of the player's progress (and fresh new bad
+                                // mutations).
             if (!crawl_state.disables[DIS_SAVE_CHECKPOINTS])
                 save_game(false);
         }
@@ -1056,7 +1055,7 @@ void player_reacts()
     you.accum_has_constricted();
 
     const int food_use = div_rand_round(player_hunger_rate() * you.time_taken,
-                                        BASELINE_DELAY);
+        BASELINE_DELAY);
     if (food_use > 0 && you.hunger > 0)
         make_hungry(food_use, true);
 
