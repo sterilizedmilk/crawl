@@ -446,7 +446,7 @@ string get_desc_quantity(const int quant, const int total, string whose)
 }
 
 // find correct josa for name
-string josa(string name, string postposition)
+string _josa(string name, string postposition)
 {
     string array = "은는이가을를과와아야";
     int num = -1;
@@ -484,4 +484,9 @@ string josa(string name, string postposition)
     default:
         return "";
     }
+}
+
+string josa(string name, string postposition)
+{
+    return name + _josa(name, postposition);
 }

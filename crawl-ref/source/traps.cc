@@ -154,7 +154,7 @@ string trap_def::name(string postposition) const
         return "buggy";
 
     string basename = full_trap_name(type);
-    basename += josa(basename, postposition);
+    basename += _josa(basename, postposition);
     return basename;
 }
 

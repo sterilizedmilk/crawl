@@ -2317,7 +2317,7 @@ string monster::name(string postposition, description_level_type desc,
                      bool force_vis, bool force_article) const
 {
     string monname = name(desc, force_vis, force_article);
-    monname += josa(monname, postposition);
+    monname += _josa(monname, postposition);
     return monname;
 }
 

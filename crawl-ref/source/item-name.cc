@@ -337,7 +337,7 @@ string item_def::name(string postposition, description_level_type descrip,
 {
     string itemname = name(descrip, terse, ident, with_inscription,
                            quantity_in_words, ignore_flags);
-    itemname += josa(itemname, postposition);      
+    itemname += _josa(itemname, postposition);      
     return itemname;
 }
 
