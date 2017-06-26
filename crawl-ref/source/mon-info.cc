@@ -24,6 +24,7 @@
 #include "item-name.h"
 #include "item-prop.h"
 #include "item-status-flag-type.h"
+#include "kor-name.h"
 #include "libutil.h"
 #include "los.h"
 #include "message.h"
@@ -865,7 +866,7 @@ string monster_info::_core_name() const
     {
         const char* slime_sizes[] = {"buggy ", "", "large ", "very large ",
                                                "enormous ", "titanic "};
-        s = get_monster_data(nametype)->name;
+        s = lookup(monster_kor, nametype, get_monster_data(nametype)->name);
 
         if (mons_is_draconian_job(type) && base_type != MONS_NO_MONSTER)
             s = draconian_colour_name(base_type) + " " + s;

@@ -36,6 +36,7 @@
 #include "item-status-flag-type.h"
 #include "items.h"
 #include "item-use.h"
+#include "kor-name.h"
 #include "level-state-type.h"
 #include "libutil.h"
 #include "makeitem.h"
@@ -135,7 +136,7 @@ static string _item_inscription(const item_def &item)
 
 string item_def::name(description_level_type descrip, bool terse, bool ident,
                       bool with_inscription, bool quantity_in_words,
-                      iflags_t ignore_flags) const
+                      iflags_t ignore_flags, bool kr) const
 {
     if (crawl_state.game_is_arena())
     {
@@ -148,8 +149,9 @@ string item_def::name(description_level_type descrip, bool terse, bool ident,
 
     ostringstream buff;
 
-    const string auxname = name_aux(descrip, terse, ident, with_inscription,
-                                    ignore_flags);
+    const string auxname 
+                    = kr ? name_aux_kr(descrip, terse, ident, with_inscription, ignore_flags)
+                         : name_aux(descrip, terse, ident, with_inscription, ignore_flags);
 
     const bool startvowel     = is_vowel(auxname[0]);
 
@@ -210,8 +212,8 @@ string item_def::name(description_level_type descrip, bool terse, bool ident,
         switch (descrip)
         {
         case DESC_THE:        buff << "the "; break;
-        case DESC_YOUR:       buff << "your "; break;
-        case DESC_ITS:        buff << "its "; break;
+        case DESC_YOUR:       buff << "당신의 "; break;
+        case DESC_ITS:        buff << "그것의 "; break;
         case DESC_A:
         case DESC_INVENTORY_EQUIP:
         case DESC_INVENTORY:
@@ -234,8 +236,8 @@ string item_def::name(description_level_type descrip, bool terse, bool ident,
         switch (descrip)
         {
         case DESC_THE:        buff << "the "; break;
-        case DESC_YOUR:       buff << "your "; break;
-        case DESC_ITS:        buff << "its "; break;
+        case DESC_YOUR:       buff << "당신의 "; break;
+        case DESC_ITS:        buff << "그것의 "; break;
         case DESC_A:
         case DESC_INVENTORY_EQUIP:
         case DESC_INVENTORY:
@@ -254,16 +256,16 @@ string item_def::name(description_level_type descrip, bool terse, bool ident,
         if (eq != EQ_NONE)
         {
             if (you.melded[eq])
-                buff << " (melded)";
+                buff << " (녹아듬)";
             else
             {
                 switch (eq)
                 {
                 case EQ_WEAPON:
                     if (is_weapon(*this))
-                        buff << " (weapon)";
+                        buff << " (무기)";
                     else if (you.species == SP_FELID)
-                        buff << " (in mouth)";
+                        buff << " (입에 뭄)";
                     else
                         buff << " (in " << you.hand_name(false) << ")";
                     break;
@@ -273,7 +275,7 @@ string item_def::name(description_level_type descrip, bool terse, bool ident,
                 case EQ_BOOTS:
                 case EQ_SHIELD:
                 case EQ_BODY_ARMOUR:
-                    buff << " (worn)";
+                    buff << " (착용함)";
                     break;
                 case EQ_LEFT_RING:
                 case EQ_RIGHT_RING:
@@ -281,7 +283,7 @@ string item_def::name(description_level_type descrip, bool terse, bool ident,
                 case EQ_RING_TWO:
                     buff << " (";
                     buff << ((eq == EQ_LEFT_RING || eq == EQ_RING_ONE)
-                             ? "left" : "right");
+                             ? "왼" : "오른");
                     buff << " ";
                     buff << you.hand_name(false);
                     buff << ")";
@@ -290,7 +292,7 @@ string item_def::name(description_level_type descrip, bool terse, bool ident,
                     if (you.species == SP_OCTOPODE && form_keeps_mutations())
                         buff << " (around mantle)";
                     else
-                        buff << " (around neck)";
+                        buff << " (목)";
                     break;
                 case EQ_RING_THREE:
                 case EQ_RING_FOUR:
@@ -298,10 +300,10 @@ string item_def::name(description_level_type descrip, bool terse, bool ident,
                 case EQ_RING_SIX:
                 case EQ_RING_SEVEN:
                 case EQ_RING_EIGHT:
-                    buff << " (on tentacle)";
+                    buff << " (촉수)";
                     break;
                 case EQ_RING_AMULET:
-                    buff << " (on amulet)";
+                    buff << " (부적)";
                     break;
                 default:
                     die("Item in an invalid slot");
@@ -323,10 +325,20 @@ string item_def::name(description_level_type descrip, bool terse, bool ident,
         && !testbits(ignore_flags, ISFLAG_KNOW_CURSE)
         && (ident || item_ident(*this, ISFLAG_KNOW_CURSE)))
     {
-        buff << " (curse)";
+        buff << " (저주)";
     }
 
     return buff.str();
+}
+
+string item_def::name(string postposition, description_level_type descrip,
+            bool terse, bool ident, bool with_inscription,
+            bool quantity_in_words, iflags_t ignore_flags) const
+{
+    string itemname = name(descrip, terse, ident, with_inscription,
+                           quantity_in_words, ignore_flags);
+    itemname += josa(itemname, postposition);      
+    return itemname;
 }
 
 static bool _missile_brand_is_prefix(special_missile_type brand)
@@ -357,44 +369,44 @@ const char* missile_brand_name(const item_def &item, mbn_type t)
     {
 #if TAG_MAJOR_VERSION == 34
     case SPMSL_FLAME:
-        return "flame";
+        return "화염";
     case SPMSL_FROST:
-        return "frost";
+        return "서리";
 #endif
     case SPMSL_POISONED:
-        return t == MBN_NAME ? "poisoned" : "poison";
+        return t == MBN_NAME ? "독이 발린" : "독";
     case SPMSL_CURARE:
-        return t == MBN_NAME ? "curare-tipped" : "curare";
+        return t == MBN_NAME ? "쿠라레 발린" : "쿠라레";
     case SPMSL_EXPLODING:
-        return t == MBN_TERSE ? "explode" : "exploding";
+        return t == MBN_TERSE ? "폭발" : "폭발하는";
     case SPMSL_STEEL:
-        return "steel";
+        return "강철";
     case SPMSL_SILVER:
-        return "silver";
+        return "은";
     case SPMSL_PARALYSIS:
-        return "paralysis";
+        return "마비";
 #if TAG_MAJOR_VERSION == 34
     case SPMSL_SLOW:
         return t == MBN_TERSE ? "slow" : "slowing";
 #endif
     case SPMSL_SLEEP:
-        return t == MBN_TERSE ? "sleep" : "sleeping";
+        return "수면";
     case SPMSL_CONFUSION:
-        return t == MBN_TERSE ? "conf" : "confusion";
+        return "혼란";
 #if TAG_MAJOR_VERSION == 34
     case SPMSL_SICKNESS:
         return t == MBN_TERSE ? "sick" : "sickness";
 #endif
     case SPMSL_FRENZY:
-        return "frenzy";
+        return "광폭";
     case SPMSL_RETURNING:
-        return t == MBN_TERSE ? "return" : "returning";
+        return "귀환";
     case SPMSL_CHAOS:
-        return "chaos";
+        return "혼돈";
     case SPMSL_PENETRATION:
-        return t == MBN_TERSE ? "penet" : "penetration";
+        return "관통";
     case SPMSL_DISPERSAL:
-        return t == MBN_TERSE ? "disperse" : "dispersal";
+        return "분산";
 #if TAG_MAJOR_VERSION == 34
     case SPMSL_BLINDING:
         return t == MBN_TERSE ? "blind" : "blinding";
@@ -408,50 +420,50 @@ const char* missile_brand_name(const item_def &item, mbn_type t)
 
 static const char *weapon_brands_terse[] =
 {
-    "", "flame", "freeze", "holy", "elec",
+    "", "화염", "냉기", "신성", "전기",
 #if TAG_MAJOR_VERSION == 34
     "obsolete", "obsolete",
 #endif
-    "venom", "protect", "drain", "speed", "buggy-vorpal",
+    "맹독", "보호", "흡수", "신속", "buggy-vorpal",
 #if TAG_MAJOR_VERSION == 34
     "obsolete", "obsolete",
 #endif
-    "vamp", "pain", "antimagic", "distort",
+    "흡혈", "고통", "반마법", "왜곡",
 #if TAG_MAJOR_VERSION == 34
     "obsolete", "obsolete",
 #endif
-    "chaos",
+    "혼돈",
 #if TAG_MAJOR_VERSION == 34
     "evade", "confuse",
 #endif
-    "penet", "reap", "buggy-num", "acid",
+    "관통", "수확", "buggy-num", "산성",
 #if TAG_MAJOR_VERSION > 34
-    "confuse",
+    "혼란",
 #endif
     "debug",
 };
 
 static const char *weapon_brands_verbose[] =
 {
-    "", "flaming", "freezing", "holy wrath", "electrocution",
+    "", "불타는", "냉기의", "신성한 분노의", "전격의",
 #if TAG_MAJOR_VERSION == 34
     "orc slaying", "dragon slaying",
 #endif
-    "venom", "protection", "draining", "speed", "buggy-vorpal",
+    "맹독의", "보호의", "흡수의", "신속의", "buggy-vorpal",
 #if TAG_MAJOR_VERSION == 34
     "flame", "frost",
 #endif
-    "", "pain", "", "distortion",
+    "흡혈의", "고통의", "반마법의", "왜곡의",
 #if TAG_MAJOR_VERSION == 34
     "reaching", "returning",
 #endif
-    "chaos",
+    "혼돈의",
 #if TAG_MAJOR_VERSION == 34
     "evasion", "confusion",
 #endif
-    "penetration", "reaping", "buggy-num", "acid",
+    "관통의", "수확의", "buggy-num", "산성의",
 #if TAG_MAJOR_VERSION > 34
-    "confusion",
+    "혼란",
 #endif
     "debug",
 };
@@ -496,17 +508,17 @@ static const char* _vorpal_brand_name(const item_def &item, bool terse)
 {
     // Dummy "All Hand Weapons" item from objstat.
     if (item.sub_type == NUM_WEAPONS)
-        return "vorpal";
+        return "보팔";
 
     if (is_range_weapon(item))
-        return "velocity";
+        return "속도";
 
     // Would be nice to implement this as an array (like other brands), but
     // mapping the DVORP flags to array entries seems very fragile.
     switch (get_vorpal_type(item))
     {
-        case DVORP_CRUSHING: return terse ? "crush" :"crushing";
-        case DVORP_SLICING:  return terse ? "slice" : "slicing";
+        case DVORP_CRUSHING: return terse ? "분쇄" :"분쇄의";
+        case DVORP_SLICING:  return terse ? "절단" : "절단의";
         case DVORP_PIERCING: return terse ? "pierce" : "piercing";
         case DVORP_CHOPPING: return terse ? "chop" : "chopping";
         case DVORP_SLASHING: return terse ? "slash" :"slashing";
@@ -577,35 +589,35 @@ const char* armour_ego_name(const item_def& item, bool terse)
             // they are possible. The terse ego name for these is {run}
             // still to avoid player confusion, it used to be {sslith}.
             if (item.sub_type == ARM_NAGA_BARDING)
-                                      return "speedy slithering";
+                                      return "빠른 미끄러짐";
             else
-                                      return "running";
-        case SPARM_FIRE_RESISTANCE:   return "fire resistance";
-        case SPARM_COLD_RESISTANCE:   return "cold resistance";
-        case SPARM_POISON_RESISTANCE: return "poison resistance";
-        case SPARM_SEE_INVISIBLE:     return "see invisible";
-        case SPARM_INVISIBILITY:      return "invisibility";
-        case SPARM_STRENGTH:          return "strength";
-        case SPARM_DEXTERITY:         return "dexterity";
-        case SPARM_INTELLIGENCE:      return "intelligence";
-        case SPARM_PONDEROUSNESS:     return "ponderousness";
-        case SPARM_FLYING:            return "flying";
+                                      return "질주";
+        case SPARM_FIRE_RESISTANCE:   return "화염 저항";
+        case SPARM_COLD_RESISTANCE:   return "냉기 저항";
+        case SPARM_POISON_RESISTANCE: return "독 저항";
+        case SPARM_SEE_INVISIBLE:     return "투명 감지";
+        case SPARM_INVISIBILITY:      return "투명";
+        case SPARM_STRENGTH:          return "힘";
+        case SPARM_DEXTERITY:         return "민첩";
+        case SPARM_INTELLIGENCE:      return "지능";
+        case SPARM_PONDEROUSNESS:     return "무거움";
+        case SPARM_FLYING:            return "비행";
 
-        case SPARM_MAGIC_RESISTANCE:  return "magic resistance";
-        case SPARM_PROTECTION:        return "protection";
-        case SPARM_STEALTH:           return "stealth";
-        case SPARM_RESISTANCE:        return "resistance";
-        case SPARM_POSITIVE_ENERGY:   return "positive energy";
-        case SPARM_ARCHMAGI:          return "the Archmagi";
+        case SPARM_MAGIC_RESISTANCE:  return "마법 저항";
+        case SPARM_PROTECTION:        return "보호";
+        case SPARM_STEALTH:           return "은신";
+        case SPARM_RESISTANCE:        return "저항";
+        case SPARM_POSITIVE_ENERGY:   return "양 에너지";
+        case SPARM_ARCHMAGI:          return "대 마법사";
 #if TAG_MAJOR_VERSION == 34
         case SPARM_JUMPING:           return "jumping";
         case SPARM_PRESERVATION:      return "preservation";
 #endif
-        case SPARM_REFLECTION:        return "reflection";
-        case SPARM_SPIRIT_SHIELD:     return "spirit shield";
-        case SPARM_ARCHERY:           return "archery";
-        case SPARM_REPULSION:         return "repulsion";
-        case SPARM_CLOUD_IMMUNE:      return "cloud immunity";
+        case SPARM_REFLECTION:        return "반사";
+        case SPARM_SPIRIT_SHIELD:     return "영혼방패";
+        case SPARM_ARCHERY:           return "궁도";
+        case SPARM_REPULSION:         return "반발";
+        case SPARM_CLOUD_IMMUNE:      return "구름 면역";
         default:                      return "bugginess";
         }
     }
@@ -669,9 +681,9 @@ static const char* _wand_type_name(int wandtype)
 static const char* wand_secondary_string(uint32_t s)
 {
     static const char* const secondary_strings[] = {
-        "", "jewelled ", "curved ", "long ", "short ", "twisted ", "crooked ",
-        "forked ", "shiny ", "blackened ", "tapered ", "glowing ", "worn ",
-        "encrusted ", "runed ", "sharpened "
+        "", "보석박힌 ", "굽은 ", "기다란 ", "짧은 ", "꼬인 ", "손잡이달린 ",
+        "갈라진 ", "빛나는 ", "그을린 ", "끝이 가는 ", "반짝이는 ", "낡은 ",
+        "장식된 ", "룬이 새겨진 ", "뾰족한 "
     };
     COMPILE_CHECK(ARRAYSZ(secondary_strings) == NDSC_WAND_SEC);
     return secondary_strings[s % NDSC_WAND_SEC];
@@ -680,8 +692,8 @@ static const char* wand_secondary_string(uint32_t s)
 static const char* wand_primary_string(uint32_t p)
 {
     static const char* const primary_strings[] = {
-        "iron", "brass", "bone", "wooden", "copper", "gold", "silver",
-        "bronze", "ivory", "glass", "lead", "fluorescent"
+        "철", "놋쇠", "뼈", "나무", "구리", "금", "은",
+        "청동", "상아", "유리", "납", "형광"
     };
     COMPILE_CHECK(ARRAYSZ(primary_strings) == NDSC_WAND_PRI);
     return primary_strings[p % NDSC_WAND_PRI];
@@ -923,9 +935,9 @@ static string jewellery_type_name(int jeweltype)
 static const char* ring_secondary_string(uint32_t s)
 {
     static const char* const secondary_strings[] = {
-        "", "encrusted ", "glowing ", "tubular ", "runed ", "blackened ",
-        "scratched ", "small ", "large ", "twisted ", "shiny ", "notched ",
-        "knobbly "
+        "", "장식된 ", "반짝거리는 ", "튜브형 ", "룬이 새겨진 ", "그을린 ",
+        "긁힌 ", "작은 ", "커다란 ", "꼬인 ", "빛나는 ", "홈 있는 ",
+        "울퉁불퉁한 "
     };
     COMPILE_CHECK(ARRAYSZ(secondary_strings) == NDSC_JEWEL_SEC);
     return secondary_strings[s % NDSC_JEWEL_SEC];
@@ -934,11 +946,11 @@ static const char* ring_secondary_string(uint32_t s)
 static const char* ring_primary_string(uint32_t p)
 {
     static const char* const primary_strings[] = {
-        "wooden", "silver", "golden", "iron", "steel", "tourmaline", "brass",
-        "copper", "granite", "ivory", "ruby", "marble", "jade", "glass",
-        "agate", "bone", "diamond", "emerald", "peridot", "garnet", "opal",
-        "pearl", "coral", "sapphire", "cabochon", "gilded", "onyx", "bronze",
-        "moonstone"
+        "나무", "은", "금", "철", "강철", "전기석", "놋쇠",
+        "구리", "화강암", "상아", "루비", "대리석", "옥", "유리",
+        "마노", "뼈", "다이아몬드", "에메랄드", "감람석", "가넷", "오팔",
+        "진주", "산호", "사파이어", "카보숑", "도금", "오닉스", "청동",
+        "월장석"
     };
     COMPILE_CHECK(ARRAYSZ(primary_strings) == NDSC_JEWEL_PRI);
     return primary_strings[p % NDSC_JEWEL_PRI];
@@ -947,9 +959,9 @@ static const char* ring_primary_string(uint32_t p)
 static const char* amulet_secondary_string(uint32_t s)
 {
     static const char* const secondary_strings[] = {
-        "dented ", "square ", "thick ", "thin ", "runed ", "blackened ",
-        "glowing ", "small ", "large ", "twisted ", "tiny ", "triangular ",
-        "lumpy "
+        "찌그러진 ", "사각형 ", "두툼한 ", "얇은 ", "룬이 새겨진 ", "그을린 ",
+        "반짝거리는 ", "작은 ", "커다란 ", "꼬인 ", "자그마한 ", "삼각형 ",
+        "우둘투둘한 "
     };
     COMPILE_CHECK(ARRAYSZ(secondary_strings) == NDSC_JEWEL_SEC);
     return secondary_strings[s % NDSC_JEWEL_SEC];
@@ -958,11 +970,11 @@ static const char* amulet_secondary_string(uint32_t s)
 static const char* amulet_primary_string(uint32_t p)
 {
     static const char* const primary_strings[] = {
-        "sapphire", "zirconium", "golden", "emerald", "garnet", "bronze",
-        "brass", "copper", "ruby", "citrine", "bone", "platinum", "jade",
-        "fluorescent", "amethyst", "cameo", "pearl", "blue", "peridot",
-        "jasper", "diamond", "malachite", "steel", "cabochon", "silver",
-        "soapstone", "lapis lazuli", "filigree", "beryl"
+        "사파이어", "지르코늄", "금", "에메랄드", "가넷", "청동",
+        "놋쇠", "구리", "루비", "황수정", "뼈", "백금", "옥",
+        "형광색", "자수정", "카메오", "진주", "파란", "감람석",
+        "벽옥", "다이아몬드", "공작석", "강철", "카보숑", "은",
+        "동석", "청금석", "선세공된", "녹주석"
     };
     COMPILE_CHECK(ARRAYSZ(primary_strings) == NDSC_JEWEL_PRI);
     return primary_strings[p % NDSC_JEWEL_PRI];
@@ -1050,8 +1062,8 @@ static const char* book_secondary_string(uint32_t s)
         return "";
 
     static const char* const secondary_strings[] = {
-        "", "chunky ", "thick ", "thin ", "wide ", "glowing ",
-        "dog-eared ", "oblong ", "runed ", "", "", ""
+        "", "두툼한 ", "두꺼운 ", "얇은 ", "넓은 ", "반짝거리는 ",
+        "페이지가 접힌 ", "길쭉한 ", "룬이 새겨진 ", "", "", ""
     };
     return secondary_strings[(s / NDSC_BOOK_PRI) % ARRAYSZ(secondary_strings)];
 }
@@ -1059,7 +1071,7 @@ static const char* book_secondary_string(uint32_t s)
 static const char* book_primary_string(uint32_t p)
 {
     static const char* const primary_strings[] = {
-        "paperback", "hardcover", "leatherbound", "metal-bound", "papyrus",
+        "종이표지", "양장본", "가죽장정된 ", "금속테두리", "파피루스",
     };
     COMPILE_CHECK(NDSC_BOOK_PRI == ARRAYSZ(primary_strings));
 
@@ -1123,8 +1135,8 @@ static const char* _book_type_name(int booktype)
 static const char* staff_secondary_string(uint32_t s)
 {
     static const char* const secondary_strings[] = {
-        "crooked ", "knobbly ", "weird ", "gnarled ", "thin ", "curved ",
-        "twisted ", "thick ", "long ", "short ",
+        "갈고리손잡이 ", "울퉁불퉁한 ", "이상한 ", "뒤틀린 ", "얇은 ", "휜 ",
+        "꼬인 ", "굵은 ", "기다란 ", "짧은 ",
     };
     COMPILE_CHECK(NDSC_STAVE_SEC == ARRAYSZ(secondary_strings));
     return secondary_strings[s % ARRAYSZ(secondary_strings)];
@@ -1133,7 +1145,7 @@ static const char* staff_secondary_string(uint32_t s)
 static const char* staff_primary_string(uint32_t p)
 {
     static const char* const primary_strings[] = {
-        "glowing ", "jewelled ", "runed ", "smoking "
+        "빛나는 ", "보석박힌 ", "룬이 새겨진 ", "연기이는 "
     };
     COMPILE_CHECK(NDSC_STAVE_PRI == ARRAYSZ(primary_strings));
     return primary_strings[p % ARRAYSZ(primary_strings)];
@@ -1286,17 +1298,6 @@ string ego_type_string(const item_def &item, bool terse, brand_type override_bra
     case OBJ_ARMOUR:
         return armour_ego_name(item, terse);
     case OBJ_WEAPONS:
-        if (!terse)
-        {
-            brand_type checkbrand = override_brand ? override_brand
-                                            : get_weapon_brand(item);
-            // this is specialcased out of weapon_brand_name
-            // ("vampiric hand axe", etc)
-            if (checkbrand == SPWPN_VAMPIRISM)
-                return "vampirism";
-            else if (checkbrand == SPWPN_ANTIMAGIC)
-                return "antimagic";
-        }
         if (get_weapon_brand(item) != SPWPN_NORMAL)
             return weapon_brand_name(item, terse, override_brand);
         else
@@ -1388,7 +1389,7 @@ static string _curse_prefix(const item_def &weap, description_level_type desc,
         return "";
 
     if (weap.cursed())
-        return "cursed ";
+        return "저주받은 ";
 
     // We don't bother printing "uncursed" if the item is identified
     // for pluses (its state should be obvious), this is so that
@@ -1402,7 +1403,7 @@ static string _curse_prefix(const item_def &weap, description_level_type desc,
     if (!ident && !item_type_known(weap)
         || !is_artefact(weap))
     {
-        return "uncursed ";
+        return "저주받지 않은 ";
     }
     return "";
 }
@@ -1431,9 +1432,9 @@ static string _cosmetic_text(const item_def &weap, iflags_t ignore_flags)
     switch (desc)
     {
         case ISFLAG_RUNED:
-            return "runed ";
+            return "룬이 박힌 ";
         case ISFLAG_GLOWING:
-            return "glowing ";
+            return "반짝이는 ";
         default:
             return "";
     }
@@ -1452,14 +1453,14 @@ static string _ego_prefix(const item_def &weap, description_level_type desc,
     switch (get_weapon_brand(weap))
     {
         case SPWPN_VAMPIRISM:
-            return "vampiric ";
+            return "흡혈의 ";
         case SPWPN_ANTIMAGIC:
-            return "antimagic ";
+            return "반마법의 ";
         case SPWPN_NORMAL:
             if (!_know_pluses(weap, desc, ident, ignore_flags)
                 && get_equip_desc(weap))
             {
-                return "enchanted ";
+                return "마법걸린 ";
             }
             // fallthrough to default
         default:
@@ -2038,6 +2039,558 @@ string item_def::name_aux(description_level_type desc, bool terse, bool ident,
     // One plural to rule them all.
     if (need_plural && quantity > 1 && !basename && !qualname)
         buff.str(pluralise(buff.str()));
+
+    // debugging output -- oops, I probably block it above ... dang! {dlb}
+    if (buff.str().length() < 3)
+    {
+        buff << "bad item (cl:" << static_cast<int>(base_type)
+             << ",ty:" << item_typ << ",pl:" << plus
+             << ",pl2:" << plus2 << ",sp:" << special
+             << ",qu:" << quantity << ")";
+    }
+
+    return buff.str();
+}
+
+string item_def::name_aux_kr(description_level_type desc, bool terse, bool ident,
+                          bool with_inscription, iflags_t ignore_flags) const
+{
+    // Shortcuts
+    const int item_typ   = sub_type;
+
+    const bool know_type = ident || item_type_known(*this);
+
+    const bool dbname   = (desc == DESC_DBNAME);
+    const bool basename = _use_basename(*this, desc, ident);
+    const bool qualname = (desc == DESC_QUALNAME);
+
+    const bool know_curse =  _know_curse(*this, desc, ident, ignore_flags);
+    const bool know_pluses = _know_pluses(*this, desc, ident, ignore_flags);
+    const bool know_brand =  _know_ego(*this, desc, ident, ignore_flags);
+
+    const bool know_ego = know_brand;
+
+    // Display runed/glowing/embroidered etc?
+    // Only display this if brand is unknown.
+    const bool show_cosmetic = !know_pluses && !know_brand
+                               && !basename && !qualname && !dbname
+                               && !terse
+                               && !(ignore_flags & ISFLAG_COSMETIC_MASK);
+
+    ostringstream buff;
+
+    switch (base_type)
+    {
+    case OBJ_WEAPONS:
+    {
+        buff << _curse_prefix(*this, desc, terse, ident, ignore_flags);
+
+        if (know_pluses)
+            buff << _plus_prefix(*this);
+
+        if (is_artefact(*this) && !dbname)
+        {
+            string long_name = buff.str();
+            long_name += get_artefact_name(*this, ident);
+
+            // crop long artefact names when not controlled by webtiles -
+            // webtiles displays weapon names across multiple lines
+#ifdef USE_TILE_WEB
+            if (!tiles.is_controlled_from_web())
+#endif
+            {
+                const bool has_inscript = desc != DESC_BASENAME
+                                    && desc != DESC_DBNAME
+                                    && with_inscription;
+
+                const int total_length = long_name.size()
+                                        + (has_inscript ? _item_inscription(*this).size() : 0);
+                const string inv_slot_text = "x) ";
+                const int max_length = crawl_view.hudsz.x - inv_slot_text.size();
+                if (!terse || total_length <= max_length)
+                {
+                    buff << long_name;
+                    break;
+                }
+            }
+#ifdef USE_TILE_WEB
+            else
+            {
+                buff << long_name;
+                break;
+            }
+#endif
+            // special case: these two shouldn't ever have their base name revealed
+            // (since showing 'eudaemon blade' is unhelpful in the former case, and
+            // showing 'broad axe' is misleading in the latter)
+            // could be a flag, but doesn't seem worthwhile for only two items
+            if (is_unrandom_artefact(*this, UNRAND_ZEALOT_SWORD)
+                || is_unrandom_artefact(*this, UNRAND_DEMON_AXE))
+            {
+                buff << long_name;
+                break;
+            }
+
+            buff << get_artefact_base_name(*this, true);
+            break;
+        }
+        
+        if (show_cosmetic)
+            _cosmetic_text(*this, ignore_flags);
+
+        if (know_ego)
+            buff << weapon_brand_name(*this, terse);
+
+        buff << lookup(weapon_kor, item_typ, "");
+
+        if (know_curse && cursed() && terse)
+            buff << " (저주)";
+
+        break;
+    }
+    case OBJ_MISSILES:
+    {
+        special_missile_type msl_brand = get_ammo_brand(*this);
+
+        if (!terse && !dbname && !basename)
+        {
+            if (props.exists(DAMNATION_BOLT_KEY)) // hack alert
+                buff << "damnation ";
+        }
+
+        if (msl_brand != SPMSL_NORMAL
+#if TAG_MAJOR_VERSION == 34
+            && msl_brand != SPMSL_BLINDING
+#endif
+            && !basename && !dbname)
+        {
+            if (terse)
+            {
+                if (props.exists(DAMNATION_BOLT_KEY)) // still a hack
+                    buff << " (damnation)";
+                else
+                    buff << " (" <<  missile_brand_name(*this, MBN_TERSE) << ")";
+            }
+            else
+            {
+                buff << missile_brand_name(*this, MBN_NAME);
+                
+                if (msl_brand != SPMSL_POISONED && msl_brand != SPMSL_CURARE
+                                                && msl_brand != SPMSL_EXPLODING)
+                buff << "의 ";
+            }            
+        }
+
+        buff << lookup(missile_kor, item_typ, "");
+        break;
+    }
+    case OBJ_ARMOUR:
+    {
+        if (know_curse && !terse)
+        {
+            if (cursed())
+                buff << "저주받은 ";
+            else if (!know_pluses)
+                buff << "저주받지 않은 ";
+
+        }
+
+        // If we know enough to know it has *something* ('shiny' etc),
+        // but we know it has no ego, it must have a plus. (or maybe a curse.)
+        // If we don't know what the plus is, call it 'enchanted'.
+        if (!terse && know_ego && get_armour_ego_type(*this) == SPARM_NORMAL &&
+            !know_pluses && !is_artefact(*this) && get_equip_desc(*this))
+        {
+            buff << "마법걸린 ";
+        }
+
+        // Don't list unenchantable armor as +0.
+        if (know_pluses && armour_is_enchantable(*this))
+            buff << make_stringf("%+d ", plus);
+
+        if (item_typ == ARM_GLOVES || item_typ == ARM_BOOTS)
+            buff << "한 쌍의 ";
+
+        if (is_artefact(*this) && !dbname)
+        {
+            buff << get_artefact_name(*this);
+            break;
+        }
+
+        if (show_cosmetic)
+        {
+            switch (get_equip_desc(*this))
+            {
+            case ISFLAG_EMBROIDERED_SHINY:
+                if (testbits(ignore_flags, ISFLAG_EMBROIDERED_SHINY))
+                    break;
+                if (item_typ == ARM_ROBE || item_typ == ARM_CLOAK
+                    || item_typ == ARM_GLOVES || item_typ == ARM_BOOTS
+                    || item_typ == ARM_SCARF
+                    || get_armour_slot(*this) == EQ_HELMET
+                       && !is_hard_helmet(*this))
+                {
+                    buff << "수놓인 ";
+                }
+                else if (item_typ != ARM_LEATHER_ARMOUR
+                         && item_typ != ARM_ANIMAL_SKIN)
+                {
+                    buff << "빛나는 ";
+                }
+                else
+                    buff << "염색된 ";
+                break;
+
+            case ISFLAG_RUNED:
+                if (!testbits(ignore_flags, ISFLAG_RUNED))
+                    buff << "룬이 새겨진 ";
+                break;
+
+            case ISFLAG_GLOWING:
+                if (!testbits(ignore_flags, ISFLAG_GLOWING))
+                    buff << "반짝이는 ";
+                break;
+            }
+        }
+
+        const special_armour_type sparm = get_armour_ego_type(*this);
+        bool show_ego = know_ego && !is_artefact(*this) && sparm != SPARM_NORMAL;
+
+        if (show_ego && !terse)
+            buff << armour_ego_name(*this, terse) << "의 ";
+
+        buff << lookup(armour_kor, item_typ, "");
+
+        if (show_ego && terse)
+            buff << " {" << armour_ego_name(*this, terse) << "}";
+
+        if (know_curse && cursed() && terse)
+            buff << " (저주)";
+        break;
+    }
+    case OBJ_WANDS:
+        if (basename)
+        {
+            buff << "마법봉";
+            break;
+        }
+
+        if (know_type)
+            buff << lookup(wand_kor, item_typ, "") << "의 마법봉";
+        else
+        {
+            buff << wand_secondary_string(subtype_rnd / NDSC_WAND_PRI)
+                 << wand_primary_string(subtype_rnd % NDSC_WAND_PRI)
+                 << " 마법봉";
+        }
+
+        if (dbname)
+            break;
+
+        if (know_type && charges > 0)
+            buff << " (" << charges << ")";
+
+        break;
+
+    case OBJ_POTIONS:
+        if (basename)
+        {
+            buff << "물약";
+            break;
+        }
+
+        if (know_type)
+            buff << lookup(potion_kor, item_typ, "") << "의 물약";
+        else
+        {
+            const int pqual   = PQUAL(subtype_rnd);
+            const int pcolour = PCOLOUR(subtype_rnd);
+
+            static const char *potion_qualifiers[] =
+            {
+                "",  "부글거리는 ", "냄새나는 ", "거품이는 ", "끈적거리는 ",
+                "덩어리진 ", "연기이는 ", "반짝거리는 ", "침전된 ", "금속빛의 ",
+                "탁한 ", "걸쭉한 ", "기름진 ", "점액질의 ", "뭔가 섞인 ",
+            };
+            COMPILE_CHECK(ARRAYSZ(potion_qualifiers) == PDQ_NQUALS);
+
+            static const char *potion_colours[] =
+            {
+#if TAG_MAJOR_VERSION == 34
+                "투명한",
+#endif
+                "파란", "검은", "은색", "청록색", "보라색", "주황색",
+                "새까만", "붉은", "노란", "초록색", "갈색", "다홍색", "흰",
+                "선녹색", "회색", "분홍색", "구릿빛", "황금빛", "어두운", "암갈색",
+                "자줏빛", "하늘색",
+            };
+            COMPILE_CHECK(ARRAYSZ(potion_colours) == PDC_NCOLOURS);
+
+            const char *qualifier =
+                (pqual < 0 || pqual >= PDQ_NQUALS) ? "bug-filled "
+                                    : potion_qualifiers[pqual];
+
+            const char *clr =  (pcolour < 0 || pcolour >= PDC_NCOLOURS) ?
+                                   "bogus" : potion_colours[pcolour];
+
+            buff << qualifier << clr << " 물약";
+        }
+        break;
+
+    case OBJ_FOOD:
+        switch (item_typ)
+        {
+        case FOOD_RATION: buff << "식량"; break;
+        case FOOD_CHUNK:
+            switch (determine_chunk_effect(*this))
+            {
+                case CE_NOXIOUS:
+                    buff << "못먹는 ";
+                    break;
+                default:
+                    break;
+            }
+
+            buff << "고깃덩이";
+            break;
+#if TAG_MAJOR_VERSION == 34
+        default: buff << "removed food"; break;
+#endif
+        }
+
+        break;
+
+    case OBJ_SCROLLS:
+        if (basename)
+        {
+            buff << "두루마리";
+            break;
+        }
+
+        if (know_type)
+            buff << lookup(scroll_kor, item_typ, "") << "의 두루마리";
+        else
+            buff << make_name(subtype_rnd, MNAME_SCROLL) << "라고 적힌 두루마리";
+        break;
+
+    case OBJ_JEWELLERY:
+    {
+        if (basename)
+        {
+            if (jewellery_is_amulet(*this))
+                buff << "부적";
+            else
+                buff << "반지";
+
+            break;
+        }
+
+        const bool is_randart = is_artefact(*this);
+
+        if (know_curse && !terse)
+        {
+            if (cursed())
+                buff << "저주받은 ";
+            else if (desc != DESC_PLAIN
+                     && (!is_randart || !know_type)
+                     && (!jewellery_has_pluses(*this) || !know_pluses)
+                     // If the item is worn, its curse status is known,
+                     // no need to belabour the obvious.
+                     && get_equip_slot(this) == -1)
+            {
+                buff << "저주받지 않은 ";
+            }
+        }
+
+        if (is_randart && !dbname)
+        {
+            buff << get_artefact_name(*this);
+            break;
+        }
+
+        if (know_type)
+        {
+            if (know_pluses && jewellery_has_pluses(*this))
+                buff << make_stringf("%+d ", plus);
+
+            buff << lookup(jewellery_kor, item_typ, "");
+
+            if (item_typ < NUM_RINGS)
+                buff << "의 반지";
+            else
+                buff << "의 부적";
+        }
+        else
+        {
+            if (jewellery_is_amulet(*this))
+            {
+                buff << amulet_secondary_string(subtype_rnd / NDSC_JEWEL_PRI)
+                     << amulet_primary_string(subtype_rnd % NDSC_JEWEL_PRI)
+                     << "부적";
+            }
+            else  // i.e., a ring
+            {
+                buff << ring_secondary_string(subtype_rnd / NDSC_JEWEL_PRI)
+                     << ring_primary_string(subtype_rnd % NDSC_JEWEL_PRI)
+                     << "반지";
+            }
+        }
+        if (know_curse && cursed() && terse)
+            buff << " (저주)";
+        break;
+    }
+    case OBJ_MISCELLANY:
+    {
+        if (!dbname && item_typ == MISC_ZIGGURAT && you.zigs_completed > 0)
+            buff << "+" << you.zigs_completed << " ";
+
+        buff << lookup(miscellany_kor, item_typ, "");
+
+        if (is_xp_evoker(*this) && !dbname && !evoker_charges(sub_type))
+            buff << " (비활성)";
+        else if (!dbname && item_typ == MISC_LIGHTNING_ROD)
+        {
+            int rod_charge = LIGHTNING_MAX_CHARGE;
+            if (you.props.exists("thunderbolt_charge"))
+                rod_charge -= you.props["thunderbolt_charge"].get_int();
+
+            buff << " (" << rod_charge << "/" << LIGHTNING_MAX_CHARGE << ")";
+
+        }
+
+        break;
+    }
+
+    case OBJ_BOOKS:
+        if (is_random_artefact(*this) && !dbname && !basename)
+        {
+            buff << get_artefact_name(*this);
+            if (!know_type)
+                buff << "책";
+            break;
+        }
+        if (basename)
+            buff << (item_typ == BOOK_MANUAL ? "설명서" : "책");
+        else if (!know_type)
+        {
+            buff << book_secondary_string(rnd)
+                 << book_primary_string(rnd) << " "
+                 << (item_typ == BOOK_MANUAL ? "설명서" : "책");
+        }
+        else
+        {
+            if (item_typ == BOOK_MANUAL)
+                buff << skill_name(static_cast<skill_type>(plus));
+
+            buff << lookup(book_kor, item_typ, "");
+
+            if (item_typ != BOOK_YOUNG_POISONERS
+                    && item_typ != BOOK_FEN  
+                    && item_typ != BOOK_PARTY_TRICKS 
+                    && item_typ != BOOK_GRAND_GRIMOIRE
+                    && item_typ != BOOK_NECRONOMICON)
+                buff << "의 책";
+        }
+
+        break;
+
+#if TAG_MAJOR_VERSION == 34
+    case OBJ_RODS:
+        buff << "removed rod";
+        break;
+#endif
+
+    case OBJ_STAVES:
+        if (know_curse && !terse)
+        {
+            if (cursed())
+                buff << "저주받은 ";
+            else if (desc != DESC_PLAIN
+                     && (!know_type || !is_artefact(*this)))
+            {
+                buff << "저주받지 않은 ";
+            }
+        }
+
+        if (!know_type)
+        {
+            if (!basename)
+            {
+                buff << staff_primary_string(subtype_rnd % NDSC_STAVE_PRI)
+                     << staff_secondary_string(subtype_rnd / NDSC_STAVE_PRI);
+            }
+
+            buff << "지팡이";
+        }
+        else
+            buff << lookup(staff_kor, item_typ, "") << "의 지팡이";
+
+        if (know_curse && cursed() && terse)
+            buff << " (저주)";
+        break;
+
+    // rearranged 15 Apr 2000 {dlb}:
+    case OBJ_ORBS:
+        buff.str("조트의 오브");
+        break;
+
+    case OBJ_RUNES:
+        buff << "조트의 ";
+
+        if (!dbname)
+            buff << lookup(rune_kor, item_typ, "") << " ";
+        buff << "룬";
+        break;
+
+    case OBJ_GOLD:
+        buff << "금화";
+        break;
+
+    case OBJ_CORPSES:
+    {
+        if (dbname && item_typ == CORPSE_SKELETON)
+            return "부패중인 해골";
+
+        monster_flags_t name_flags;
+        const string _name = get_corpse_name(*this, &name_flags);
+        const monster_flags_t name_type = name_flags & MF_NAME_MASK;
+
+        const bool shaped = starts_with(_name, "shaped ");    // 시체이름과 조율할것
+
+        if (!_name.empty() && name_type == MF_NAME_ADJECTIVE)
+            buff << _name << " ";
+
+        if ((name_flags & MF_NAME_SPECIES) && name_type == MF_NAME_REPLACE)
+            buff << _name << " ";
+        else if (!dbname && !starts_with(_name, "the "))
+        {
+            const monster_type mc = mon_type;
+            if (!(mons_is_unique(mc) && mons_species(mc) == mc))
+                buff << mons_type_name(mc, DESC_PLAIN) << ' ';
+
+            if (!_name.empty() && shaped)
+                buff << _name << ' ';
+        }
+        
+        if (!_name.empty() && !shaped && name_type != MF_NAME_ADJECTIVE
+            && !(name_flags & MF_NAME_SPECIES) && name_type != MF_NAME_SUFFIX
+            && !dbname)
+        {
+            buff << _name << "의 ";
+        }
+        
+        if (item_typ == CORPSE_BODY)
+            buff << "시체";
+        else if (item_typ == CORPSE_SKELETON)
+            buff << "해골";
+        else
+            buff << "시체 버그";
+        break;
+    }
+
+    default:
+        buff << "!";
+    }
 
     // debugging output -- oops, I probably block it above ... dang! {dlb}
     if (buff.str().length() < 3)
@@ -3897,7 +4450,7 @@ void init_item_name_cache()
                 if (plus > 0)
                     item.plus = max(0, plus - 1);
                 string name = item.name(plus || item.base_type == OBJ_RUNES ? DESC_PLAIN : DESC_DBNAME,
-                                        true, true);
+                                        true, true, true, false, 0x0, false);
                 lowercase(name);
                 cglyph_t g = get_item_glyph(item);
 

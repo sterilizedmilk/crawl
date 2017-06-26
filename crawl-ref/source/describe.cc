@@ -1935,7 +1935,7 @@ string get_item_description(const item_def &item, bool verbose,
 
         if (need_base_desc)
         {
-            string db_name = item.name(DESC_DBNAME, true, false, false);
+            string db_name = item.name(DESC_DBNAME, true, false, false, false, 0x0, false);
             string db_desc = getLongDescription(db_name);
 
             if (db_desc.empty())
