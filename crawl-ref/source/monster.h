@@ -315,7 +315,7 @@ public:
 
     string name(description_level_type type, bool force_visible = false,
                 bool force_article = false) const override;
-    string name(string postposition, description_level_type type = DESC_PLAIN,
+    string name(string postposition = "", description_level_type type = DESC_PLAIN,
                 bool force_visible = false, bool force_article = false) const;
 
     // Base name of the monster, bypassing any mname setting. For an orc priest
