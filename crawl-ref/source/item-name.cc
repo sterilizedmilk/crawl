@@ -337,7 +337,7 @@ string item_def::name(string postposition, description_level_type descrip,
 {
     string itemname = name(descrip, terse, ident, with_inscription,
                            quantity_in_words, ignore_flags);
-    itemname += _josa(itemname, postposition);      
+    itemname += _josa(itemname, postposition);
     return itemname;
 }
 
@@ -374,11 +374,11 @@ const char* missile_brand_name(const item_def &item, mbn_type t)
         return "서리";
 #endif
     case SPMSL_POISONED:
-        return t == MBN_NAME ? "독이 발린" : "독";
+        return t == MBN_NAME ? "독이 발린 " : "독";
     case SPMSL_CURARE:
-        return t == MBN_NAME ? "쿠라레 발린" : "쿠라레";
+        return t == MBN_NAME ? "쿠라레 발린 " : "쿠라레";
     case SPMSL_EXPLODING:
-        return t == MBN_TERSE ? "폭발" : "폭발하는";
+        return t == MBN_TERSE ? "폭발" : "폭발하는 ";
     case SPMSL_STEEL:
         return "강철";
     case SPMSL_SILVER:
@@ -445,25 +445,25 @@ static const char *weapon_brands_terse[] =
 
 static const char *weapon_brands_verbose[] =
 {
-    "", "불타는", "냉기의", "신성한 분노의", "전격의",
+    "", "불타는 ", "냉기의 ", "신성한 분노의 ", "전격의 ",
 #if TAG_MAJOR_VERSION == 34
     "orc slaying", "dragon slaying",
 #endif
-    "맹독의", "보호의", "흡수의", "신속의", "buggy-vorpal",
+    "맹독의 ", "보호의 ", "흡수의 ", "신속의 ", "buggy-vorpal",
 #if TAG_MAJOR_VERSION == 34
     "flame", "frost",
 #endif
-    "흡혈의", "고통의", "반마법의", "왜곡의",
+    "흡혈의 ", "고통의 ", "반마법의 ", "왜곡의 ",
 #if TAG_MAJOR_VERSION == 34
     "reaching", "returning",
 #endif
-    "혼돈의",
+    "혼돈의 ",
 #if TAG_MAJOR_VERSION == 34
     "evasion", "confusion",
 #endif
-    "관통의", "수확의", "buggy-num", "산성의",
+    "관통의 ", "수확의 ", "buggy-num", "산성의 ",
 #if TAG_MAJOR_VERSION > 34
-    "혼란",
+    "혼란의 ",
 #endif
     "debug",
 };
@@ -1480,22 +1480,15 @@ static string _ego_prefix(const item_def &weap, description_level_type desc,
     if (!_know_ego(weap, desc, ident, ignore_flags) || terse)
         return "";
 
-    switch (get_weapon_brand(weap))
+    if (get_weapon_brand(weap) == SPWPN_NORMAL)
     {
-        case SPWPN_VAMPIRISM:
-            return "흡혈의 ";
-        case SPWPN_ANTIMAGIC:
-            return "반마법의 ";
-        case SPWPN_NORMAL:
-            if (!_know_pluses(weap, desc, ident, ignore_flags)
-                && get_equip_desc(weap))
-            {
-                return "마법걸린 ";
-            }
-            // fallthrough to default
-        default:
+        if (!_know_pluses(weap, desc, ident, ignore_flags) && get_equip_desc(weap))
+            return "마법걸린 ";
+        else
             return "";
     }
+
+    return weapon_brand_name(weap, terse); 
 }
 
 /**
@@ -2203,11 +2196,12 @@ string item_def::name_aux_kr(description_level_type desc, bool terse, bool ident
         if (show_cosmetic)
             _cosmetic_text(*this, ignore_flags);
 
-        if (know_ego)
-            buff << weapon_brand_name(*this, terse);
+        buff << _ego_prefix(*this, desc, terse, ident, ignore_flags)
+             << lookup(Weapon_name, item_typ, "");
 
-        buff << lookup(Weapon_name, item_typ, "");
-
+        if (know_ego && terse)
+            buff << _ego_suffix(*this, terse);
+            
         if (know_curse && cursed() && terse)
             buff << " (저주)";
 
@@ -2242,7 +2236,7 @@ string item_def::name_aux_kr(description_level_type desc, bool terse, bool ident
                 
                 if (msl_brand != SPMSL_POISONED && msl_brand != SPMSL_CURARE
                                                 && msl_brand != SPMSL_EXPLODING)
-                buff << "의 ";
+                    buff << "의 ";
             }            
         }
 
@@ -4553,7 +4547,7 @@ void init_item_name_cache()
                     init_deck(item);
                 }
                 string name = item.name(plus || item.base_type == OBJ_RUNES ? DESC_PLAIN : DESC_DBNAME,
-                                        true, true, 0x0, false);
+                                        true, true, true, false, 0x0, false);
                 lowercase(name);
                 cglyph_t g = get_item_glyph(item);
 

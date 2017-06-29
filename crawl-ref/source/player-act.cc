@@ -450,10 +450,25 @@ string player::name(description_level_type dt, bool, bool) const
         return "";
     case DESC_A: case DESC_THE:
     default:
-        return "you";
+        return "당신";
     case DESC_YOUR:
     case DESC_ITS:
-        return "your";
+        return "당신의";
+    }
+}
+
+string player::name(string postposition, description_level_type dt, bool, bool) const
+{
+    switch (dt)
+    {
+    case DESC_NONE:
+        return "";
+    case DESC_A: case DESC_THE:
+    default:
+        return josa("당신", postposition);
+    case DESC_YOUR:
+    case DESC_ITS:
+        return "당신의";
     }
 }
 
