@@ -1068,6 +1068,11 @@ string attack::atk_name(description_level_type desc)
     return actor_name(attacker, desc, attacker_visible);
 }
 
+string attack::atk_name(string postposition, description_level_type desc)
+{
+    return josa(actor_name(attacker, desc, attacker_visible), postposition);
+}
+
 /* Returns the defender's name
  *
  * Helper method to easily access the defender's name
@@ -1075,6 +1080,11 @@ string attack::atk_name(description_level_type desc)
 string attack::def_name(description_level_type desc)
 {
     return actor_name(defender, desc, defender_visible);
+}
+
+string attack::def_name(string postposition, description_level_type desc)
+{
+    return josa(actor_name(defender, desc, defender_visible), postposition);
 }
 
 /* Returns the attacking weapon's name
@@ -1106,6 +1116,12 @@ string attack::wep_name(description_level_type desc, iflags_t ignre_flags)
     return name;
 }
 
+string attack::wep_name(string postposition, description_level_type desc,
+                                             iflags_t ignre_flags)
+{
+    return josa(wep_name(desc, ignre_flags), postposition);
+}
+
 /* TODO: Remove this!
  * Removing it may not really be practical, in retrospect. Its only used
  * below, in calc_elemental_brand_damage, which is called for both frost and
@@ -1118,6 +1134,12 @@ string attack::defender_name(bool allow_reflexive)
     else
         return def_name(DESC_THE);
 }
+
+string attack::defender_name(string postposition,bool allow_reflexive)
+{
+    return josa(defender_name(allow_reflexive), postposition);
+}
+
 
 int attack::player_stat_modify_damage(int damage)
 {
