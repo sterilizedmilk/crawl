@@ -25,6 +25,7 @@
 #include "item-prop.h"
 #include "item-status-flag-type.h"
 #include "items.h"
+#include "kor-name.h"
 #include "libutil.h"
 #include "makeitem.h"
 #include "random.h"
@@ -1172,9 +1173,9 @@ string make_artefact_name(const item_def &item, bool appearance)
     {
         const unrandart_entry *unrand = _seekunrandart(item);
         if (!appearance)
-            return unrand->name;
+            return get_unrand_korean(item.unrand_idx);
         if (!(unrand->flags & UNRAND_FLAG_RANDAPP))
-            return unrand->unid_name;
+            return get_unrand_korean(item.unrand_idx, true);
     }
 
     string lookup;
@@ -1250,14 +1251,15 @@ string make_artefact_name(const item_def &item, bool appearance)
     {
         // construct a unique name
         const string st_p = make_name();
-        result += item_base_name(item);
-
-        if (one_chance_in(3))
+        bool use_of = one_chance_in(3);
+        if (use_of)
         {
-            result += " of ";
-            result += st_p;
+            result += st_p;            
+            result += "의 ";
         }
-        else
+
+        result += item_base_name(item);
+        if (!use_of)
         {
             result += " \"";
             result += st_p;
@@ -1299,7 +1301,7 @@ string get_artefact_name(const item_def &item, bool force_known)
             return item.props[ARTEFACT_NAME_KEY].get_string();
         // other unrands don't use cached names
         if (is_unrandom_artefact(item))
-            return _seekunrandart(item)->name;
+            return get_unrand_korean(item.unrand_idx);
         return make_artefact_name(item, false);
     }
     // print artefact appearance
@@ -1765,7 +1767,7 @@ bool make_item_unrandart(item_def &item, int unrand_index)
     // get artefact appearance
     ASSERT(!item.props.exists(ARTEFACT_APPEAR_KEY));
     if (!(unrand->flags & UNRAND_FLAG_RANDAPP))
-        item.props[ARTEFACT_APPEAR_KEY].get_string() = unrand->unid_name;
+        item.props[ARTEFACT_APPEAR_KEY].get_string() = get_unrand_korean(item.unrand_idx, true);
     else
     {
         item.props[ARTEFACT_APPEAR_KEY].get_string() = make_artefact_name(item, true);

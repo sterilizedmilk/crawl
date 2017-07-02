@@ -88,12 +88,12 @@ string quant_name(const item_def &item, int quant,
 static const char* _interesting_origin(const item_def &item)
 {
     if (origin_as_god_gift(item) != GOD_NO_GOD)
-        return "god gift";
+        return "신의 선물";
 
     if (item.orig_monnum == MONS_DONALD && get_equip_desc(item)
         && item.is_type(OBJ_ARMOUR, ARM_SHIELD))
     {
-        return "Donald";
+        return "도날드";
     }
 
     return nullptr;
@@ -2148,8 +2148,7 @@ string item_def::name_aux_kr(description_level_type desc, bool terse, bool ident
 
         if (is_artefact(*this) && !dbname)
         {
-            string long_name = buff.str();
-            long_name += get_artefact_name(*this, ident);
+            string long_name = get_artefact_name(*this, ident);
 
             // crop long artefact names when not controlled by webtiles -
             // webtiles displays weapon names across multiple lines
@@ -2197,7 +2196,7 @@ string item_def::name_aux_kr(description_level_type desc, bool terse, bool ident
             _cosmetic_text(*this, ignore_flags);
 
         buff << _ego_prefix(*this, desc, terse, ident, ignore_flags)
-             << lookup(Weapon_name, item_typ, "");
+             << item_korean_name(*this);
 
         if (know_ego && terse)
             buff << _ego_suffix(*this, terse);
@@ -2240,7 +2239,7 @@ string item_def::name_aux_kr(description_level_type desc, bool terse, bool ident
             }            
         }
 
-        buff << lookup(Missile_name, item_typ, "");
+        buff << item_korean_name(*this);
         break;
     }
     case OBJ_ARMOUR:
@@ -2318,7 +2317,7 @@ string item_def::name_aux_kr(description_level_type desc, bool terse, bool ident
         if (show_ego && !terse)
             buff << armour_ego_name(*this, terse) << "의 ";
 
-        buff << lookup(Armour_name, item_typ, "");
+        buff << item_korean_name(*this);
 
         if (show_ego && terse)
             buff << " {" << armour_ego_name(*this, terse) << "}";
@@ -2338,7 +2337,7 @@ string item_def::name_aux_kr(description_level_type desc, bool terse, bool ident
             buff << "과충전된 ";
 
         if (know_type)
-            buff << lookup(Wand_name, item_typ, "") << "의 마법봉";
+            buff << item_korean_name(*this) << "의 마법봉";
         else
         {
             buff << wand_secondary_string(subtype_rnd / NDSC_WAND_PRI)
@@ -2378,7 +2377,7 @@ string item_def::name_aux_kr(description_level_type desc, bool terse, bool ident
         }
 
         if (know_type)
-            buff << lookup(Potion_name, item_typ, "") << "의 물약";
+            buff << item_korean_name(*this) << "의 물약";
         else
         {
             const int pqual   = PQUAL(subtype_rnd);
@@ -2452,7 +2451,7 @@ string item_def::name_aux_kr(description_level_type desc, bool terse, bool ident
         }
 
         if (know_type)
-            buff << lookup(Scroll_name, item_typ, "") << "의 두루마리";
+            buff << item_korean_name(*this) << "의 두루마리";
         else
             buff << make_name(subtype_rnd, MNAME_SCROLL) << "라고 적힌 두루마리";
         break;
@@ -2497,7 +2496,7 @@ string item_def::name_aux_kr(description_level_type desc, bool terse, bool ident
             if (know_pluses && jewellery_has_pluses(*this))
                 buff << make_stringf("%+d ", plus);
 
-            buff << lookup(Jewellery_name, item_typ, "");
+            buff << item_korean_name(*this);
 
             if (item_typ < NUM_RINGS)
                 buff << "의 반지";
@@ -2534,7 +2533,7 @@ string item_def::name_aux_kr(description_level_type desc, bool terse, bool ident
         if (!dbname && item_typ == MISC_ZIGGURAT && you.zigs_completed > 0)
             buff << "+" << you.zigs_completed << " ";
 
-        buff << lookup(Miscellany_name, item_typ, "");
+        buff << item_korean_name(*this);
 
         if (is_xp_evoker(*this) && !dbname && !evoker_is_charged(*this))
             buff << " (비활성)";
@@ -2572,7 +2571,7 @@ string item_def::name_aux_kr(description_level_type desc, bool terse, bool ident
             if (item_typ == BOOK_MANUAL)
                 buff << skill_name(static_cast<skill_type>(plus));
 
-            buff << lookup(Book_name, item_typ, "");
+            buff << item_korean_name(*this);
 
             if (item_typ != BOOK_YOUNG_POISONERS
                     && item_typ != BOOK_FEN  
@@ -2613,7 +2612,7 @@ string item_def::name_aux_kr(description_level_type desc, bool terse, bool ident
             buff << "지팡이";
         }
         else
-            buff << lookup(Staff_name, item_typ, "") << "의 지팡이";
+            buff << item_korean_name(*this) << "의 지팡이";
 
         if (know_curse && cursed() && terse)
             buff << " (저주)";
@@ -2628,7 +2627,7 @@ string item_def::name_aux_kr(description_level_type desc, bool terse, bool ident
         buff << "조트의 ";
 
         if (!dbname)
-            buff << lookup(Rune_name, item_typ, "") << " ";
+            buff << item_korean_name(*this) << " ";
         buff << "룬";
         break;
 
