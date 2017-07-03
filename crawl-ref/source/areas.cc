@@ -304,7 +304,7 @@ bool remove_sanctuary(bool did_attack)
     if (did_attack)
     {
         if (seen_change)
-            simple_god_message(" revokes the gift of sanctuary.", GOD_ZIN);
+            simple_god_message("은(는) 성지의 선물을 해지하였다.", GOD_ZIN);
         did_god_conduct(DID_ATTACK_IN_SANCTUARY, 3);
     }
 
@@ -334,7 +334,7 @@ void decrease_sanctuary_radius()
 
     if (you.running && is_sanctuary(you.pos()))
     {
-        mprf(MSGCH_DURATION, "The sanctuary starts shrinking.");
+        mprf(MSGCH_DURATION, "성지가 점점 작아지기 시작한다.");
         stop_running();
     }
 
@@ -352,7 +352,7 @@ void decrease_sanctuary_radius()
     {
         _remove_sanctuary_property(env.sanctuary_pos);
         if (you.see_cell(env.sanctuary_pos))
-            mprf(MSGCH_DURATION, "The sanctuary disappears.");
+            mprf(MSGCH_DURATION, "성지가 사라졌다.");
     }
 }
 
@@ -450,24 +450,24 @@ void create_sanctuary(const coord_def& center, int time)
 
     // Messaging.
     if (trap_count > 0)
-        mprf(MSGCH_GOD, "By Zin's power, hidden traps are revealed to you.");
+        mprf(MSGCH_GOD, "진의 힘에 의해, 숨겨져 있던 함정들이 나타났다.");
 
     if (cloud_count == 1)
     {
-        mprf(MSGCH_GOD, "By Zin's power, the foul cloud within the sanctuary "
-                        "is swept away.");
+        mprf(MSGCH_GOD, "진의 힘에 의해, 성지를 덮고 있던 구름들이 "
+                        "걷혔다.");
     }
     else if (cloud_count > 1)
     {
-        mprf(MSGCH_GOD, "By Zin's power, all foul fumes within the sanctuary "
-                        "are swept away.");
+        mprf(MSGCH_GOD, "진의 힘으로 인해, 성지를 덮고 있던 연기들이  "
+                        "걷혔다.");
     }
 
     if (blood_count > 0)
-        mprf(MSGCH_GOD, "By Zin's power, all blood is cleared from the sanctuary.");
+        mprf(MSGCH_GOD, "진의 힘으로 인해, 성지 내에 있던 핏자국들이 깨끗이 지워졌다.");
 
     if (scare_count == 1 && seen_mon != nullptr)
-        simple_monster_message(*seen_mon, " turns to flee the light!");
+        simple_monster_message(*seen_mon, "은(는) 빛을 피해 달아나기 시작했다!");
     else if (scare_count > 0)
         mpr("몬스터들이 사방으로 비산했다!");
 }

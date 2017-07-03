@@ -966,13 +966,13 @@ static void _grab_followers()
         // Summons won't follow and will time out.
         if (non_stair_using_summons > 0)
         {
-            mprf("Your summoned %s left behind.",
+            mprf("당신의 소환된 %s이(가) 떠나갔다.",
                  non_stair_using_allies > 1 ? "allies are" : "ally is");
         }
         else
         {
             // Permanent undead are left behind but stay.
-            mprf("Your mindless thrall%s behind.",
+            mprf("당신의 %s은(는) 남아 당신을 기다린다.",
                  non_stair_using_allies > 1 ? "s stay" : " stays");
         }
     }
@@ -1449,7 +1449,7 @@ bool load_level(dungeon_feature_type stair_taken, load_mode_type load_mode,
         && !get_level_annotation().empty()
         && !crawl_state.level_annotation_shown)
     {
-        mprf(MSGCH_PLAIN, YELLOW, "Level annotation: %s",
+        mprf(MSGCH_PLAIN, YELLOW, "층 주석: %s",
              get_level_annotation().c_str());
     }
 
@@ -1521,7 +1521,7 @@ bool load_level(dungeon_feature_type stair_taken, load_mode_type load_mode,
                 if (coinflip())
                 {
                     // Stairs stop fleeing from you now you actually caught one.
-                    mprf("%s settles down.", stair_str.c_str());
+                    mprf("%s은(는) 도망을 멈추었다.", stair_str.c_str());
                     you.duration[DUR_REPEL_STAIRS_MOVE]  = 0;
                     you.duration[DUR_REPEL_STAIRS_CLIMB] = 0;
                 }
@@ -1796,7 +1796,7 @@ bool load_ghost(bool creating_level)
     if (ghost_filename.empty())
     {
         if (wiz_cmd && !creating_level)
-            mprf(MSGCH_PROMPT, "No ghost files for this level.");
+            mprf(MSGCH_PROMPT, "현재 층에는 망령 파일이 없다.");
         return false; // no such ghost.
     }
 
@@ -1872,13 +1872,13 @@ bool load_ghost(bool creating_level)
             unplaced_ghosts--;
             if (!mons->alive())
             {
-                mprf(MSGCH_DIAGNOSTICS, "Placed ghost is not alive.");
+                mprf(MSGCH_DIAGNOSTICS, "배치된 망령은 살아있지 않다.");
                 ghost_errors = true;
             }
             else if (mons->type != MONS_PLAYER_GHOST)
             {
                 mprf(MSGCH_DIAGNOSTICS,
-                     "Placed ghost is not MONS_PLAYER_GHOST, but %s",
+                     "배치된 망령은 MONS_PLAYER_GHOST는 아니지만, %s(이)다",
                      mons->name(DESC_PLAIN, true).c_str());
                 ghost_errors = true;
             }
@@ -1889,7 +1889,7 @@ bool load_ghost(bool creating_level)
 #ifdef BONES_DIAGNOSTICS
     if (do_diagnostics && unplaced_ghosts > 0)
     {
-        mprf(MSGCH_DIAGNOSTICS, "Unable to place %u ghost(s)",
+        mprf(MSGCH_DIAGNOSTICS, "%s의 망령(들)을 배치하는데 실패함",
              (unsigned int)ghosts.size());
         ghost_errors = true;
     }
@@ -2399,7 +2399,7 @@ void save_ghost(bool force)
     {
 #ifdef BONES_DIAGNOSTICS
         if (do_diagnostics)
-            mprf(MSGCH_DIAGNOSTICS, "Could not find any ghosts for this level.");
+            mprf(MSGCH_DIAGNOSTICS, "해당 층에는 어떠한 망령도 찾을 수 없다.");
 #endif
         return;
     }
@@ -2477,7 +2477,7 @@ FILE *lk_open(const char *mode, const string &file)
     const bool write_lock = mode[0] != 'r' || strchr(mode, '+');
     if (!lock_file_handle(handle, write_lock))
     {
-        mprf(MSGCH_ERROR, "ERROR: Could not lock file %s", file.c_str());
+        mprf(MSGCH_ERROR, "ERROR: 파일 %s을(를) 잠글 수 없음", file.c_str());
         fclose(handle);
         handle = nullptr;
     }
@@ -2501,7 +2501,7 @@ FILE *lk_open_exclusive(const string &file)
 
     if (!lock_file(fd, true))
     {
-        mprf(MSGCH_ERROR, "ERROR: Could not lock file %s", file.c_str());
+        mprf(MSGCH_ERROR, "ERROR: 파일 %s을(를) 잠글 수 없음", file.c_str());
         close(fd);
         return nullptr;
     }

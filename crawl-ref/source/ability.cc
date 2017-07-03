@@ -280,46 +280,46 @@ static int _scale_piety_cost(ability_type abil, int original_cost);
 static const ability_def Ability_List[] =
 {
     // NON_ABILITY should always come first
-    { ABIL_NON_ABILITY, "No ability", 0, 0, 0, 0, {}, abflag::none },
-    { ABIL_SPIT_POISON, "Spit Poison",
+    { ABIL_NON_ABILITY, "특수 능력 없음", 0, 0, 0, 0, {}, abflag::none },
+    { ABIL_SPIT_POISON, "독침 내뱉기",
         0, 0, 40, 0, {fail_basis::xl, 20, 1}, abflag::breath },
 
-    { ABIL_BLINK, "Blink", 0, 50, 50, 0, {fail_basis::xl, -1}, abflag::none },
+    { ABIL_BLINK, "순간이동", 0, 50, 50, 0, {fail_basis::xl, -1}, abflag::none },
     // ^ failure special-cased
 
-    { ABIL_BREATHE_FIRE, "Breathe Fire",
+    { ABIL_BREATHE_FIRE, "화염 숨결",
         0, 0, 125, 0, {fail_basis::xl, 30, 1}, abflag::breath },
-    { ABIL_BREATHE_FROST, "Breathe Frost",
+    { ABIL_BREATHE_FROST, "냉기 숨결",
         0, 0, 125, 0, {fail_basis::xl, 30, 1}, abflag::breath },
-    { ABIL_BREATHE_POISON, "Breathe Poison Gas",
+    { ABIL_BREATHE_POISON, "독소 숨결",
       0, 0, 125, 0, {fail_basis::xl, 30, 1}, abflag::breath },
-    { ABIL_BREATHE_MEPHITIC, "Breathe Noxious Fumes",
+    { ABIL_BREATHE_MEPHITIC, "독구름 숨결",
       0, 0, 125, 0, {fail_basis::xl, 30, 1}, abflag::breath },
-    { ABIL_BREATHE_LIGHTNING, "Breathe Lightning",
+    { ABIL_BREATHE_LIGHTNING, "번개 숨결",
       0, 0, 125, 0, {fail_basis::xl, 30, 1}, abflag::breath },
-    { ABIL_BREATHE_POWER, "Breathe Dispelling Energy",
+    { ABIL_BREATHE_POWER, "항마력의 숨결",
       0, 0, 125, 0, {fail_basis::xl, 30, 1}, abflag::breath },
-    { ABIL_BREATHE_STEAM, "Breathe Steam",
+    { ABIL_BREATHE_STEAM, "증기 숨결",
       0, 0, 75, 0, {fail_basis::xl, 20, 1}, abflag::breath },
-    { ABIL_TRAN_BAT, "Bat Form", 2, 0, 0, 0, {fail_basis::xl, 45, 2}, abflag::none },
+    { ABIL_TRAN_BAT, "박쥐 변신", 2, 0, 0, 0, {fail_basis::xl, 45, 2}, abflag::none },
 
     { ABIL_BREATHE_ACID, "Breathe Acid",
       0, 0, 125, 0, {fail_basis::xl, 30, 1}, abflag::breath },
 
-    { ABIL_FLY, "Fly", 3, 0, 100, 0, {fail_basis::xl, 42, 3}, abflag::none },
-    { ABIL_STOP_FLYING, "Stop Flying", 0, 0, 0, 0, {}, abflag::none },
+    { ABIL_FLY, "비행", 3, 0, 100, 0, {fail_basis::xl, 42, 3}, abflag::none },
+    { ABIL_STOP_FLYING, "비행 중지", 0, 0, 0, 0, {}, abflag::none },
     { ABIL_DAMNATION, "Hurl Damnation",
         0, 150, 200, 0, {fail_basis::xl, 50, 1}, abflag::none },
 
 #if TAG_MAJOR_VERSION == 34
-    { ABIL_DELAYED_FIREBALL, "Release Delayed Fireball",
+    { ABIL_DELAYED_FIREBALL, "축적된 화염구 방출",
       0, 0, 0, 0, {}, abflag::instant },
 #endif
     { ABIL_CANCEL_PPROJ, "Cancel Portal Projectile",
       0, 0, 0, 0, {}, abflag::instant },
 
-    { ABIL_DIG, "Dig", 0, 0, 0, 0, {}, abflag::instant },
-    { ABIL_SHAFT_SELF, "Shaft Self", 0, 0, 250, 0, {}, abflag::delay },
+    { ABIL_DIG, "굴착", 0, 0, 0, 0, {}, abflag::instant },
+    { ABIL_SHAFT_SELF, "구덩이 파기", 0, 0, 250, 0, {}, abflag::delay },
 
     { ABIL_HOP, "Hop", 0, 0, 0, 0, {}, abflag::none },
 
@@ -331,58 +331,58 @@ static const ability_def Ability_List[] =
     // you used a wand, potion, or miscast effect). I didn't see
     // any reason to label them as "Evoke" in the text, they don't
     // use or train Evocations (the others do).  -- bwr
-    { ABIL_EVOKE_BLINK, "Evoke Blink",
+    { ABIL_EVOKE_BLINK, "순간이동 발동",
       1, 0, 50, 0, {fail_basis::evo, 40, 2}, abflag::none },
     { ABIL_HEAL_WOUNDS, "Heal Wounds",
       0, 0, 0, 0, {fail_basis::xl, 45, 2}, abflag::none },
-    { ABIL_EVOKE_BERSERK, "Evoke Berserk Rage",
+    { ABIL_EVOKE_BERSERK, "광전사의 분노 발동",
       0, 0, 600, 0, {fail_basis::evo, 50, 2}, abflag::none },
 
-    { ABIL_EVOKE_TURN_INVISIBLE, "Evoke Invisibility",
+    { ABIL_EVOKE_TURN_INVISIBLE, "투명화 발동",
       2, 0, 250, 0, {fail_basis::evo, 60, 2}, abflag::none },
 #if TAG_MAJOR_VERSION == 34
-    { ABIL_EVOKE_TURN_VISIBLE, "Turn Visible",
+    { ABIL_EVOKE_TURN_VISIBLE, "투명화 해제",
       0, 0, 0, 0, {}, abflag::none },
 #endif
-    { ABIL_EVOKE_FLIGHT, "Evoke Flight",
+    { ABIL_EVOKE_FLIGHT, "비행 발동",
       1, 0, 100, 0, {fail_basis::evo, 40, 2}, abflag::none },
-    { ABIL_EVOKE_FOG, "Evoke Fog",
+    { ABIL_EVOKE_FOG, "안개 발동",
       2, 0, 250, 0, {fail_basis::evo, 50, 2}, abflag::none },
     { ABIL_EVOKE_RATSKIN, "Evoke Ratskin",
       3, 0, 200, 0, {fail_basis::evo, 50, 2}, abflag::none },
 
-    { ABIL_END_TRANSFORMATION, "End Transformation",
+    { ABIL_END_TRANSFORMATION, "변신 해제",
       0, 0, 0, 0, {}, abflag::none },
 
     // INVOCATIONS:
     // Zin
-    { ABIL_ZIN_RECITE, "Recite",
+    { ABIL_ZIN_RECITE, "설교",
       0, 0, 0, 0, {fail_basis::invo, 30, 6, 20}, abflag::none },
-    { ABIL_ZIN_VITALISATION, "Vitalisation",
+    { ABIL_ZIN_VITALISATION, "활력",
       2, 0, 0, 1, {fail_basis::invo, 40, 5, 20}, abflag::none },
-    { ABIL_ZIN_IMPRISON, "Imprison",
+    { ABIL_ZIN_IMPRISON, "구속",
       5, 0, 0, 4, {fail_basis::invo, 60, 5, 20}, abflag::none },
-    { ABIL_ZIN_SANCTUARY, "Sanctuary",
+    { ABIL_ZIN_SANCTUARY, "성지",
       7, 0, 0, 15, {fail_basis::invo, 80, 4, 25}, abflag::none },
-    { ABIL_ZIN_CURE_ALL_MUTATIONS, "Cure All Mutations",
+    { ABIL_ZIN_CURE_ALL_MUTATIONS, "모든 변이 정화",
       0, 0, 0, 0, {fail_basis::invo}, abflag::none },
-    { ABIL_ZIN_DONATE_GOLD, "Donate Gold",
+    { ABIL_ZIN_DONATE_GOLD, "금전 기부",
       0, 0, 0, 0, {fail_basis::invo}, abflag::none },
 
     // The Shining One
-    { ABIL_TSO_DIVINE_SHIELD, "Divine Shield",
+    { ABIL_TSO_DIVINE_SHIELD, "성스러운 방패",
       3, 0, 50, 2, {fail_basis::invo, 40, 5, 20}, abflag::none },
-    { ABIL_TSO_CLEANSING_FLAME, "Cleansing Flame",
+    { ABIL_TSO_CLEANSING_FLAME, "정화의 불꽃",
       5, 0, 100, 2, {fail_basis::invo, 70, 4, 25}, abflag::none },
-    { ABIL_TSO_SUMMON_DIVINE_WARRIOR, "Summon Divine Warrior",
+    { ABIL_TSO_SUMMON_DIVINE_WARRIOR, "성전사 소환",
       8, 0, 150, 5, {fail_basis::invo, 80, 4, 25}, abflag::none },
     { ABIL_TSO_BLESS_WEAPON, "Brand Weapon With Holy Wrath", 0, 0, 0, 0,
       {fail_basis::invo}, abflag::none },
 
     // Kikubaaqudgha
-    { ABIL_KIKU_RECEIVE_CORPSES, "Receive Corpses",
+    { ABIL_KIKU_RECEIVE_CORPSES, "시체 하사",
       3, 0, 200, 2, {fail_basis::invo, 40, 5, 20}, abflag::none },
-    { ABIL_KIKU_TORMENT, "Torment",
+    { ABIL_KIKU_TORMENT, "고문",
       4, 0, 0, 8, {fail_basis::invo, 60, 5, 20}, abflag::none },
     { ABIL_KIKU_GIFT_NECRONOMICON, "Receive Necronomicon", 0, 0, 0, 0,
       {fail_basis::invo}, abflag::none },
@@ -390,34 +390,34 @@ static const ability_def Ability_List[] =
       {fail_basis::invo}, abflag::pain },
 
     // Yredelemnul
-    { ABIL_YRED_INJURY_MIRROR, "Injury Mirror",
+    { ABIL_YRED_INJURY_MIRROR, "고통 반사",
       0, 0, 0, 0, {fail_basis::invo, 40, 4, 20}, abflag::piety },
-    { ABIL_YRED_ANIMATE_REMAINS, "Animate Remains",
+    { ABIL_YRED_ANIMATE_REMAINS, "산송장 부대",
       2, 0, 200, 0, {fail_basis::invo, 40, 4, 20}, abflag::none },
-    { ABIL_YRED_RECALL_UNDEAD_SLAVES, "Recall Undead Slaves",
+    { ABIL_YRED_RECALL_UNDEAD_SLAVES, "언데드 소집",
       2, 0, 0, 0, {fail_basis::invo, 50, 4, 20}, abflag::none },
-    { ABIL_YRED_ANIMATE_DEAD, "Animate Dead",
+    { ABIL_YRED_ANIMATE_DEAD, "송장 일으키기",
       2, 0, 200, 0, {fail_basis::invo, 40, 4, 20}, abflag::none },
-    { ABIL_YRED_DRAIN_LIFE, "Drain Life",
+    { ABIL_YRED_DRAIN_LIFE, "생명력 흡수",
       6, 0, 200, 2, {fail_basis::invo, 60, 4, 25}, abflag::none },
-    { ABIL_YRED_ENSLAVE_SOUL, "Enslave Soul",
+    { ABIL_YRED_ENSLAVE_SOUL, "영혼 예속",
       8, 0, 500, 4, {fail_basis::invo, 80, 4, 25}, abflag::none },
 
     // Okawaru
-    { ABIL_OKAWARU_HEROISM, "Heroism",
+    { ABIL_OKAWARU_HEROISM, "영웅의 기상",
       2, 0, 0, 1, {fail_basis::invo, 30, 6, 20}, abflag::none },
-    { ABIL_OKAWARU_FINESSE, "Finesse",
+    { ABIL_OKAWARU_FINESSE, "신속의 기교",
       5, 0, 0, 3, {fail_basis::invo, 60, 4, 25}, abflag::none },
 
     // Makhleb
-    { ABIL_MAKHLEB_MINOR_DESTRUCTION, "Minor Destruction",
+    { ABIL_MAKHLEB_MINOR_DESTRUCTION, "소파괴",
       0, scaling_cost::fixed(1), 0, 0, {fail_basis::invo, 40, 5, 20}, abflag::none },
-    { ABIL_MAKHLEB_LESSER_SERVANT_OF_MAKHLEB, "Lesser Servant of Makhleb",
+    { ABIL_MAKHLEB_LESSER_SERVANT_OF_MAKHLEB, "마크레브의 하위 종복 소환",
       0, scaling_cost::fixed(4), 0, 2, {fail_basis::invo, 40, 5, 20}, abflag::hostile },
-    { ABIL_MAKHLEB_MAJOR_DESTRUCTION, "Major Destruction",
+    { ABIL_MAKHLEB_MAJOR_DESTRUCTION, "대파괴",
       0, scaling_cost::fixed(6), 0, generic_cost::range(0, 1),
       {fail_basis::invo, 60, 4, 25}, abflag::none },
-    { ABIL_MAKHLEB_GREATER_SERVANT_OF_MAKHLEB, "Greater Servant of Makhleb",
+    { ABIL_MAKHLEB_GREATER_SERVANT_OF_MAKHLEB, "마크레브의 고위 종복 소환",
       0, scaling_cost::fixed(10), 0, 5,
       {fail_basis::invo, 90, 2, 5}, abflag::hostile },
 
@@ -426,108 +426,108 @@ static const ability_def Ability_List[] =
       0, 0, 0, 0, {fail_basis::invo}, abflag::instant },
     { ABIL_SIF_MUNA_STOP_DIVINE_ENERGY, "Stop Divine Energy",
       0, 0, 0, 0, {fail_basis::invo}, abflag::instant },
-    { ABIL_SIF_MUNA_FORGET_SPELL, "Forget Spell",
+    { ABIL_SIF_MUNA_FORGET_SPELL, "마법주문 망각",
       0, 0, 0, 8, {fail_basis::invo}, abflag::none },
     { ABIL_SIF_MUNA_CHANNEL_ENERGY, "Channel Magic",
       0, 0, 200, 2, {fail_basis::invo, 60, 4, 25}, abflag::none },
 
     // Trog
-    { ABIL_TROG_BURN_SPELLBOOKS, "Burn Spellbooks",
+    { ABIL_TROG_BURN_SPELLBOOKS, "마법책 태우기",
       0, 0, 0, 0, {fail_basis::invo}, abflag::none },
-    { ABIL_TROG_BERSERK, "Berserk",
+    { ABIL_TROG_BERSERK, "광폭화",
       0, 0, 600, 0, {fail_basis::invo}, abflag::none },
-    { ABIL_TROG_REGEN_MR, "Trog's Hand",
+    { ABIL_TROG_REGEN_MR, "트로그의 손길",
       0, 0, 200, 2, {fail_basis::invo, piety_breakpoint(2), 0, 1}, abflag::none },
-    { ABIL_TROG_BROTHERS_IN_ARMS, "Brothers in Arms",
+    { ABIL_TROG_BROTHERS_IN_ARMS, "전우들",
       0, 0, 250, generic_cost::range(5, 6),
       {fail_basis::invo, piety_breakpoint(5), 0, 1}, abflag::none },
 
     // Elyvilon
-    { ABIL_ELYVILON_LIFESAVING, "Divine Protection",
+    { ABIL_ELYVILON_LIFESAVING, "성스러운 가호",
       0, 0, 0, 0, {fail_basis::invo}, abflag::piety },
-    { ABIL_ELYVILON_LESSER_HEALING, "Lesser Healing", 1, 0, 100,
+    { ABIL_ELYVILON_LESSER_HEALING, "소치료", 1, 0, 100,
       generic_cost::range(0, 1), {fail_basis::invo, 30, 6, 20}, abflag::conf_ok },
-    { ABIL_ELYVILON_HEAL_OTHER, "Heal Other",
+    { ABIL_ELYVILON_HEAL_OTHER, "타인 회복",
       2, 0, 250, 2, {fail_basis::invo, 40, 5, 20}, abflag::none },
-    { ABIL_ELYVILON_PURIFICATION, "Purification",
+    { ABIL_ELYVILON_PURIFICATION, "정화",
       3, 0, 300, 3, {fail_basis::invo, 20, 5, 20}, abflag::conf_ok },
-    { ABIL_ELYVILON_GREATER_HEALING, "Greater Healing",
+    { ABIL_ELYVILON_GREATER_HEALING, "대치료",
       2, 0, 250, 3, {fail_basis::invo, 40, 5, 20}, abflag::conf_ok },
-    { ABIL_ELYVILON_DIVINE_VIGOUR, "Divine Vigour",
+    { ABIL_ELYVILON_DIVINE_VIGOUR, "신성한 원기 부여",
       0, 0, 600, 6, {fail_basis::invo, 80, 4, 25}, abflag::conf_ok },
 
     // Lugonu
-    { ABIL_LUGONU_ABYSS_EXIT, "Depart the Abyss",
+    { ABIL_LUGONU_ABYSS_EXIT, "어비스 탈출",
       1, 0, 0, 10, {fail_basis::invo, 30, 6, 20}, abflag::none },
-    { ABIL_LUGONU_BEND_SPACE, "Bend Space",
+    { ABIL_LUGONU_BEND_SPACE, "공간 왜곡",
       1, scaling_cost::fixed(2), 0, 0, {fail_basis::invo, 40, 5, 20}, abflag::none },
-    { ABIL_LUGONU_BANISH, "Banish", 4, 0, 200, generic_cost::range(3, 4),
+    { ABIL_LUGONU_BANISH, "추방", 4, 0, 200, generic_cost::range(3, 4),
       {fail_basis::invo, 85, 7, 20}, abflag::none },
-    { ABIL_LUGONU_CORRUPT, "Corrupt", 7, scaling_cost::fixed(5), 500, 10,
+    { ABIL_LUGONU_CORRUPT, "타락", 7, scaling_cost::fixed(5), 500, 10,
       {fail_basis::invo, 70, 4, 25}, abflag::none },
-    { ABIL_LUGONU_ABYSS_ENTER, "Enter the Abyss", 10, 0, 500, 28,
+    { ABIL_LUGONU_ABYSS_ENTER, "어비스 입장", 10, 0, 500, 28,
       {fail_basis::invo, 80, 4, 25}, abflag::pain },
     { ABIL_LUGONU_BLESS_WEAPON, "Brand Weapon With Distortion", 0, 0, 0, 0,
       {fail_basis::invo}, abflag::none },
 
     // Nemelex
-    { ABIL_NEMELEX_TRIPLE_DRAW, "Triple Draw",
+    { ABIL_NEMELEX_TRIPLE_DRAW, "석 장 뽑아 고르기",
       2, 0, 0, 2, {fail_basis::invo, 60, 5, 20}, abflag::none },
-    { ABIL_NEMELEX_DEAL_FOUR, "Deal Four",
+    { ABIL_NEMELEX_DEAL_FOUR, "넉 장 뒤집기",
       8, 0, 0, 8, {fail_basis::invo, -1}, abflag::none }, // failure special-cased
-    { ABIL_NEMELEX_STACK_FIVE, "Stack Five",
+    { ABIL_NEMELEX_STACK_FIVE, "다섯 장 뽑아 쌓기",
       5, 0, 0, 10, {fail_basis::invo, 80, 4, 25}, abflag::none },
 
     // Beogh
-    { ABIL_BEOGH_SMITING, "Smiting",
+    { ABIL_BEOGH_SMITING, "천벌의 일격",
       3, 0, 0, generic_cost::fixed(3), {fail_basis::invo, 40, 5, 20}, abflag::none },
-    { ABIL_BEOGH_RECALL_ORCISH_FOLLOWERS, "Recall Orcish Followers",
+    { ABIL_BEOGH_RECALL_ORCISH_FOLLOWERS, "오크 추종자 소집",
       2, 0, 0, 0, {fail_basis::invo, 30, 6, 20}, abflag::none },
     { ABIL_BEOGH_GIFT_ITEM, "Give Item to Named Follower",
       0, 0, 0, 0, {fail_basis::invo}, abflag::none },
-    { ABIL_BEOGH_RESURRECTION, "Resurrection",
+    { ABIL_BEOGH_RESURRECTION, "뒤틀린 소생",
       0, 0, 0, 28, {fail_basis::invo}, abflag::none },
 
     // Jiyva
-    { ABIL_JIYVA_CALL_JELLY, "Request Jelly",
+    { ABIL_JIYVA_CALL_JELLY, "젤리 소환",
       2, 0, 0, 1, {fail_basis::invo}, abflag::none },
-    { ABIL_JIYVA_SLIMIFY, "Slimify",
+    { ABIL_JIYVA_SLIMIFY, "점액 두르기",
       4, 0, 0, 8, {fail_basis::invo, 90, 0, 2}, abflag::none },
-    { ABIL_JIYVA_CURE_BAD_MUTATION, "Cure Bad Mutation",
+    { ABIL_JIYVA_CURE_BAD_MUTATION, "악성 변이 치료",
       0, 0, 0, 15, {fail_basis::invo}, abflag::none },
 
     // Fedhas
     { ABIL_FEDHAS_FUNGAL_BLOOM, "Fungal Bloom",
       0, 0, 0, 0, {fail_basis::invo}, abflag::none },
-    { ABIL_FEDHAS_EVOLUTION, "Evolution",
+    { ABIL_FEDHAS_EVOLUTION, "진화",
       2, 0, 0, 0, {fail_basis::invo, 30, 6, 20}, abflag::variable_fruit },
-    { ABIL_FEDHAS_SUNLIGHT, "Sunlight",
+    { ABIL_FEDHAS_SUNLIGHT, "햇빛",
       2, 0, 50, 0, {fail_basis::invo, 30, 6, 20}, abflag::none },
-    { ABIL_FEDHAS_PLANT_RING, "Growth",
+    { ABIL_FEDHAS_PLANT_RING, "성장",
       2, 0, 0, 0, {fail_basis::invo, 40, 5, 20}, abflag::fruit },
-    { ABIL_FEDHAS_SPAWN_SPORES, "Reproduction",
+    { ABIL_FEDHAS_SPAWN_SPORES, "번식",
       4, 0, 100, 1, {fail_basis::invo, 60, 4, 25}, abflag::none },
-    { ABIL_FEDHAS_RAIN, "Rain",
+    { ABIL_FEDHAS_RAIN, "강우",
       4, 0, 150, 4, {fail_basis::invo, 70, 4, 25}, abflag::none },
 
     // Cheibriados
-    { ABIL_CHEIBRIADOS_TIME_BEND, "Bend Time",
+    { ABIL_CHEIBRIADOS_TIME_BEND, "시간의 뒤틀림",
       3, 0, 50, 1, {fail_basis::invo, 40, 4, 20}, abflag::none },
-    { ABIL_CHEIBRIADOS_DISTORTION, "Temporal Distortion",
+    { ABIL_CHEIBRIADOS_DISTORTION, "시간의 왜곡",
       4, 0, 200, 3, {fail_basis::invo, 60, 5, 20}, abflag::instant },
-    { ABIL_CHEIBRIADOS_SLOUCH, "Slouch",
+    { ABIL_CHEIBRIADOS_SLOUCH, "느림의 징벌",
       5, 0, 100, 8, {fail_basis::invo, 60, 4, 25}, abflag::none },
-    { ABIL_CHEIBRIADOS_TIME_STEP, "Step From Time",
+    { ABIL_CHEIBRIADOS_TIME_STEP, "시간의 도약",
       10, 0, 200, 10, {fail_basis::invo, 80, 4, 25}, abflag::none },
 
     // Ashenzari
     { ABIL_ASHENZARI_CURSE, "Curse Item",
       0, 0, 0, 0, {fail_basis::invo}, abflag::remove_curse_scroll },
-    { ABIL_ASHENZARI_SCRYING, "Scrying",
+    { ABIL_ASHENZARI_SCRYING, "투시",
       4, 0, 0, 2, {fail_basis::invo}, abflag::instant },
-    { ABIL_ASHENZARI_TRANSFER_KNOWLEDGE, "Transfer Knowledge",
+    { ABIL_ASHENZARI_TRANSFER_KNOWLEDGE, "지식 전송",
       0, 0, 0, 10, {fail_basis::invo}, abflag::none },
-    { ABIL_ASHENZARI_END_TRANSFER, "End Transfer Knowledge",
+    { ABIL_ASHENZARI_END_TRANSFER, "지식 전송 중지",
       0, 0, 0, 0, {fail_basis::invo}, abflag::none },
 
     // Dithmenos
@@ -642,9 +642,9 @@ static const ability_def Ability_List[] =
         0, 0, 0, 20, {fail_basis::invo, piety_breakpoint(5), 0, 1}, abflag::none },
 
     { ABIL_STOP_RECALL, "Stop Recall", 0, 0, 0, 0, {fail_basis::invo}, abflag::none },
-    { ABIL_RENOUNCE_RELIGION, "Renounce Religion",
+    { ABIL_RENOUNCE_RELIGION, "신앙 포기하기",
       0, 0, 0, 0, {fail_basis::invo}, abflag::none },
-    { ABIL_CONVERT_TO_BEOGH, "Convert to Beogh",
+    { ABIL_CONVERT_TO_BEOGH, "베오그에로 개종함",
       0, 0, 0, 0, {fail_basis::invo}, abflag::none },
 };
 
@@ -1196,7 +1196,7 @@ bool activate_ability()
     {
         while (selected < 0)
         {
-            msg::streams(MSGCH_PROMPT) << "Use which ability? (? or * to list) "
+            msg::streams(MSGCH_PROMPT) << "어느 능력을 사용하는가? (? 또는 * 키로 특수능력 일람) "
                                        << endl;
 
             const int keyin = get_ch();
@@ -1272,7 +1272,7 @@ static bool _check_ability_possible(const ability_def& abil,
         {
             if (!quiet)
             {
-                mprf("You cannot call out to %s while silenced.",
+                mprf("정적 상태에서는 %s을(를) 부를 수 없다.",
                      god_name(you.religion).c_str());
             }
             return false;
@@ -1597,7 +1597,7 @@ bool activate_talent(const talent& tal)
     {
         if (feat_dangerous_for_form(transformation::none, env.grid(you.pos())))
         {
-            mprf("Turning back right now would cause you to %s!",
+            mprf("지금 바로 되돌아가는 행위는, 당신에게 %s(을)를 일으킨다!<darkgrey>ability.cc.mprf:2</darkgrey>",
                  env.grid(you.pos()) == DNGN_LAVA ? "burn" : "drown");
 
             crawl_state.zero_turns_taken();
@@ -1838,7 +1838,7 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
 
         direction_chooser_args args;
         args.mode = TARG_HOSTILE;
-        args.top_prompt = "Aiming: <white>Delayed Fireball</white>";
+        args.top_prompt = "조준: <white>축적된 화염구</white>";
         args.hitfunc = &tgt;
         if (!spell_direction(spd, beam, &args))
             return SPRET_ABORT;
@@ -1888,7 +1888,7 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
         fail_check();
         zapping(ZAP_BREATHE_ACID, (you.form == transformation::dragon) ?
                 2 * you.experience_level : you.experience_level,
-                beam, false, "You spit a glob of acid.");
+                beam, false, "산성 침을 뱉어 내었다.");
 
         you.increase_duration(DUR_BREATH_WEAPON,
                           3 + random2(10) + random2(30 - you.experience_level));
@@ -1922,7 +1922,7 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
             if (you.form == transformation::dragon)
                 power += 12;
 
-            string msg = "You breathe a blast of fire";
+            string msg = "불의 숨결을 내뿜었다";
             msg += (power < 15) ? '.' : '!';
 
             if (!zapping(ZAP_BREATHE_FIRE, power, beam, true, msg.c_str()))
@@ -1935,7 +1935,7 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
                  (you.form == transformation::dragon) ?
                      2 * you.experience_level : you.experience_level,
                  beam, true,
-                         "You exhale a wave of freezing cold."))
+                         "냉기의 숨결을 내뿜었다."))
             {
                 return SPRET_ABORT;
             }
@@ -1943,7 +1943,7 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
 
         case ABIL_BREATHE_POISON:
             if (!zapping(ZAP_BREATHE_POISON, you.experience_level, beam, true,
-                         "You exhale a blast of poison gas."))
+                         "독가스 폭풍을 내뿜었다."))
             {
                 return SPRET_ABORT;
             }
@@ -1958,7 +1958,7 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
             if (!zapping(ZAP_BREATHE_ACID,
                 (you.form == transformation::dragon) ?
                     2 * you.experience_level : you.experience_level,
-                beam, true, "You spit a glob of acid."))
+                beam, true, "산성 침을 뱉어 내었다."))
             {
                 return SPRET_ABORT;
             }
@@ -1969,7 +1969,7 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
                 (you.form == transformation::dragon) ?
                     2 * you.experience_level : you.experience_level,
                 beam, true,
-                         "You breathe a bolt of dispelling energy."))
+                         "항마력의 화살을 내뿜었다."))
             {
                 return SPRET_ABORT;
             }
@@ -1980,7 +1980,7 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
                 (you.form == transformation::dragon) ?
                     2 * you.experience_level : you.experience_level,
                 beam, true,
-                         "You exhale a blast of scalding steam."))
+                         "뜨거운 증기 폭풍을 내뿜었다."))
             {
                 return SPRET_ABORT;
             }
@@ -1991,7 +1991,7 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
                 (you.form == transformation::dragon) ?
                     2 * you.experience_level : you.experience_level,
                 beam, true,
-                         "You exhale a blast of noxious fumes."))
+                         "매캐한 연기 숨결을 내뿜었다."))
             {
                 return SPRET_ABORT;
             }
@@ -2144,7 +2144,7 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
             you.attribute[ATTR_RECITE_TYPE] = (recite_type) random2(NUM_RECITE_TYPES); // This is just flavor
             you.attribute[ATTR_RECITE_SEED] = random2(2187); // 3^7
             you.duration[DUR_RECITE] = 3 * BASELINE_DELAY;
-            mprf("You clear your throat and prepare to recite.");
+            mprf("당신은 암송하기 위해 목을 가다듬고 준비했다.");
             you.increase_duration(DUR_RECITE_COOLDOWN,
                                   3 + random2(10) + random2(30));
         }
@@ -2246,7 +2246,7 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
 
     case ABIL_TSO_BLESS_WEAPON:
         fail_check();
-        simple_god_message(" will bless one of your weapons.");
+        simple_god_message("(은)는 당신의 무기 중 하나에, 축복을 내릴 것이다.");
         // included in default force_more_message
         if (!bless_weapon(GOD_SHINING_ONE, SPWPN_HOLY_WRATH, YELLOW))
             return SPRET_ABORT;
@@ -2264,13 +2264,13 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
             mpr("희생할 시체가 없다!");
             return SPRET_ABORT;
         }
-        simple_god_message(" torments the living!");
+        simple_god_message("은(는) 살아있는 존재들에게 고통을 선사했다!");
         torment(&you, TORMENT_KIKUBAAQUDGHA, you.pos());
         break;
 
     case ABIL_KIKU_BLESS_WEAPON:
         fail_check();
-        simple_god_message(" will bloody one of your weapons with pain.");
+        simple_god_message("(은)는 당신의 무기 중 하나를, 고통으로 물들일 것이다.");
         // included in default force_more_message
         if (!bless_weapon(GOD_KIKUBAAQUDGHA, SPWPN_PAIN, RED))
             return SPRET_ABORT;
@@ -2290,7 +2290,7 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
             mpr("불경한 에너지의 또 다른 물결이 당신에게로 흘러 들어간다.");
         else
         {
-            mprf("You offer yourself to %s, and are filled with unholy energy.",
+            mprf("당신은 스스로를 %s에게 바쳤고, 불경한 에너지로 차올랐다.",
                  god_name(you.religion).c_str());
         }
         you.duration[DUR_MIRROR_DAMAGE] = 9 * BASELINE_DELAY
@@ -2364,7 +2364,7 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
         // The monster can be no more than lightly wounded/damaged.
         if (mons_get_damage_level(*mons) > MDAM_LIGHTLY_DAMAGED)
         {
-            simple_monster_message(*mons, "'s soul is too badly injured.");
+            simple_monster_message(*mons, "의 영혼은 너무 크게 손상되었다.");
             return SPRET_ABORT;
         }
         fail_check();
@@ -2374,8 +2374,8 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
     case ABIL_OKAWARU_HEROISM:
         fail_check();
         mprf(MSGCH_DURATION, you.duration[DUR_HEROISM]
-             ? "You feel more confident with your borrowed prowess."
-             : "You gain the combat prowess of a mighty hero.");
+             ? "영웅적인 기량에 좀 더 자신감을 얻었다."
+             : "강력한 영웅의 전투 기량을 얻었다.");
 
         you.increase_duration(DUR_HEROISM,
                               10 + random2avg(you.skill(SK_INVOCATIONS, 6), 2),
@@ -2393,7 +2393,7 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
                  you.hands_act("get", "new energy.").c_str());
         }
         else
-            mprf(MSGCH_DURATION, "You can now deal lightning-fast blows.");
+            mprf(MSGCH_DURATION, "당신은 이제 번개같은 공격을 날릴 수 있다.");
 
         you.increase_duration(DUR_FINESSE,
                               10 + random2avg(you.skill(SK_INVOCATIONS, 6), 2),
@@ -2537,7 +2537,7 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
             mpr("구원에 대한 당신의 요청이 갱신되었다.");
         else
         {
-            mprf("You beseech %s to protect your life.",
+            mprf("당신은 생명력을 보호하기 위해, %s의 가호를 요청했다.",
                  god_name(you.religion).c_str());
         }
         // Might be a decrease, this is intentional (like Yred).
@@ -2634,8 +2634,8 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
 
     case ABIL_LUGONU_BLESS_WEAPON:
         fail_check();
-        simple_god_message(" will brand one of your weapons with the "
-                           "corruption of the Abyss.");
+        simple_god_message("(은)는 당신의 무기 중 하나에 심연의 오염된 "
+                           "속성을 부여할 것이다.");
         // included in default force_more_message
         if (!bless_weapon(GOD_LUGONU, SPWPN_DISTORTION, MAGENTA))
             return SPRET_ABORT;
@@ -2751,7 +2751,7 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
         const item_def* const weapon = you.weapon();
         const string msg = weapon ? weapon->name(DESC_YOUR)
                                   : ("your " + you.hand_name(true));
-        mprf(MSGCH_DURATION, "A thick mucus forms on %s.", msg.c_str());
+        mprf(MSGCH_DURATION, "두꺼운 점액질이 %s의 몸을 덮었다.", msg.c_str());
         you.increase_duration(DUR_SLIMIFY,
                               random2avg(you.piety / 4, 2) + 3, 100);
         break;
@@ -2973,7 +2973,7 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
     {
         fail_check();
 
-        mprf(MSGCH_DURATION, "You feel a buildup of energy.");
+        mprf(MSGCH_DURATION, "마력이 강해지는 것을 느꼈다.<darkgrey>ability.cc.mprf:10</darkgrey>");
         you.increase_duration(DUR_DEVICE_SURGE,
                               random2avg(you.piety / 4, 2) + 3, 100);
         break;
@@ -3023,8 +3023,8 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
             return SPRET_ABORT;
         }
 
-        string prompt = "Do you wish to have " + wand.name(DESC_YOUR)
-                           + " supercharged?";
+        string prompt = "정말로 " + wand.name(DESC_YOUR)
+                           + "을(를) 최대충전하길 원하는가?";
 
         if (!yesno(prompt.c_str(), true, 'n'))
         {
@@ -3043,12 +3043,12 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
         take_note(Note(NOTE_ID_ITEM, 0, 0, wand.name(DESC_A).c_str(),
                   "supercharged by Pakellas"));
 
-        mprf(MSGCH_GOD, "Your %s glows brightly!",
+        mprf(MSGCH_GOD, "당신의 %s이(가) 환하게 빛났다!<darkgrey>ability.cc.mprf:11</darkgrey>",
              wand.name(DESC_QUALNAME).c_str());
 
         flash_view(UA_PLAYER, LIGHTGREEN);
 
-        simple_god_message(" booms: Use this gift wisely!");
+        simple_god_message("은(는) 외쳤다: 이것을 현명하게 사용하게!");
 
 #ifndef USE_TILE_LOCAL
         // Allow extra time for the flash to linger.
@@ -3261,8 +3261,8 @@ int choose_ability_menu(const vector<talent>& talents)
     else
     {
         abil_menu.set_more(formatted_string::parse_string(
-                           "Press '<w>!</w>' or '<w>?</w>' to toggle "
-                           "between ability selection and description."));
+                           "'<w>!</w>' 또는 '<w>?</w>' 키를 눌러, "
+                           "특수 능력 발동과 설명 보기를 전환할 수 있다."));
     }
 
     int numbers[52];

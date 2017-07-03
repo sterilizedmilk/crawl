@@ -848,14 +848,14 @@ command_type travel()
 
     if (Options.travel_key_stop && kbhit())
     {
-        mprf("Key pressed, stopping %s.", you.running.runmode_name().c_str());
+        mprf("키 입력됨, %s 중지.", you.running.runmode_name().c_str());
         stop_running();
         return CMD_NO_CMD;
     }
 
     if (you.confused())
     {
-        mprf("You're confused, stopping %s.",
+        mprf("혼란에 걸려, %s을(를) 중지했다.",
              you.running.runmode_name().c_str());
         stop_running();
         return CMD_NO_CMD;
@@ -864,7 +864,7 @@ command_type travel()
     // Excluded squares are only safe if marking stairs, i.e. another level.
     if (is_excluded(you.pos()) && !is_stair_exclusion(you.pos()))
     {
-        mprf("You're in a travel-excluded area, stopping %s.",
+        mprf("탐험 예외 지역에 도달하여, %s을(를) 중지했다.",
              you.running.runmode_name().c_str());
         stop_running();
         return CMD_NO_CMD;
@@ -2068,7 +2068,7 @@ static int _prompt_travel_branch(int prompt_flags)
                                               ", ", ", ");
             shortcuts += ") ";
         }
-        mprf(MSGCH_PROMPT, "Where to? %s",
+        mprf(MSGCH_PROMPT, "어디로? %s",
              shortcuts.c_str());
 
         int keyin = get_ch();
@@ -2350,8 +2350,8 @@ static level_pos _prompt_travel_depth(const level_id &id)
     while (true)
     {
         clear_messages();
-        mprf(MSGCH_PROMPT, "What level of %s? "
-             "(default %s, ? - help) ",
+        mprf(MSGCH_PROMPT, "%s의 몇 층으로 이동하는가? "
+             "(디폴트:%s, ? - 도움말) ",
              branches[target.id.branch].longname,
              _get_trans_travel_dest(target, true).c_str());
 
@@ -3755,7 +3755,7 @@ void TravelCache::delete_waypoint()
         clear_messages();
         mpr("존재하는 목적지:");
         list_waypoints();
-        mprf(MSGCH_PROMPT, "Delete which waypoint? (* - delete all, Esc - exit) ");
+        mprf(MSGCH_PROMPT, "어느 지점을 삭제하겠는가? (* - 모두 삭제, Esc - 취소) ");
 
         int key = getchm();
         if (key >= '0' && key <= '9')
@@ -3802,8 +3802,8 @@ void TravelCache::add_waypoint(int x, int y)
         list_waypoints();
     }
 
-    mprf(MSGCH_PROMPT, "Assign waypoint to what number? (0-9%s) ",
-         waypoints_exist? ", D - delete waypoint" : "");
+    mprf(MSGCH_PROMPT, " ",
+         waypoints_exist? ", D - 기억한 지점 삭제" : "");
 
     int keyin = toalower(get_ch());
 
@@ -3841,10 +3841,10 @@ void TravelCache::add_waypoint(int x, int y)
     if (overwrite)
     {
         if (lid == old_lid) // same level
-            mprf("Waypoint %d re-assigned to your current position.", waynum);
+            mprf("지점 %d이(가) 현재 위치로 재설정되었다.", waynum);
         else
         {
-            mprf("Waypoint %d re-assigned from %s to %s.",
+            mprf("지점 %d은(는) %s에서 %s(으)로 재설정되었다.",
                  waynum, old_dest.c_str(), new_dest.c_str());
         }
     }
@@ -4104,7 +4104,7 @@ bool runrest::run_should_stop() const
     {
 #ifndef USE_TILE_LOCAL
         // XXX: Remove this once exclusions are visible.
-        mprf(MSGCH_WARN, "Stopped running for exclusion.");
+        mprf(MSGCH_WARN, "탐험 예외 지역에 도달하여, 연속 이동을 멈추었다.");
 #endif
         return true;
     }
@@ -4473,7 +4473,7 @@ template <class C> void explore_discoveries::say_any(
 
     if (has_duplicates(coll.begin(), coll.end()))
     {
-        mprf("Found %s %s.", number_in_words(size).c_str(), category);
+        mprf("%s %s을(를) 발견했다.", number_in_words(size).c_str(), category);
         return;
     }
 
@@ -4481,7 +4481,7 @@ template <class C> void explore_discoveries::say_any(
                            comma_separated_line(coll.begin(), coll.end()) + ".";
 
     if (printed_width(message) >= get_number_of_cols())
-        mprf("Found %s %s.", number_in_words(size).c_str(), category);
+        mprf("%s %s을(를) 발견했다.", number_in_words(size).c_str(), category);
     else
         mpr(message);
 }
@@ -4518,7 +4518,7 @@ bool explore_discoveries::stop_explore() const
         mpr(msg);
 
     for (const string &marked : marked_feats)
-        mprf("Found %s", marked.c_str());
+        mprf("%s개의 아이템을 발견했다.", marked.c_str());
 
     if (!es_flags)
         return marker_stop;

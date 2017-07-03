@@ -63,7 +63,7 @@ void swap_with_monster(monster* mon_to_swap)
     // If it was submerged, it surfaces first.
     mon.del_ench(ENCH_SUBMERGED);
 
-    mprf("You swap places with %s.", mon.name(DESC_THE).c_str());
+    mprf("당신은 %s와 자리를 바꾸었다.", mon.name(DESC_THE).c_str());
 
     mon.move_to_pos(you.pos(), true, true);
 

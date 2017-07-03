@@ -180,7 +180,7 @@ static spret_type _try_to_pacify(monster &mon, int healed, int max_healed,
     {
         // monster mhp too high to ever be pacified with your invo skill.
         dprf("mon hp %d", mon_hp);
-        mprf("%s is completely unfazed by your meager offer of peace.",
+        mprf("%s은(는) 당신의 치유에 동요하지 않았다.",
              mon.name(DESC_THE).c_str());
         return SPRET_SUCCESS;
     }
@@ -190,7 +190,7 @@ static spret_type _try_to_pacify(monster &mon, int healed, int max_healed,
     if (pacified_hp * 23 / 20 < mon_hp)
     {
         // not even close.
-        mprf("The light of Elyvilon fails to reach %s.",
+        mprf("엘리빌론의 빛이 %s에 닿지 못했다.",
              mon.name(DESC_THE).c_str());
         return SPRET_SUCCESS;
     }
@@ -198,7 +198,7 @@ static spret_type _try_to_pacify(monster &mon, int healed, int max_healed,
     if (pacified_hp < mon_hp)
     {
         // closer! ...but not quite.
-        mprf("The light of Elyvilon almost touches upon %s.",
+        mprf("엘리빌론의 빛이 %s에 거의 닿았다.",
              mon.name(DESC_THE).c_str());
         return SPRET_SUCCESS;
     }
@@ -246,7 +246,7 @@ bool heal_monster(monster& patient, int amount)
     if (!patient.heal(amount))
         return false;
 
-    mprf("You heal %s.", patient.name(DESC_THE).c_str());
+    mprf("당신은 %s을(를) 치유했다.", patient.name(DESC_THE).c_str());
 
     if (patient.hit_points == patient.max_hit_points)
         simple_monster_message(patient, " is completely healed.");
@@ -387,7 +387,7 @@ void debuff_player()
         you.attribute[attr] = 0;
 #if TAG_MAJOR_VERSION == 34
         if (attr == ATTR_DELAYED_FIREBALL)
-            mprf(MSGCH_DURATION, "Your charged fireball dissipates.");
+            mprf(MSGCH_DURATION, "충전해둔 화염구가 소멸했다.");
         else
 #endif
             need_msg = true;
@@ -399,12 +399,12 @@ void debuff_player()
         if (duration == DUR_TELEPORT)
         {
             len = 0;
-            mprf(MSGCH_DURATION, "You feel strangely stable.");
+            mprf(MSGCH_DURATION, "기묘한 안정감을 느꼈다.");
         }
         else if (duration == DUR_PETRIFYING)
         {
             len = 0;
-            mprf(MSGCH_DURATION, "You feel limber!");
+            mprf(MSGCH_DURATION, "굳었던 몸이 풀리는 것을 느꼈다!");
             you.redraw_evasion = true;
         }
         else if (duration == DUR_FLAYED)
@@ -676,7 +676,7 @@ bool remove_curse(bool alreadyknown, const string &pre_msg)
         learned_something_new(HINT_REMOVED_CURSE);
     }
     else if (alreadyknown)
-        mprf(MSGCH_PROMPT, "None of your equipped items are cursed.");
+        mprf(MSGCH_PROMPT, "저주받은 장비중인 아이템이 없다.");
     else
     {
         if (!pre_msg.empty())
@@ -706,7 +706,7 @@ static bool _selectively_curse_item(bool armour, const string &pre_msg)
             || armour && item.base_type != OBJ_ARMOUR
             || !armour && item.base_type != OBJ_JEWELLERY)
         {
-            mprf("Choose an uncursed equipped piece of %s, or Esc to abort.",
+            mprf("저주받지 않은 %s을(를) 선택하시오. (Esc:취소)",
                  armour ? "armour" : "jewellery");
             more();
             continue;
@@ -736,7 +736,7 @@ bool curse_item(bool armour, const string &pre_msg)
     }
     if (!found)
     {
-        mprf(MSGCH_PROMPT, "You aren't wearing any piece of uncursed %s.",
+        mprf(MSGCH_PROMPT, "당신은 저주받지 않은 %s을(를) 착용하고 있지 않다.",
              armour ? "armour" : "jewellery");
         return false;
     }
@@ -820,8 +820,8 @@ static bool _do_imprison(int pow, const coord_def& where, bool zin)
 
         if (!success)
         {
-            mprf(none_vis ? "You briefly glimpse something next to %s."
-                        : "You need more space to imprison %s.",
+            mprf(none_vis ? "%s을(를) 가두려 했으나, 근처에 무언가 보이지 않는 것이 있는 것 같다."
+                        : "%s을(를) 가두기에는 빈 공간이 부족해 보인다.",
                 targname.c_str());
             return false;
         }
@@ -922,7 +922,7 @@ static bool _do_imprison(int pow, const coord_def& where, bool zin)
     {
         if (zin)
         {
-            mprf("Zin imprisons %s with walls of pure silver!",
+            mprf("진은 %s을(를) 순수한 은의 벽으로 가두었다!",
                  targname.c_str());
         }
         else
@@ -988,7 +988,7 @@ bool cast_smiting(int pow, monster* mons)
     {
         set_attack_conducts(conducts, mons);
 
-        mprf("You smite %s!", mons->name(DESC_THE).c_str());
+        mprf("당신은 %s에게 일격을 가했다!", mons->name(DESC_THE).c_str());
 
         behaviour_event(mons, ME_ANNOY, &you);
     }
@@ -1099,7 +1099,7 @@ void holy_word(int pow, holy_word_source_type source, const coord_def& where,
 {
     if (!silent && attacker)
     {
-        mprf("%s %s a Word of immense power!",
+        mprf("%s는 신성한 힘의 단어를 읊었다!",
              attacker->name(DESC_THE).c_str(),
              attacker->conj_verb("speak").c_str());
     }
@@ -1133,12 +1133,12 @@ void torment_player(actor *attacker, torment_source_type taux)
             if (random2(600) < you.piety) // 13.33% to 33.33% chance
             {
                 hploss = 0;
-                simple_god_message(" shields you from torment!");
+                simple_god_message("은(는) 당신을 고통으로부터 보호했다!");
             }
             else if (random2(250) < you.piety) // 24% to 80% chance
             {
                 hploss -= random2(hploss - 1);
-                simple_god_message(" partially shields you from torment!");
+                simple_god_message(" partially은(는) 당신을 고통으로부터 보호했다!");
             }
         }
     }

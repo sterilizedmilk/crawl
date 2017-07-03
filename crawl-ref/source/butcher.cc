@@ -49,7 +49,7 @@ static bool _start_butchering(item_def& corpse)
 
     if (is_forbidden_food(corpse))
     {
-        mprf("It would be a sin to %sbutcher this!",
+        mprf("이 시체를 해체하는 것은 %s의 분노를 살 것이다!<darkgrey>butcher.cc.mprf:3</darkgrey>",
              bottle_blood ? "bottle or " : "");
         return false;
     }
@@ -83,7 +83,7 @@ void finish_butchering(item_def& corpse, bool bottling)
     }
     else
     {
-        mprf("You butcher %s.",
+        mprf("당신은 %s를 도축했다.<darkgrey>butcher.cc.mprf:1</darkgrey>",
              corpse.name(DESC_THE).c_str());
 
         butcher_corpse(corpse);
@@ -159,7 +159,7 @@ void butchery(item_def* specific_corpse)
 
     if (corpses.empty())
     {
-        mprf("There isn't anything to %sbutcher here.",
+        mprf("여기에는 해체할 수 있는 시체가 없다.(%s)<darkgrey>butcher.cc.mprf:2</darkgrey>",
              bottle_blood ? "bottle or " : "");
         return;
     }
@@ -229,7 +229,7 @@ void butchery(item_def* specific_corpse)
                 const bool can_bottle =
                     can_bottle_blood_from_corpse(it->mon_type);
                 mprf(MSGCH_PROMPT,
-                     "%s %s? [(y)es/(c)hoosy/(n)o/(a)ll/(e)dible/(q)uit/?]",
+                     "%s_%s? [(y)예/(c)해체/(n)아니오/(a)모두 해체/(q)취소]<darkgrey>butcher.cc.mprf:5</darkgrey>",
                      can_bottle ? "Bottle" : "Butcher",
                      corpse_name.c_str());
                 repeat_prompt = false;
@@ -288,7 +288,7 @@ void butchery(item_def* specific_corpse)
     // No point in displaying this if the player pressed 'a' above.
     if (!to_eat && !butcher_all)
     {
-        mprf("There isn't anything %s to %sbutcher here.",
+        mprf("There isn't anything %s to %sbutcher here.<darkgrey>butcher.cc.mprf:6</darkgrey>",
              butcher_edible ? "edible" : "else",
              bottle_blood ? "bottle or " : "");
     }

@@ -302,7 +302,7 @@ static const map<spell_type, mons_spell_logic> spell_to_logic = {
         [](monster &caster, mon_spell_slot, bolt&) {
             if (you.can_see(caster))
             {
-                mprf("%s liquefies the ground around %s!",
+                mprf("%s의 액화물이 그것의 주위를 뒤덮었다!",
                      caster.name(DESC_THE).c_str(),
                      caster.pronoun(PRONOUN_REFLEXIVE).c_str());
                 flash_view_delay(UA_MONSTER, BROWN, 80);
@@ -768,7 +768,7 @@ static void _cast_smiting(monster &caster, mon_spell_slot slot, bolt&)
     ASSERT(foe);
 
     if (foe->is_player())
-        mprf("%s smites you!", _god_name(god).c_str());
+        mprf("%s(이)가 당신에게 일격을 가한다!", _god_name(god).c_str());
     else
         simple_monster_message(*foe->as_monster(), " is smitten.");
 
@@ -2579,7 +2579,7 @@ static bool _seal_doors_and_stairs(const monster* warden,
     if (had_effect)
     {
         ASSERT(!check_only);
-        mprf(MSGCH_MONSTER_SPELL, "%s activates a sealing rune.",
+        mprf(MSGCH_MONSTER_SPELL, "%s이(가) 봉인의 룬을 작동시켰다.",
                 (warden->visible_to(&you) ? warden->name(DESC_THE, true).c_str()
                                           : "Someone"));
         if (num_closed > 1)
@@ -2683,7 +2683,7 @@ static bool _make_monster_angry(const monster* mon, monster* targ, bool actual)
                 mon->pronoun(PRONOUN_OBJECTIVE).c_str());
         }
         else
-            mprf("%s goads %s on!", mon->name(DESC_THE).c_str(),
+            mprf("%s은(는) %s에게 성질을 부리기 시작했다!", mon->name(DESC_THE).c_str(),
                  targ->name(DESC_THE).c_str());
     }
 
@@ -4269,8 +4269,8 @@ static int _monster_abjure_target(monster* target, int pow, bool actual)
         pow = pow * (30 - target->get_hit_dice()) / 30;
         if (pow < duration)
         {
-            simple_god_message(" protects your fellow warrior from evil "
-                               "magic!");
+            simple_god_message(" "
+                               );
             shielded = true;
         }
     }
@@ -4279,14 +4279,14 @@ static int _monster_abjure_target(monster* target, int pow, bool actual)
         pow = pow / 2;
         if (pow < duration)
         {
-            simple_god_message(" shields your ally from puny magic!");
+            simple_god_message("은(는) 당신의 동료를 보잘것없는 마법으로부터 보호했다!");
             shielded = true;
         }
     }
     else if (is_sanctuary(target->pos()))
     {
         pow = 0;
-        mprf(MSGCH_GOD, "Zin's power protects your fellow warrior from evil magic!");
+        mprf(MSGCH_GOD, "'진'의 힘이, 당신의 동료 전사를 사악한 마법으로부터 보호했다!");
         shielded = true;
     }
 
@@ -4582,7 +4582,7 @@ static bool _mons_cast_freeze(monster* mons)
 
     if (you.can_see(*target))
     {
-        mprf("%s %s frozen.", target->name(DESC_THE).c_str(),
+        mprf("%s은(는) 얼어붙었다.", target->name(DESC_THE).c_str(),
                               target->conj_verb("are").c_str());
     }
 
@@ -4913,7 +4913,7 @@ static int _mons_control_undead(monster* mons, bool actual)
             retval = 1;
             if (you.can_see(**mi))
             {
-                mprf("%s submits to %s will!",
+                mprf("%s은(는) %s에게 복종했다!",
                      mi->name(DESC_YOUR).c_str(),
                      apostrophise(mons->name(DESC_THE)).c_str());
             }
@@ -5375,12 +5375,12 @@ void flay(const monster &caster, actor &defender, int damage)
     {
         if (was_flayed)
         {
-            mprf("Terrible wounds spread across more of %s body!",
+            mprf("끔찍한 상처들이 %s의 몸에 더욱 퍼져나갔다!",
                  defender.name(DESC_ITS).c_str());
         }
         else
         {
-            mprf("Terrible wounds open up all over %s body!",
+            mprf("%s의 몸에 끔찍한 상처들이 생겨났다!",
                  defender.name(DESC_ITS).c_str());
         }
     }
@@ -5855,9 +5855,9 @@ void mons_cast(monster* mons, bolt pbolt, spell_type spell_cast,
         if (you.can_see(*foe))
         {
             if (foe->airborne())
-                mprf("The water rises up and strikes %s!", foe->name(DESC_THE).c_str());
+                mprf("물살이 일어 %s을(를) 타격했다!", foe->name(DESC_THE).c_str());
             else
-                mprf("The water swirls and strikes %s!", foe->name(DESC_THE).c_str());
+                mprf("물살이 소용돌이쳐 %s을(를) 타격했다!", foe->name(DESC_THE).c_str());
         }
 
         pbolt.flavour    = BEAM_WATER;
@@ -6607,7 +6607,7 @@ void mons_cast(monster* mons, bolt pbolt, spell_type spell_cast,
     {
         if (you.can_see(*mons))
         {
-            mprf("A film of ice covers %s body!",
+            mprf("얇은 얼음 막이 %s 몸을 뒤덮었다!",
                  apostrophise(mons->name(DESC_THE)).c_str());
         }
         const int power = (mons->spell_hd(spell_cast) * 15) / 10;
@@ -7754,7 +7754,7 @@ static void _mons_awaken_earth(monster &mon, const coord_def &target)
     if (seen)
     {
         noisy(20, target);
-        mprf("Some walls %s!",
+        mprf("벽의 일부가 %s했다!",
              count > 0 ? "begin to move on their own"
                        : "crumble away");
     }
@@ -7791,10 +7791,10 @@ static void _siren_sing(monster* mons, bool avatar)
     }
     else
     {
-        mprf(MSGCH_SOUND, "You hear %s.",
-                          already_mesmerised ? "a luring song" :
-                          coinflip()         ? "a haunting song"
-                                             : "an eerie melody");
+        mprf(MSGCH_SOUND, "당신은 %s을(를) 들었다.",
+                          already_mesmerised ? "매혹적인 노랫소리" :
+                          coinflip()         ? "소름끼치는 노랫소리"
+                                             : "으스스한 곡조가 들렸다.");
 
         // If you're already mesmerised by an invisible siren, it
         // can still prolong the enchantment.

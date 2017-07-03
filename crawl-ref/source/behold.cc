@@ -24,7 +24,7 @@ void player::add_beholder(const monster& mon, bool axe)
         {
             if (can_see(mon))
             {
-                mprf("%s's singing sounds muted, and has no effect on you.",
+                mprf("%s의 마력이 공중으로 사라졌다.",
                      mon.name(DESC_THE).c_str());
             }
             else
@@ -33,7 +33,7 @@ void player::add_beholder(const monster& mon, bool axe)
         else
         {
             if (can_see(mon))
-                mprf("%s's is no longer quite as mesmerising!", mon.name(DESC_THE).c_str());
+                mprf("%s은(는) 더 이상 매혹적으로 보이지 않는다!", mon.name(DESC_THE).c_str());
             else
                 mpr("매혹된 대상이 당신에게 갖는 관심이 줄어든 것 같다!");
         }
@@ -47,7 +47,7 @@ void player::add_beholder(const monster& mon, bool axe)
         beholders.push_back(mon.mid);
         if (!axe)
         {
-            mprf(MSGCH_WARN, "You are mesmerised by %s!",
+            mprf(MSGCH_WARN, "당신은 %s의 최면에 걸려있다!",
                              mon.name(DESC_THE).c_str());
         }
     }
@@ -137,7 +137,7 @@ static void _removed_beholder_msg(const monster *mons)
         {
             if (you.can_see(mon))
             {
-                mprf("%s's singing becomes strangely muted.",
+                mprf("%s의 노랫소리가 별안간 멈추었다.",
                      mon.name(DESC_THE).c_str());
             }
             else
@@ -146,7 +146,7 @@ static void _removed_beholder_msg(const monster *mons)
         else
         {
             if (you.can_see(mon))
-                mprf("%s's is no longer quite as mesmerising!", mon.name(DESC_THE).c_str());
+                mprf("%s은(는) 더 이상 매혹적으로 보이지 않는다!", mon.name(DESC_THE).c_str());
             else
                 mpr("매혹된 대상이 당신에게 갖는 관심이 줄어든 것 같다!");
         }
@@ -160,7 +160,7 @@ static void _removed_beholder_msg(const monster *mons)
         {
             if (mons_is_siren_beholder(mon))
             {
-                mprf("You can no longer hear %s's singing!",
+                mprf("더 이상 %s의 노랫소리가 들리지 않는다!",
                      mon.name(DESC_THE).c_str());
             }
             else
@@ -169,9 +169,9 @@ static void _removed_beholder_msg(const monster *mons)
         }
 
         if (mons_is_siren_beholder(mon))
-            mprf("%s stops singing.", mon.name(DESC_THE).c_str());
+            mprf("%s은(는) 노래를 멈추었다.", mon.name(DESC_THE).c_str());
         else
-            mprf("%s is no longer quite as mesmerising!", mon.name(DESC_THE).c_str());
+            mprf("%s의 노래는 더이상 최면 효과가 없다!", mon.name(DESC_THE).c_str());
 
         return;
     }
@@ -236,8 +236,8 @@ void player::_removed_beholder(bool quiet)
         if (!quiet)
         {
             mprf(MSGCH_DURATION,
-                 coinflip() ? "You break out of your daze!"
-                            : "You are no longer entranced.");
+                 coinflip() ? "현혹에서 벗어나 정신을 차렸다!"
+                            : "황홀한 감정이 사라졌다.");
         }
     }
 }

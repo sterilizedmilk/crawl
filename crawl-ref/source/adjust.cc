@@ -21,7 +21,7 @@ static void _adjust_ability();
 
 void adjust()
 {
-    mprf(MSGCH_PROMPT, "Adjust (i)tems, (s)pells, or (a)bilities? ");
+    mprf(MSGCH_PROMPT, "어떤 단축키를 변경할 것인가? ( [i]아이템 [s]주문 [a]특수능력 ) ");
 
     const int keyin = toalower(get_ch());
 
@@ -54,7 +54,7 @@ void adjust_item(int from_slot)
         mprf_nocap("%s", you.inv[from_slot].name(DESC_INVENTORY_EQUIP).c_str());
     }
 
-    const int to_slot = prompt_invent_item("Adjust to which letter? ",
+    const int to_slot = prompt_invent_item(" ",
                                            MT_INVLIST,
                                            -1, OPER_ANY,
                                            invprompt_flag::unthings_ok
@@ -80,8 +80,8 @@ static void _adjust_spell()
     }
 
     // Select starting slot
-    mprf(MSGCH_PROMPT, "Adjust which spell? ");
-    int keyin = list_spells(false, false, false, "Adjust which spell?");
+    mprf(MSGCH_PROMPT, "어느 주문의 단축키를 바꿀 것인가? ");
+    int keyin = list_spells(false, false, false, "어느 주문의 단축키를 바꿀 것인가?");
 
     if (!isaalpha(keyin))
     {
@@ -106,7 +106,7 @@ static void _adjust_spell()
     keyin = 0;
     while (!isaalpha(keyin))
     {
-        mprf(MSGCH_PROMPT, "Adjust to which letter? ");
+        mprf(MSGCH_PROMPT, " ");
         keyin = get_ch();
         if (key_is_escape(keyin))
         {
@@ -116,7 +116,7 @@ static void _adjust_spell()
         // FIXME: It would be nice if the user really could select letters
         // without spells from this menu.
         if (keyin == '?' || keyin == '*')
-            keyin = list_spells(true, false, false, "Adjust to which letter?");
+            keyin = list_spells(true, false, false, "");
     }
 
     const int input_2 = keyin;
@@ -153,7 +153,7 @@ static void _adjust_ability()
         return;
     }
 
-    mprf(MSGCH_PROMPT, "Adjust which ability? ");
+    mprf(MSGCH_PROMPT, "어느 특수능력의 단축키를 바꿀 것인가?");
     int selected = choose_ability_menu(talents);
 
     // If we couldn't find anything, cancel out.
@@ -169,7 +169,7 @@ static void _adjust_ability()
 
     const int index1 = letter_to_index(old_key);
 
-    mprf(MSGCH_PROMPT, "Adjust to which letter?");
+    mprf(MSGCH_PROMPT, "");
 
     const int keyin = get_ch();
 

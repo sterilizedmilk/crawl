@@ -300,7 +300,7 @@ bool fight_melee(actor *attacker, actor *defender, bool *did_hit, bool simu)
                 {
                     if (could_see || you.can_see(*mons))
                     {
-                        mprf("%s hops backward while attacking.",
+                        mprf("%s은(는) 공격하며 뒤로 빠졌다.",
                              mons->name(DESC_THE, true).c_str());
                     }
                     mons->speed_increment -= 2; // Add a small extra delay

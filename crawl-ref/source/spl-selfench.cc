@@ -256,7 +256,7 @@ int cast_selective_amnesia(const string &pre_msg)
     int slot;
 
     // Pick a spell to forget.
-    mprf(MSGCH_PROMPT, "Forget which spell ([?*] list [ESC] exit)? ");
+    mprf(MSGCH_PROMPT, "어떤 주문을 잊겠습니까? ([?*] 목록 [ESC] 취소)");
     keyin = list_spells(false, false, false, "Forget which spell?");
     redraw_screen();
 
@@ -277,7 +277,7 @@ int cast_selective_amnesia(const string &pre_msg)
         if (!isaalpha(keyin))
         {
             clear_messages();
-            mprf(MSGCH_PROMPT, "Forget which spell ([?*] list [ESC] exit)? ");
+            mprf(MSGCH_PROMPT, "어떤 주문을 잊겠습니까? ([?*] 목록 [ESC] 취소)");
             keyin = get_ch();
             continue;
         }
@@ -288,7 +288,7 @@ int cast_selective_amnesia(const string &pre_msg)
         if (spell == SPELL_NO_SPELL)
         {
             mpr("당신은 그 주문을 모른다.");
-            mprf(MSGCH_PROMPT, "Forget which spell ([?*] list [ESC] exit)? ");
+            mprf(MSGCH_PROMPT, "어떤 주문을 잊겠습니까? ([?*] 목록 [ESC] 취소)");
             keyin = get_ch();
         }
         else

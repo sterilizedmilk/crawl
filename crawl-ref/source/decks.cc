@@ -390,7 +390,7 @@ static card_type _draw_top_card(item_def& deck, bool message,
     {
         const char *verb = (_flags & CFLAG_DEALT) ? "deal" : "draw";
 
-        mprf("You %s a card... It is %s.", verb, card_name(card));
+        mprf("당신은 카드 한 장을 %s... %s 카드이다.", verb, card_name(card));
     }
 
     return card;
@@ -663,7 +663,7 @@ static void _deck_ident(item_def& deck)
     if (in_inventory(deck) && !item_ident(deck, ISFLAG_KNOW_TYPE))
     {
         set_ident_flags(deck, ISFLAG_KNOW_TYPE);
-        mprf("This is %s.", deck.name(DESC_A).c_str());
+        mprf("이것은 %s(이)다.", deck.name(DESC_A).c_str());
         you.wield_change = true;
     }
 }
@@ -697,7 +697,7 @@ bool deck_deal()
     if (num_cards == 1)
         mpr("그 덱에는 카드 한 장만이 남아있다!");
     else if (num_cards < 4)
-        mprf("The deck only has %d cards.", num_cards);
+        mprf("이 카드 덱에는 카드가 %d장밖에 남지 않았다.", num_cards);
 
     const int num_to_deal = (num_cards < 4 ? num_cards : 4);
 
@@ -841,12 +841,12 @@ bool deck_stack()
     if (num_cards == 1)
         mpr("그 덱에는 카드 한 장만이 남아있다!");
     else if (num_cards < 5)
-        mprf("The deck only has %d cards.", num_cards);
+        mprf("이 카드 덱에는 카드가 %d장밖에 남지 않았다.", num_cards);
     else if (num_cards == 5)
         mpr("그 덱에는 정확히 다섯 장의 카드가 있다.");
     else
     {
-        mprf("You draw the first five cards out of %d and discard the rest.",
+        mprf("당신은 카드 덱의 처음 다섯 장의 카드를 뽑았다. 나머지 %d장의 카드는 사라졌다.",
              num_cards);
     }
     // these are included in default force_more_message to show them before menu
@@ -2160,7 +2160,7 @@ void card_effect(card_type which_card, deck_rarity_type rarity,
 
     case NUM_CARDS:
         // The compiler will complain if any card remains unhandled.
-        mprf("You have %s a buggy card!", participle);
+        mprf("당신은 버그 카드를 %s!", participle);
         break;
     }
 }

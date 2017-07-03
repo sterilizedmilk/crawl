@@ -1526,11 +1526,11 @@ static bool _write_dump(const string &fname, const dump_params &par, bool quiet)
 #ifdef DGAMELAUNCH
             mpr("캐릭터의 덤프 파일이 성공적으로 생성되었다.");
 #else
-            mprf("Char dumped to '%s'.", file_name.c_str());
+            mprf("'%s'(으)로 캐릭터 덤프를 완료했다.", file_name.c_str());
 #endif
     }
     else
-        mprf(MSGCH_ERROR, "Error opening file '%s'", file_name.c_str());
+        mprf(MSGCH_ERROR, "'%s'파일 열기 실패", file_name.c_str());
 
     return succeeded;
 }

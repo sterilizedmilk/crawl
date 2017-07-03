@@ -464,5 +464,5 @@ static void _daction_hog_to_human(monster *mon, bool in_transit)
     if (could_see && !can_see)
         mpr("돼지가 사라졌다!");
     else if (!could_see && can_see)
-        mprf("%s appears from out of thin air!", mon->name(DESC_A).c_str());
+        mprf("%s이(가) 갑자기 나타났다!", mon->name(DESC_A).c_str());
 }

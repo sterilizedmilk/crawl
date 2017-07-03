@@ -389,7 +389,7 @@ bool player::could_wield(const item_def &item, bool ignore_brand,
         if (item.base_type == OBJ_ARMOUR || item.base_type == OBJ_JEWELLERY)
         {
             if (!quiet)
-                mprf("You can't wield %s.", base_type_string(item));
+                mprf("당신은 %s를 손에 들 수 없다.", base_type_string(item));
             return false;
         }
 
@@ -705,7 +705,7 @@ static bool _god_prevents_berserk_haste(bool intentional)
     // a part of your penance.
     if (!intentional)
     {
-        simple_god_message(" protects you from inadvertent hurry.");
+        simple_god_message("은(는) 당신을 예기치 못한 가속으로부터 지켰다.");
         return true;
     }
 
@@ -714,7 +714,7 @@ static bool _god_prevents_berserk_haste(bool intentional)
     if (!you_worship(old_religion))
         return false;
 
-    simple_god_message(" forces you to slow down.");
+    simple_god_message("은(는) 당신의 가속을 막았다.");
     return true;
 }
 
@@ -845,7 +845,7 @@ bool player::shove(const char* feat_name)
         {
             moveto(*di);
             if (*feat_name)
-                mprf("You are pushed out of the %s.", feat_name);
+                mprf("당신은 %s에서 밀려났다.", feat_name);
             dprf("Moved to (%d, %d).", pos().x, pos().y);
             return true;
         }

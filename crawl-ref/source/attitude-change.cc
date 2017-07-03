@@ -180,11 +180,11 @@ bool yred_slaves_abandon_you()
     if (num_reclaim > 0)
     {
         if (num_reclaim == 1 && num_slaves > 1)
-            simple_god_message(" reclaims one of your granted undead slaves!");
+            simple_god_message("은(는) 당신의 언데드 수하 중 하나를 회수하였다!");
         else if (num_reclaim == num_slaves)
-            simple_god_message(" reclaims your granted undead slaves!");
+            simple_god_message("은(는) 당신의 언데드 수하들을 회수하였다!");
         else
-            simple_god_message(" reclaims some of your granted undead slaves!");
+            simple_god_message("은(는) 당신의 언데드 수하 중 일부를 회수하였다!");
         return true;
     }
 
