@@ -55,7 +55,6 @@
 #include "dbg-scan.h"
 #include "dbg-util.h"
 #include "delay.h"
-#include "describe-demigod-portfolio.h"
 #include "describe-god.h"
 #include "describe.h"
 #ifdef DGL_SIMPLE_MESSAGING
@@ -1889,12 +1888,6 @@ void process_command(command_type cmd)
 
     case CMD_DISPLAY_RELIGION:
     {
-        if (you.species == SP_DEMIGOD)
-        {
-            describe_demigod_portfolio();
-            redraw_screen();
-            break;
-        }
 #ifdef USE_TILE_WEB
         if (!you_worship(GOD_NO_GOD))
             tiles_crt_control show_as_menu(CRT_MENU, "describe_god");

@@ -1501,15 +1501,6 @@ static void tag_construct_you(writer &th)
         marshallShort(th, you.demonic_traits[j].mutation);
     }
 
-       marshallByte(th, you.demigod_portifolio);
-       // how many demigod portrait points?
-       marshallByte(th, NUM_DEMIGOD_PORTFOLIO);
-    for (int j = 0; j < NUM_DEMIGOD_PORTFOLIO; j++)
-    {
-              marshallUByte(th, you.demigod_portifolio_point[j]);
-    }
-
-
     // set up sacrifice piety by ability
     marshallShort(th, 1 + ABIL_FINAL_SACRIFICE - ABIL_FIRST_SACRIFICE);
     for (int j = ABIL_FIRST_SACRIFICE; j <= ABIL_FINAL_SACRIFICE; ++j)
@@ -3072,15 +3063,7 @@ static void tag_read_you(reader &th)
     }
 
 #if TAG_MAJOR_VERSION == 34
-       you.demigod_portifolio = static_cast<demigod_portfolio>(unmarshallByte(th));
-       count = unmarshallUByte(th);
-       for (int j = 0; j < count; ++j)
-       {
-              you.demigod_portifolio_point[j] = unmarshallUByte(th);
-       }
-#endif
 
-#if TAG_MAJOR_VERSION == 34
     if (th.getMinorVersion() < TAG_MINOR_SAC_PIETY_LEN)
     {
         const int OLD_NUM_ABILITIES = 1503;

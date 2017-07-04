@@ -14,7 +14,6 @@
 #include "cio.h"
 #include "database.h"
 #include "describe.h"
-#include "demigod-portfolio.h"
 #include "english.h"
 #include "eq-type-flags.h"
 #include "food.h"

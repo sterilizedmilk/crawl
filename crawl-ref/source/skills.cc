@@ -581,11 +581,6 @@ bool training_restricted(skill_type sk)
     case SK_UNARMED_COMBAT:
     case SK_SPELLCASTING:
         return false;
-       case SK_INVOCATIONS:
-        if (you.species == SP_DEMIGOD)
-            return false;
-              else
-            return true;              
     default:
         return true;
     }

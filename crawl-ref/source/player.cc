@@ -1350,7 +1350,7 @@ int player_res_fire(bool calc_unid, bool temp, bool items)
 
         rf += get_form()->res_fire();
     }
-    
+
     if (rf > 3)
         rf = 3;
     if (temp && you.duration[DUR_FIRE_VULN])
@@ -1592,11 +1592,6 @@ int player_res_poison(bool calc_unid, bool temp, bool items)
         return 3;
     }
 
-    if (you_have_demigod_portfolio_level(DEMIGOD_PORTFOLIO_POISON, DEMIGOD_PORTFOLIO_POISON_LEVEL_GIVE_POISON_IMMUNE))
-    {
-        return 3;
-    }
-
     int rp = 0;
 
     if (items)
@@ -1640,11 +1635,6 @@ int player_res_poison(bool calc_unid, bool temp, bool items)
 
         if (get_form()->res_pois() > 0)
             rp++;
-    }
-
-    if (you_have_demigod_portfolio_level(DEMIGOD_PORTFOLIO_POISON, DEMIGOD_PORTFOLIO_POISON_LEVEL_GIVE_POISON_RES))
-    {
-        rp++;
     }
 
     // Cap rPois at + before vulnerability effects are applied
@@ -1791,9 +1781,6 @@ int player_spec_poison()
     sp += you.wearing(EQ_STAFF, STAFF_POISON);
 
     if (player_equip_unrand(UNRAND_OLGREB))
-        sp++;
-
-    if (you_have_demigod_portfolio_level(DEMIGOD_PORTFOLIO_POISON, DEMIGOD_PORTFOLIO_POISON_LEVEL_AUGMENT_POISON))
         sp++;
 
     return sp;
@@ -2764,11 +2751,6 @@ void level_change(bool skip_attribute_increase)
             {
                 mprf(MSGCH_INTRINSIC_GAIN, "You have reached level %d!",
                      new_exp);
-            }
-
-            if (you.species == SP_DEMIGOD && you.demigod_portifolio == DEMIGOD_PORTFOLIO_NO_PORTFOLIO)
-            {
-                gain_portfolio();
             }
 
             const bool manual_stat_level = new_exp % 3 == 0;  // 3,6,9,12...
@@ -5098,9 +5080,6 @@ player::player()
     temp_mutation.init(0);
     demonic_traits.clear();
     sacrifices.init(0);
-
-    demigod_portifolio_point.init(0);
-    demigod_portifolio = DEMIGOD_PORTFOLIO_NO_PORTFOLIO;
 
     magic_contamination = 0;
 
@@ -8089,13 +8068,6 @@ int player::inaccuracy() const
     return degree;
 }
 
-int player::wild_level() const
-{
-    int degree = 0;    
-    degree += wearing(EQ_RINGS, RING_WILD);
-    degree += scan_artefacts(ARTP_WILD);
-    return degree;
-}
 /**
  * Handle effects that occur after the player character stops berserking.
  */

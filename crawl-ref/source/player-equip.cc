@@ -1206,9 +1206,7 @@ static void _equip_jewellery_effect(item_def &item, bool unmeld,
             mprf("You feel slightly %sjumpy.",
                  (player_teleport(false) > 8) ? "more " : "");
         break;
-    case RING_WILD:
-        mpr("당신은 무언가를 깨물고 싶은 강한 충동을 느꼈다.");
-        break;
+        
 
     case AMU_FAITH:
         if (you.species == SP_DEMIGOD)
@@ -1348,9 +1346,7 @@ static void _unequip_jewellery_effect(item_def &item, bool mesg, bool meld,
     case RING_MAGICAL_POWER:
         canned_msg(MSG_MANA_DECREASE);
         break;
-    case RING_WILD:
-        mpr("당신은 좀 더 문명화되었다.");
-        break;
+        
     case AMU_THE_GOURMAND:
         you.duration[DUR_GOURMAND] = 0;
         break;
