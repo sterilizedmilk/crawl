@@ -138,7 +138,7 @@ static void _interrupt_butchering(const char* action)
                {
                    return d->is_butcher();
                });
-    mprf("당신은 시체를 해체하던 일을 멈추었다. (%s %s)", action, multiple_corpses ? "s" : "");
+    mprf("You stop %s the corpse%s.", action, multiple_corpses ? "s" : "");
 }
 
 bool BottleBloodDelay::try_interrupt()
@@ -444,12 +444,12 @@ void clear_macro_process_key_delay()
 
 void ArmourOnDelay::start()
 {
-    mprf(MSGCH_MULTITURN_ACTION, "방어구를 장비하기 시작했다.");
+    mprf(MSGCH_MULTITURN_ACTION, "You start putting on your armour.");
 }
 
 void ArmourOffDelay::start()
 {
-    mprf(MSGCH_MULTITURN_ACTION, "방어구를 해제하기 시작했다.");
+    mprf(MSGCH_MULTITURN_ACTION, "You start removing your armour.");
 }
 
 void MemoriseDelay::start()
@@ -460,22 +460,22 @@ void MemoriseDelay::start()
             spell_title(spell));
         simple_god_message(message.c_str());
     }
-    mprf(MSGCH_MULTITURN_ACTION, "주문의 암기를 시작했다.");
+    mprf(MSGCH_MULTITURN_ACTION, "You start memorising the spell.");
 }
 
 void PasswallDelay::start()
 {
-    mprf(MSGCH_MULTITURN_ACTION, "벽을 바라보고, 명상에 잠겼다.");
+    mprf(MSGCH_MULTITURN_ACTION, "You begin to meditate on the wall.");
 }
 
 void ShaftSelfDelay::start()
 {
-    mprf(MSGCH_MULTITURN_ACTION, "구덩이를 파내려가기 시작했다.");
+    mprf(MSGCH_MULTITURN_ACTION, "You begin to dig a shaft.");
 }
 
 void BlurryScrollDelay::start()
 {
-    mprf(MSGCH_MULTITURN_ACTION, "두루마리를 읽기 시작했다.");
+    mprf(MSGCH_MULTITURN_ACTION, "You begin reading the scroll.");
 }
 
 command_type RunDelay::move_cmd() const
@@ -744,7 +744,7 @@ void ArmourOnDelay::finish()
 #ifdef USE_SOUND
     parse_sound(EQUIP_ARMOUR_SOUND);
 #endif
-    mprf("%s을(를) 장비했다.", armour.name(DESC_YOUR).c_str());
+    mprf("You finish putting on %s.", armour.name(DESC_YOUR).c_str());
 
     if (eq_slot == EQ_BODY_ARMOUR)
     {
@@ -768,7 +768,7 @@ void ArmourOffDelay::finish()
 #ifdef USE_SOUND
     parse_sound(DEQUIP_ARMOUR_SOUND);
 #endif
-    mprf("%s을(를) 해제했다.", armour.name(DESC_YOUR).c_str());
+    mprf("You finish taking off %s.", armour.name(DESC_YOUR).c_str());
     unequip_item(slot);
 }
 
@@ -916,7 +916,7 @@ void run_macro(const char *macroname)
 #ifdef CLUA_BINDINGS
     if (!clua)
     {
-        mprf(MSGCH_DIAGNOSTICS, "Lua 스크립트가 초기화되지 않음");
+        mprf(MSGCH_DIAGNOSTICS, "Lua not initialised");
         stop_delay();
         return;
     }
@@ -937,7 +937,7 @@ void run_macro(const char *macroname)
     {
         if (!clua.error.empty())
         {
-            mprf(MSGCH_ERROR, "Lua 스크립트 에러 : %s", clua.error.c_str());
+            mprf(MSGCH_ERROR, "Lua error: %s", clua.error.c_str());
             stop_delay();
         }
         else if (delay->duration > 0)
@@ -1083,7 +1083,7 @@ static inline bool _monster_warning(activity_interrupt_type ai,
 {
     if (ai == AI_SENSE_MONSTER)
     {
-        mprf(MSGCH_WARN, "주변의 몬스터들을 감지했다.");
+        mprf(MSGCH_WARN, "You sense a monster nearby.");
         return true;
     }
     if (ai != AI_SEE_MONSTER)
@@ -1109,7 +1109,7 @@ static inline bool _monster_warning(activity_interrupt_type ai,
         // during the previous turn.
         if (testbits(mon->flags, MF_WAS_IN_VIEW) && delay)
         {
-            mprf(MSGCH_WARN, "탐색 중, %s이(가) 시야 내에 들어왔다.",
+            mprf(MSGCH_WARN, "%s is too close now for your liking.",
                  mon->name(DESC_THE).c_str());
         }
     }
@@ -1259,7 +1259,7 @@ void autotoggle_autopickup(bool off)
         {
             Options.autopickup_on = -1;
             mprf(MSGCH_WARN,
-                 "자동 줍기 해제; (<w>%s</w>키로 다시 활성화)",
+                 "Deactivating autopickup; reactivate with <w>%s</w>.",
                  command_to_string(CMD_TOGGLE_AUTOPICKUP).c_str());
         }
         if (crawl_state.game_is_hints())
@@ -1271,7 +1271,7 @@ void autotoggle_autopickup(bool off)
     else if (Options.autopickup_on < 0) // was turned off automatically
     {
         Options.autopickup_on = 1;
-        mprf(MSGCH_WARN, "자동 줍기 재시작.");
+        mprf(MSGCH_WARN, "Reactivating autopickup.");
     }
 }
 

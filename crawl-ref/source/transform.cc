@@ -1162,7 +1162,7 @@ static void _remove_equipment(const set<equipment_type>& removed,
                 unequip = true;
         }
 
-        mprf("%s_%s_%s_%s<darkgrey>transform.cc.mprf:1</darkgrey>", equip->name(DESC_YOUR).c_str(),
+        mprf("%s %s%s %s", equip->name(DESC_YOUR).c_str(),
              unequip ? "fall" : "meld",
              equip->quantity > 1 ? "" : "s",
              unequip ? "away!" : "into your body.");
@@ -1227,12 +1227,12 @@ static void _unmeld_equipment_type(equipment_type e)
 
     if (force_remove)
     {
-        mprf("%s이(가) 벗겨져 나갔다!", item.name(DESC_YOUR).c_str());
+        mprf("%s is pushed off your body!", item.name(DESC_YOUR).c_str());
         unequip_item(e);
     }
     else
     {
-        mprf("%s이(가) 당신의 몸으로부터 빠져나왔다.", item.name(DESC_YOUR).c_str());
+        mprf("%s unmelds from your body.", item.name(DESC_YOUR).c_str());
         unmeld_slot(e);
     }
 }
@@ -1498,14 +1498,14 @@ static void _print_head_change_message(int old_heads, int new_heads)
     if (old_heads > new_heads)
     {
         if (plural)
-            mprf("당신 머리의 %d가 줄어들었다.<darkgrey>transform.cc.mprf:4</darkgrey>", delta);
+            mprf("%d of your heads shrink away.", delta);
         else
             mpr("당신의 머리 중 하나가 작아지더니 사라졌다.");
         return;
     }
 
     if (plural)
-        mprf("당신 머리에서 %d가 새로 자라났다.<darkgrey>transform.cc.mprf:5</darkgrey>", delta);
+        mprf("%d new heads grow.", delta);
     else
         mpr("새로운 머리가 자라났다.");
 }
@@ -1591,7 +1591,7 @@ bool transform(int pow, transformation which_trans, bool involuntary,
         && x_chance_in_y(you.piety, MAX_PIETY)
         && which_trans != transformation::none)
     {
-        simple_god_message("은(는) 당신을 부자연스러운 변형으로부터 보호했다!");
+        simple_god_message(" protects your body from unnatural transformation!");
         return false;
     }
 
@@ -1757,7 +1757,7 @@ bool transform(int pow, transformation which_trans, bool involuntary,
     case transformation::statue:
         if (you.duration[DUR_ICY_ARMOUR])
         {
-            mprf(MSGCH_DURATION, "당신의 새로운 육체가 얼음 갑옷을 깨트렸다.<darkgrey>transform.cc.mprf:6</darkgrey>");
+            mprf(MSGCH_DURATION, "Your new body cracks your icy armour.");
             you.duration[DUR_ICY_ARMOUR] = 0;
         }
         break;
@@ -1800,7 +1800,7 @@ bool transform(int pow, transformation which_trans, bool involuntary,
         // undead cannot regenerate -- bwr
         if (you.duration[DUR_REGENERATION])
         {
-            mprf(MSGCH_DURATION, "당신의 재생이 멈추었다.");
+            mprf(MSGCH_DURATION, "You stop regenerating.");
             you.duration[DUR_REGENERATION] = 0;
         }
 
@@ -1936,7 +1936,7 @@ void untransform(bool skip_move)
         {
             const char * const verb = you.has_mutation(app) ? "shrink"
                                                             : "disappear";
-            mprf(MSGCH_DURATION, "당신의 %s가 %s_%s.<darkgrey>transform.cc.mprf:8</darkgrey>",
+            mprf(MSGCH_DURATION, "Your %s %s%s.",
                  mutation_name(app), verb,
                  app == MUT_TENTACLE_SPIKE ? "s" : "");
         }
@@ -1997,7 +1997,7 @@ void untransform(bool skip_move)
         you.duration[DUR_ICY_ARMOUR] = 0;
 
         const item_def *armour = you.slot_item(EQ_BODY_ARMOUR, false);
-        mprf(MSGCH_DURATION, "%s이(가) 당신의 얼음 갑옷을 깨트렸다.",
+        mprf(MSGCH_DURATION, "%s cracks your icy armour.",
              armour->name(DESC_YOUR).c_str());
     }
 

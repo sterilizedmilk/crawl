@@ -23,7 +23,7 @@ bool player::add_fearmonger(const monster* mon)
     {
         if (can_see(*mon))
         {
-            mprf("%s의 공포의 기운이 사라지고, 더 이상 당신에게 영향을 주지 않는다.",
+            mprf("%s's aura of fear is muted, and has no effect on you.",
                  mon->name(DESC_THE).c_str());
         }
         else
@@ -36,7 +36,7 @@ bool player::add_fearmonger(const monster* mon)
     {
         set_duration(DUR_AFRAID, 7, 12);
         fearmongers.push_back(mon->mid);
-        mprf(MSGCH_WARN, "%s은(는)  당신을 공포에 사로잡히게 했다!",
+        mprf(MSGCH_WARN, "You are terrified of %s!",
                          mon->name(DESC_THE).c_str());
     }
     else
@@ -165,7 +165,7 @@ void player::_removed_fearmonger(bool quiet)
     {
         duration[DUR_AFRAID] = 0;
         if (!quiet)
-            mprf(MSGCH_DURATION, "공포감이 사라졌다.");
+            mprf(MSGCH_DURATION, "You are no longer terrified.");
     }
 }
 

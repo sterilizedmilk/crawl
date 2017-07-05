@@ -1439,7 +1439,7 @@ void shop()
 {
     if (!shop_at(you.pos()))
     {
-        mprf(MSGCH_ERROR, "도와줘! 존재하지 않는 가게다.");
+        mprf(MSGCH_ERROR, "Help! Non-existent shop.");
         return;
     }
 
@@ -1449,7 +1449,7 @@ void shop()
     // Quick out, if no inventory
     if (shop.stock.empty())
     {
-        mprf("%s은(는) 문을 닫은 듯 하다.", shopname.c_str());
+        mprf("%s appears to be closed.", shopname.c_str());
         destroy_shop_at(you.pos());
         return;
     }
@@ -1478,7 +1478,7 @@ void shop()
         destroy_shop_at(you.pos());
     redraw_screen();
     if (menu.bought_something)
-        mprf("우리 %s에서 물건을 사 줘서 정말 고마워!", shopname.c_str());
+        mprf("Thank you for shopping at %s!", shopname.c_str());
     if (any_on_list)
         mpr("당신은 '$' 를 눌러 당신의 구매 리스트에 접근 할 수 있다.");
 }
@@ -1707,7 +1707,7 @@ bool ShoppingList::add_thing(const item_def &item, int cost,
 
     if (find_thing(item, pos) != -1)
     {
-        mprf(MSGCH_ERROR, "%s은(는) 이미 구매 목록에 올라와 있다.",
+        mprf(MSGCH_ERROR, "%s is already on the shopping list.",
              item.name(DESC_THE).c_str());
         return false;
     }
@@ -1731,7 +1731,7 @@ bool ShoppingList::add_thing(string desc, string buy_verb, int cost,
 
     if (find_thing(desc, pos) != -1)
     {
-        mprf(MSGCH_ERROR, "%s은(는) 이미 구매 목록에 올라와 있다.",
+        mprf(MSGCH_ERROR, "%s is already on the shopping list.",
              desc.c_str());
         return false;
     }
@@ -1789,7 +1789,7 @@ bool ShoppingList::del_thing(const item_def &item,
 
     if (idx == -1)
     {
-        mprf(MSGCH_ERROR, "%s은(는) 구매 목록에 올라와 있지 않아, 지울 수 없다.",
+        mprf(MSGCH_ERROR, "%s isn't on shopping list, can't delete it.",
              item.name(DESC_THE).c_str());
         return false;
     }
@@ -1806,7 +1806,7 @@ bool ShoppingList::del_thing(string desc, const level_pos* _pos)
 
     if (idx == -1)
     {
-        mprf(MSGCH_ERROR, "%s은(는) 구매 목록에 올라와 있지 않아, 지울 수 없다.",
+        mprf(MSGCH_ERROR, "%s isn't on shopping list, can't delete it.",
              desc.c_str());
         return false;
     }

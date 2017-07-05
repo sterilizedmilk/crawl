@@ -251,7 +251,7 @@ int yesnoquit(const char* str, bool allow_lowercase, int default_answer, bool al
                 bool upper = !allow_lowercase
                              && (tmp == 'n' || tmp == 'y' || tmp == 'a'
                                  || crawl_state.game_is_hints_tutorial());
-                mprf("선택: %s[Y]예%s, [N]아니오, [Q]취소, [A]모두",
+                mprf("Choose %s[Y]es%s, [N]o, [Q]uit, or [A]ll!",
                      upper ? "uppercase " : "",
                      _list_alternative_yes(alt_yes, alt_yes2, false, true).c_str());
             }
@@ -261,7 +261,7 @@ int yesnoquit(const char* str, bool allow_lowercase, int default_answer, bool al
             bool upper = !allow_lowercase
                          && (tmp == 'n' || tmp == 'y'
                              || crawl_state.game_is_hints_tutorial());
-            mprf("%s[Y]예%s, [N]아니오, [Q]취소 중 하나로 대답해 주세요.",
+            mprf("%s[Y]es%s, [N]o or [Q]uit only, please.",
                  upper ? "Uppercase " : "",
                  _list_alternative_yes(alt_yes, alt_yes2, false, true).c_str());
         }

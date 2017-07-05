@@ -359,7 +359,7 @@ static void _unequip_artefact_effect(item_def &item,
     // this must be last!
     if (proprt[ARTP_FRAGILE] && !meld)
     {
-        mprf("%s은(는) 먼지처럼 바스라졌다!", item.name(DESC_THE).c_str());
+        mprf("%s crumbles to dust!", item.name(DESC_THE).c_str());
         dec_inv_item_quantity(item.link, 1);
     }
 }
@@ -388,7 +388,7 @@ static void _wield_cursed(item_def& item, bool known_cursed, bool unmeld)
 {
     if (!item.cursed() || unmeld)
         return;
-    mprf("그것은 당신의 %s에 달라붙어 떨어지지 않는다!", you.hand_name(false).c_str());
+    mprf("It sticks to your %s!", you.hand_name(false).c_str());
     int amusement = 16;
     if (!known_cursed)
     {
@@ -489,7 +489,7 @@ static void _equip_weapon_effect(item_def& item, bool showMsgs, bool unmeld)
                     if (!silenced(you.pos()))
                     {
                         mprf(MSGCH_SOUND,
-                             "전기의 폭음이 들려왔다.");
+                             "You hear the crackle of electricity.");
                     }
                     else
                         mpr("불꽃이 튀는 것이 보인다.");
@@ -527,12 +527,12 @@ static void _equip_weapon_effect(item_def& item, bool showMsgs, bool unmeld)
                         mpr("미숙한 기분이 든다.");
                     else if (you.skill(SK_NECROMANCY) <= 6)
                     {
-                        mprf("강렬한 고통이 %s을(를) 타고 올라왔다!",
+                        mprf("Pain shudders through your %s!",
                              your_arm.c_str());
                     }
                     else
                     {
-                        mprf("타는 듯한 고통이 %s을(를) 쑤시기 시작했다!",
+                        mprf("A searing pain shoots up your %s!",
                              your_arm.c_str());
                     }
                     break;
@@ -647,23 +647,23 @@ static void _unequip_weapon_effect(item_def& real_item, bool showMsgs,
             {
             case SPWPN_FLAMING:
                 if (showMsgs)
-                    mprf("%s의 불길이 사라졌다.", msg.c_str());
+                    mprf("%s stops flaming.", msg.c_str());
                 break;
 
             case SPWPN_FREEZING:
             case SPWPN_HOLY_WRATH:
                 if (showMsgs)
-                    mprf("%s의 빛이 사라졌다.", msg.c_str());
+                    mprf("%s stops glowing.", msg.c_str());
                 break;
 
             case SPWPN_ELECTROCUTION:
                 if (showMsgs)
-                    mprf("%s의 파열음이 멈추었다.", msg.c_str());
+                    mprf("%s stops crackling.", msg.c_str());
                 break;
 
             case SPWPN_VENOM:
                 if (showMsgs)
-                    mprf("%s에서 독액이 흘러 나오는 것이 멈추었다.", msg.c_str());
+                    mprf("%s stops dripping with poison.", msg.c_str());
                 break;
 
             case SPWPN_PROTECTION:
@@ -1093,7 +1093,7 @@ static void _remove_amulet_of_faith(item_def &item)
              && !you_worship(GOD_XOM)
              && !you_worship(GOD_GOZAG))
     {
-        simple_god_message("은(는) 당신에 대해 무관심해진 것 같다.");
+        simple_god_message(" seems less interested in you.");
 
         const int piety_loss = div_rand_round(you.piety, 3);
         // Piety penalty for removing the Amulet of Faith.
@@ -1203,7 +1203,7 @@ static void _equip_jewellery_effect(item_def &item, bool unmeld,
             mpr("작고 조용한 도약이 당신에게로 쏟아진다.");
         else
             // keep in sync with player_teleport
-            mprf("약간의 불안정함을 %s느꼈다.",
+            mprf("You feel slightly %sjumpy.",
                  (player_teleport(false) > 8) ? "more " : "");
         break;
     case RING_WILD:
@@ -1219,7 +1219,7 @@ static void _equip_jewellery_effect(item_def &item, bool unmeld,
                                " has no use for such trinkets.");
         }
         else if (you_worship(GOD_GOZAG))
-            simple_god_message("(은)는 오직 금화만을 원한다!");
+            simple_god_message(" cares for nothing but gold!");
         else
         {
             mprf(MSGCH_GOD, "You feel a %ssurge of divine interest.",
@@ -1267,7 +1267,7 @@ static void _equip_jewellery_effect(item_def &item, bool unmeld,
 
     if (item.cursed() && !unmeld)
     {
-        mprf("헉, 이 %s은(는) 끔찍하게 차갑다.",
+        mprf("Oops, that %s feels deathly cold.",
              jewellery_is_amulet(item)? "amulet" : "ring");
         learned_something_new(HINT_YOU_CURSED);
 

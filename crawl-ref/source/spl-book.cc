@@ -364,7 +364,7 @@ static bool _get_book_spells(const item_def& book, spell_set &spells)
     if (num_spells == 0)
     {
         mprf(MSGCH_ERROR, "Spellbook \"%s\" contains no spells! Please "
-             "버그리포트 해주세요.", book.name(DESC_PLAIN).c_str());
+             "file a bug report.", book.name(DESC_PLAIN).c_str());
         return true;
     }
 
@@ -472,20 +472,20 @@ static string _filter_memorizable_spells(const spell_set &available_spells,
                          + num_restricted;
 
     if (num_known == total)
-        return "당신은 이미 사용 가능한 주문을 모두 외우고 있다.";
+        return "You already know all available spells.";
     if (num_restricted == total || num_restricted + num_known == total)
     {
-        return "해당 학파의 마법을 사용 할 수 없기 때문에 spells "
+        return "You cannot currently memorise any of the available spells "
                "because you cannot use those schools of magic.";
     }
     if (num_misc == total || (num_known + num_misc) == total
         || num_misc + num_known + num_restricted == total)
     {
-        return "기억 가능한 주문이 spells.";
+        return "You cannot memorise any of the available spells.";
     }
 
-    return "알 수 없는 이유로 새 주문을 기억 할 수 없다.reason; please "
-           "버그리포트 해주세요.";
+    return "You can't memorise any new spells for an unknown reason; please "
+           "file a bug report.";
 }
 
 
@@ -504,9 +504,9 @@ static void _get_mem_list(spell_list &mem_spells,
         if (!just_check)
         {
             if (book_errors)
-                mprf(MSGCH_PROMPT, "당신이 소지한 모든 마법서들에는 어떠한 주문도 적혀 있지 않다.");
+                mprf(MSGCH_PROMPT, "None of the spellbooks you are carrying contain any spells.");
             else
-                mprf(MSGCH_PROMPT, "소지하고 있거나, 혹은 당신이 있는 위치에 떨어진 책이 없다.");
+                mprf(MSGCH_PROMPT, "You aren't carrying or standing over any spellbooks.");
         }
         return;
     }
@@ -889,10 +889,10 @@ bool learn_spell(spell_type specspell, bool wizard)
         const int severity = fail_severity(specspell);
 
         if (raw_spell_fail(specspell) >= 100 && !vehumet_is_offering(specspell))
-            mprf(MSGCH_WARN, "이 주문은 시전이 불가능하다!");
+            mprf(MSGCH_WARN, "This spell is impossible to cast!");
         else if (severity > 0)
         {
-            mprf(MSGCH_WARN, "이 주문은 시전하기가 %s하다%s",
+            mprf(MSGCH_WARN, "This spell is %s to cast%s",
                              fail_severity_adjs[severity],
                              severity > 1 ? "!" : ".");
         }

@@ -123,7 +123,7 @@ static const char *_xom_message_arrays[NUM_XOM_MESSAGE_TYPES][6] =
 {
     // XM_NORMAL
     {
-        "Xom는 흥미로워한다.",
+        "Xom is interested.",
         "Xom is mildly amused.",
         "Xom is amused.",
         "Xom is highly amused!",
@@ -133,10 +133,10 @@ static const char *_xom_message_arrays[NUM_XOM_MESSAGE_TYPES][6] =
 
     // XM_INTRIGUED
     {
-        "Xom는 흥미로워한다.",
+        "Xom is interested.",
         "Xom is very interested.",
         "Xom is extremely interested.",
-        "Xom는 매우 흥미로워하고 있다.",
+        "Xom is intrigued!",
         "Xom is very intrigued!",
         "Xom is fascinated!"
     }
@@ -366,7 +366,7 @@ void xom_tick()
         }
 
         if (you.gift_timeout == 1)
-            simple_god_message("(은)는 점점 지.루.해.졌.다.");
+            simple_god_message(" is getting BORED.");
     }
 
     if (x_chance_in_y(2 + you.faith(), 6))
@@ -392,9 +392,9 @@ void xom_tick()
             if (interest > 0)
             {
                 if (interest < 25)
-                    simple_god_message("는 흥미로워한다.");
+                    simple_god_message(" is interested.");
                 else
-                    simple_god_message("는 매우 흥미로워하고 있다.");
+                    simple_god_message(" is intrigued.");
 
                 you.gift_timeout += interest;
                 //updating piety status line
@@ -669,7 +669,7 @@ static void _xom_make_item(object_class_type base, int subtype, int power)
     move_item_to_grid(&thing_created, you.pos());
 
     if (thing_created == NON_ITEM) // if it fell into lava
-        simple_god_message("은(는) 낄낄대며 웃었다.", GOD_XOM);
+        simple_god_message(" snickers.", GOD_XOM);
 
     stop_running();
 }
@@ -1345,7 +1345,7 @@ static void _xom_snakes_to_sticks(int sever)
         item.quantity = 1;
 
         // Output some text since otherwise snakes will disappear silently.
-        mprf("%s은(는) %s(으)로 모습을 바꾸었다.", mi->name(DESC_THE).c_str(),
+        mprf("%s reforms as %s.", mi->name(DESC_THE).c_str(),
              item.name(DESC_A).c_str());
 
         // Dismiss monster silently.
@@ -1417,7 +1417,7 @@ static void _xom_animate_monster_weapon(int sever)
     mon->unequip(*(mon->mslot_item(MSLOT_WEAPON)), false, true);
     mon->inv[MSLOT_WEAPON] = NON_ITEM;
 
-    mprf("%s %s이(가) 공중으로 떠올라 춤을 추기 시작했다!",
+    mprf("%s %s dances into the air!",
          apostrophise(mon->name(DESC_THE)).c_str(),
          mitm[wpn].name(DESC_PLAIN).c_str());
 
@@ -1650,7 +1650,7 @@ static void _xom_change_scenery(int /*sever*/)
     }
     if (!effects.empty())
     {
-        mprf("%s!<darkgrey>xom.cc.mprf:9</darkgrey><darkgrey>xom.cc.mprf:8</darkgrey>",
+        mprf("%s!",
              comma_separated_line(effects.begin(), effects.end(),
                                   ", and ").c_str());
         effects.clear();
@@ -1686,7 +1686,7 @@ static void _xom_change_scenery(int /*sever*/)
         take_note(Note(NOTE_XOM_EFFECT, you.piety, -1, ("scenery: "
             + comma_separated_line(terse.begin(), terse.end(), ", ", ", ")).c_str()),
             true);
-        mprf("%s!<darkgrey>xom.cc.mprf:9</darkgrey><darkgrey>xom.cc.mprf:8</darkgrey>",
+        mprf("%s!",
              comma_separated_line(effects.begin(), effects.end(),
                                   ", and ").c_str());
     }
@@ -2284,7 +2284,7 @@ static void _xom_player_confusion_effect(int sever)
         return;
 
     god_speaks(GOD_XOM, _get_xom_speech("confusion").c_str());
-    mprf(MSGCH_WARN, "당신은 %s혼란스러워졌다.",
+    mprf(MSGCH_WARN, "You are %sconfused.",
          conf ? "more " : "");
 
     // At higher severities, Xom is less likely to confuse surrounding
@@ -2379,7 +2379,7 @@ bool move_stair(coord_def stair_pos, bool away, bool allow_under)
     ray_def ray;
     if (!find_ray(begin, towards, ray, opc_solid_see))
     {
-        mprf(MSGCH_ERROR, "플레이어와 계단 사이의 직선거리를 파악할 수 없다.");
+        mprf(MSGCH_ERROR, "Couldn't find ray between player and stairs.");
         return stairs_moved;
     }
 
@@ -2414,7 +2414,7 @@ bool move_stair(coord_def stair_pos, bool away, bool allow_under)
             return stairs_moved;
         }
 
-        mprf(MSGCH_ERROR, "광선은 계단을 지나가지 못했다.");
+        mprf(MSGCH_ERROR, "Ray didn't cross stairs.");
     }
 
     if (away && past_stairs <= 0)
@@ -2441,7 +2441,7 @@ bool move_stair(coord_def stair_pos, bool away, bool allow_under)
 
     string stair_str = feature_description_at(stair_pos, false, DESC_THE, false);
 
-    mprf("%s slides %s you!<darkgrey>xom.cc.mprf:13</darkgrey>", stair_str.c_str(),
+    mprf("%s slides %s you!", stair_str.c_str(),
          away ? "away from" : "towards");
 
     // Animate stair moving.
@@ -3357,13 +3357,13 @@ xom_event_type xom_acts(int sever, maybe_bool nice, int tension, bool debug)
 void xom_check_lost_item(const item_def& item)
 {
     if (is_unrandom_artefact(item))
-        xom_is_stimulated(100, "Xom은(는) 낄낄대며 웃었다.", true);
+        xom_is_stimulated(100, "Xom snickers.", true);
 }
 
 void xom_check_destroyed_item(const item_def& item)
 {
     if (is_unrandom_artefact(item))
-        xom_is_stimulated(100, "Xom은(는) 낄낄대며 웃었다.", true);
+        xom_is_stimulated(100, "Xom snickers.", true);
 }
 
 static bool _death_is_funny(const kill_method_type killed_by)

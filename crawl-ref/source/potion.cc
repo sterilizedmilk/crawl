@@ -321,7 +321,7 @@ public:
     {
         const bool were_mighty = you.duration[DUR_MIGHT] > 0;
 
-        mprf(MSGCH_DURATION, "갑자기 %s해졌다.",
+        mprf(MSGCH_DURATION, "You feel %s all of a sudden.",
              were_mighty ? "mightier" : "very mighty");
         you.increase_duration(DUR_MIGHT, 35 + random2(pow), 80);
         if (!were_mighty)
@@ -345,7 +345,7 @@ public:
     {
         const bool were_brilliant = you.duration[DUR_BRILLIANCE] > 0;
 
-        mprf(MSGCH_DURATION, "갑자기 %s해졌다.",
+        mprf(MSGCH_DURATION, "You feel %s all of a sudden.",
              were_brilliant ? "more clever" : "clever");
         you.increase_duration(DUR_BRILLIANCE, 35 + random2(pow), 80);
         if (!were_brilliant)
@@ -369,7 +369,7 @@ public:
     {
         const bool were_agile = you.duration[DUR_AGILITY] > 0;
 
-        mprf(MSGCH_DURATION, "갑자기 %s해졌다.",
+        mprf(MSGCH_DURATION, "You feel %s all of a sudden.",
              were_agile ? "more agile" : "agile");
 
         you.increase_duration(DUR_AGILITY, 35 + random2(pow), 80);
@@ -518,8 +518,8 @@ public:
             if (you.duration[DUR_QUAD_DAMAGE])
                 afflictions.push_back("!!!QUAD DAMAGE!!!");
             mprf(MSGCH_DURATION,
-                 "당신은 %s투명해졌으나, 마법 오염에 의한 광채가 "
-                 "당신을 완전히 투명하게 만드는 것을 방해하고있다.",
+                 "You become %stransparent, but the glow from %s "
+                 "%s prevents you from becoming completely invisible.",
                  you.duration[DUR_INVIS] ? "more " : "",
                  you.haloed() && you.halo_radius() == -1 ? "the" : "your",
                  comma_separated_line(afflictions.begin(),
@@ -528,8 +528,8 @@ public:
         else
         {
             mprf(MSGCH_DURATION, !you.duration[DUR_INVIS]
-                 ? "투명하게 되었다!"
-                 : "투명한 상태를 계속 유지하고 있다.");
+                 ? "You fade into invisibility!"
+                 : "You fade further into invisibility.");
         }
 
         // Now multiple invisiblity casts aren't as good. -- bwr
@@ -699,7 +699,7 @@ public:
 
     bool effect(bool=true, int pow = 40, bool=true) const override
     {
-        mprf(MSGCH_DURATION, "보호를 받는 느낌을 받았다.");
+        mprf(MSGCH_DURATION, "You feel protected.");
         you.increase_duration(DUR_RESISTANCE, random2(pow) + 35);
         return true;
     }
@@ -1109,7 +1109,7 @@ public:
         bool nothing_happens = true;
         if (you.duration[DUR_BREATH_WEAPON])
         {
-            mprf(MSGCH_RECOVERY, "호흡이 돌아오는 것이 느껴진다.");
+            mprf(MSGCH_RECOVERY, "You have got your breath back.");
             you.duration[DUR_BREATH_WEAPON] = 0;
             nothing_happens = false;
         }
@@ -1334,7 +1334,7 @@ bool quaff_potion(item_def &potion)
     {
         set_ident_flags(potion, ISFLAG_IDENT_MASK);
         set_ident_type(potion, true);
-        mprf("이건 %s였다.", potion.name(DESC_QUALNAME).c_str());
+        mprf("It was a %s.", potion.name(DESC_QUALNAME).c_str());
     }
 
     const potion_type ptyp = static_cast<potion_type>(potion.sub_type);

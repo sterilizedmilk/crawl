@@ -83,7 +83,7 @@ void maybe_melt_player_enchantments(beam_type flavour, int damage)
         if (you.has_mutation(MUT_ICEMAIL))
         {
             if (!you.duration[DUR_ICEMAIL_DEPLETED])
-                mprf(MSGCH_DURATION, "당신의 봉투형태 얼음 갑옷이 소멸됐다!");
+                mprf(MSGCH_DURATION, "Your icy envelope dissipates!");
             you.duration[DUR_ICEMAIL_DEPLETED] = ICEMAIL_TIME;
             you.redraw_armour_class = true;
         }
@@ -317,7 +317,7 @@ void expose_player_to_element(beam_type flavour, int strength, bool slow_cold_bl
 
     if (flavour == BEAM_WATER && you.duration[DUR_LIQUID_FLAMES])
     {
-        mprf(MSGCH_WARN, "불꽃이 잦아들었다!");
+        mprf(MSGCH_WARN, "The flames go out!");
         you.duration[DUR_LIQUID_FLAMES] = 0;
         you.props.erase("sticky_flame_source");
         you.props.erase("sticky_flame_aux");
@@ -332,7 +332,7 @@ static void _lose_level_abilities()
     {
         you.increase_duration(DUR_FLIGHT, 50, 100);
         you.attribute[ATTR_PERM_FLIGHT] = 0;
-        mprf(MSGCH_WARN, "비행 시간이 얼마 남지 않음을 느꼈다.");
+        mprf(MSGCH_WARN, "You feel your flight won't last long.");
     }
 }
 
@@ -350,7 +350,7 @@ void lose_level()
     you.experience_level--;
 
     mprf(MSGCH_WARN,
-         "당신은 레벨 %d(으)로 되돌아갔다!", you.experience_level);
+         "You are now level %d!", you.experience_level);
 
     calc_hp();
     calc_mp();
@@ -591,7 +591,7 @@ static void _maybe_spawn_monsters(int dam, const bool is_torment,
             }
             else
             {
-                mprf("당신의 육체는 격렬하게 떨려 충격을 입었다!",
+                mprf("You shudder from the %s and a %s!",
                      death_type == KILLED_BY_MONSTER ? "blow" : "blast",
                      count_created > 1 ? "flood of jellies pours out from you"
                                        : "jelly pops out");
@@ -906,7 +906,7 @@ void ouch(int dam, kill_method_type death_type, mid_t source, const char *aux,
 
         if (dam >= you.hp && you.hp_max > 0 && god_protects_from_harm())
         {
-            simple_god_message("은(는) 당신을 피해로부터 지켰다!");
+            simple_god_message(" protects you from harm!");
             // Ensure divine intervention wakes sleeping players. Necessary
             // because we otherwise don't wake players who take fatal damage.
             you.check_awaken(500);
@@ -926,7 +926,7 @@ void ouch(int dam, kill_method_type death_type, mid_t source, const char *aux,
         // Even if we have low HP messages off, we'll still give a
         // big hit warning (in this case, a hit for half our HPs) -- bwr
         if (dam > 0 && you.hp_max <= dam * 2)
-            mprf(MSGCH_DANGER, "악! 이건 정말로 아프다!");
+            mprf(MSGCH_DANGER, "Ouch! That really hurt!");
 
         if (you.hp > 0 && dam > 0)
         {
@@ -935,7 +935,7 @@ void ouch(int dam, kill_method_type death_type, mid_t source, const char *aux,
                 && (death_type != KILLED_BY_POISON || poison_is_lethal()))
             {
                 flash_view_delay(UA_HP, RED, 50);
-                mprf(MSGCH_DANGER, "* * * 경고! 생명력이 낮음 * * *");
+                mprf(MSGCH_DANGER, "* * * LOW HITPOINT WARNING * * *");
                 dungeon_events.fire_event(DET_HP_WARNING);
             }
 

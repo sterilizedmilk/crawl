@@ -173,7 +173,7 @@ static bool _eat_check(bool check_hunger = true, bool silent = false)
     {
         if (!silent)
         {
-            mprf("배가 불러 더 이상 %s수 없다.",
+            mprf("You're too full to %s anything.",
                  you.species == SP_VAMPIRE ? "drain" : "eat");
             crawl_state.zero_turns_taken();
         }
@@ -692,7 +692,7 @@ static void _eat_chunk(item_def& food)
             _heal_from_food(hp_amt);
         }
 
-        mprf("이 고기는 %s", _chunk_flavour_phrase(likes_chunks));
+        mprf("This raw flesh %s", _chunk_flavour_phrase(likes_chunks));
         do_eat = true;
         break;
     }
@@ -994,7 +994,7 @@ static bool _vampire_consume_corpse(item_def& corpse)
         return false;
     }
 
-    mprf("이 %s피는 정말로 맛이 좋다!",
+    mprf("This %sblood tastes delicious!",
          mons_class_flag(mons_type, M_WARM_BLOOD) ? "warm " : "");
 
     const int food_value = CHUNK_BASE_NUTRITION
@@ -1068,7 +1068,7 @@ void handle_starvation()
     {
         if (!you.cannot_act() && one_chance_in(40))
         {
-            mprf(MSGCH_FOOD, "배고파 의식을 잃었다!");
+            mprf(MSGCH_FOOD, "You lose consciousness!");
             stop_running();
 
             int turns = 5 + random2(8);
@@ -1092,7 +1092,7 @@ void handle_starvation()
                 return;
             }
 
-            mprf(MSGCH_FOOD, "굶주림을 이기지 못하고, 결국 의식을 잃고 쓰러졌다.");
+            mprf(MSGCH_FOOD, "You have starved to death.");
             ouch(INSTANT_DEATH, KILLED_BY_STARVATION);
             if (!you.pending_revival) // if we're still here...
                 set_hunger(HUNGER_DEFAULT, true);

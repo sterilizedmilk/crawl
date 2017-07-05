@@ -197,7 +197,7 @@ void mirror_damage_fineff::fire()
     }
     else if (def == MID_PLAYER)
     {
-        simple_god_message("은(는) 당신의 피해를 반사했다!");
+        simple_god_message(" mirrors your injury!");
 #ifndef USE_TILE_LOCAL
         flash_monster_colour(monster_by_mid(att), RED, 200);
 #endif
@@ -305,16 +305,16 @@ void trj_spawn_fineff::fire()
     if (trj)
     {
         const string monnam = trj->name(DESC_THE);
-        mprf("%s은(는) %s몸을 떨었다.", monnam.c_str(),
+        mprf("%s shudders%s.", monnam.c_str(),
              spawned >= 5 ? " alarmingly" :
              spawned >= 3 ? " violently" :
              spawned > 1 ? " vigorously" : "");
 
         if (spawned == 1)
-            mprf("%s은(는) 또 한마리의 젤리를 분열해냈다.", monnam.c_str());
+            mprf("%s spits out another jelly.", monnam.c_str());
         else
         {
-            mprf("%s은(는) %s 마리의 젤리를 분열해냈다.",
+            mprf("%s spits out %s more jellies.",
                  monnam.c_str(),
                  number_in_words(spawned).c_str());
         }
@@ -323,7 +323,7 @@ void trj_spawn_fineff::fire()
         mpr("로열 젤리의 조각 중 하나가 살아남았다.");
     else
     {
-        mprf("로얄 젤리는 죽어가면서, %s마리의 젤리를 몸 속에서 쏟아내었다.",
+        mprf("The dying Royal Jelly spits out %s more jellies.",
              number_in_words(spawned).c_str());
     }
 }

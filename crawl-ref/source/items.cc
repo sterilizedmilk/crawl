@@ -251,7 +251,7 @@ static int _cull_items()
 
     // XXX: Not the prettiest of messages, but the player
     // deserves to know whenever this kicks in. -- bwr
-    mprf(MSGCH_WARN, "이 층에는 아이템이 너무 많아, 몇몇 아이템이 제거된다.");
+    mprf(MSGCH_WARN, "Too many items on level, removing some.");
 
     // Rules:
     //  1. Don't cleanup anything nearby the player
@@ -560,8 +560,8 @@ void unlink_item(int dest)
                 return;
             }
         }
-        mprf(MSGCH_ERROR, "아이템 %s을(를) 몬스터 %s이(가) 장비하도록 시도했지만, "
-                          "그 몬스터는 해당 아이템을 소지하고 있지 않다.",
+        mprf(MSGCH_ERROR, "Item %s claims to be held by monster %s, but "
+                          "it isn't in the monster's inventory.",
              mitm[dest].name(DESC_PLAIN, false, true).c_str(),
              mons->name(DESC_PLAIN, true).c_str());
         // Don't return so the debugging code can take a look at it.
@@ -1725,7 +1725,7 @@ void get_gold(const item_def& item, int quant, bool quiet)
                             ? make_stringf(" (gained %d)", quant)
                             : "";
 
-        mprf("당신은 현재 %d개의 금화를 가지고 있다.(%s%s)",
+        mprf("You now have %d gold piece%s%s.",
              you.gold, you.gold != 1 ? "s" : "", gain.c_str());
         learned_something_new(HINT_SEEN_GOLD);
     }
@@ -1841,7 +1841,7 @@ static void _get_rune(const item_def& it, bool quiet)
     if (!quiet)
     {
         flash_view_delay(UA_PICKUP, rune_colour(it.sub_type), 300);
-        mprf("당신은 %s의 룬을 주웠고, 룬이 발하는 마력을 느꼈다.",
+        mprf("You pick up the %s rune and feel its power.",
              rune_type_name(it.sub_type));
         int nrunes = runes_in_pack();
         if (nrunes >= you.obtainable_runes)
@@ -1849,11 +1849,11 @@ static void _get_rune(const item_def& it, bool quiet)
         else if (nrunes == ZOT_ENTRY_RUNES)
         {
             // might be inappropriate in new Sprints, please change it then
-            mprf("%d개의 룬을 모았다! 이제 '조트의 렐름'에 출입하는 것이 가능하다.",
+            mprf("%d runes! That's enough to enter the realm of Zot.",
                  nrunes);
         }
         else if (nrunes > 1)
-            mprf("당신은 이제 %d개의 룬을 모았다.", nrunes);
+            mprf("You now have %d runes.", nrunes);
 
         mpr("}를 눌러 모은 룬을 확인할 수 있다.");
     }
@@ -1872,7 +1872,7 @@ static void _get_orb(const item_def &it, bool quiet)
 {
     run_animation(ANIMATION_ORB, UA_PICKUP);
 
-    mprf(MSGCH_ORB, "당신은 조트의 오브를 주웠다.");
+    mprf(MSGCH_ORB, "You pick up the Orb of Zot!");
 
     env.orb_pos = you.pos(); // can be wrong in wizmode
     orb_pickup_noise(you.pos(), 30);
@@ -2464,7 +2464,7 @@ bool drop_item(int item_dropped, int quant_drop)
     if (item_dropped == you.equip[EQ_WEAPON]
         && item.base_type == OBJ_WEAPONS && item.cursed())
     {
-        mprf("%s은(는) 당신에게 달라붙어 떨어지지 않는다!", item.name(DESC_THE).c_str());
+        mprf("%s is stuck to you!", item.name(DESC_THE).c_str());
         return false;
     }
 
@@ -2512,7 +2512,7 @@ bool drop_item(int item_dropped, int quant_drop)
         return false;
     }
 
-    mprf("%s을(를) 버렸다.", quant_name(item, quant_drop, DESC_A).c_str());
+    mprf("You drop %s.", quant_name(item, quant_drop, DESC_A).c_str());
 
     // If you drop an item in as a merfolk, it is below the water line and
     // makes no noise falling.
@@ -4080,7 +4080,7 @@ static void _rune_from_specs(const char* _specs, item_def &item)
                 line.clear();
             }
         }
-        mprf(MSGCH_PROMPT, "어느 룬을 선택하는가? (ESC키로 종료)");
+        mprf(MSGCH_PROMPT, "Which rune (ESC to exit)? ");
 
         int keyin = toalower(get_ch());
 
@@ -4199,7 +4199,7 @@ static void _deck_from_specs(const char* _specs, item_def &item,
     {
         while (true)
         {
-            mprf(MSGCH_PROMPT, "[a] 평이한 덱 [b] 화려한 덱 [c] 전설적인 덱 (ESC키로 종료)");
+            mprf(MSGCH_PROMPT, "[a] plain [b] ornate [c] legendary? (ESC to exit)");
 
             int keyin = toalower(get_ch());
 

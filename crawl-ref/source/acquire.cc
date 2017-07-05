@@ -1455,7 +1455,7 @@ int acquirement_create_item(object_class_type class_wanted,
         && agent < NUM_GODS)
     {
         if (agent == GOD_XOM)
-            simple_god_message("은(는) 낄낄대며 웃었다.", GOD_XOM);
+            simple_god_message(" snickers.", GOD_XOM);
         else
             return _failed_acquirement(quiet);
     }
@@ -1490,19 +1490,19 @@ bool acquirement(object_class_type class_wanted, int agent,
 
     static struct { object_class_type type; const char* name; } acq_classes[] =
     {
-        { OBJ_WEAPONS,    "무기" },
-        { OBJ_ARMOUR,     "갑옷" },
-        { OBJ_JEWELLERY,  "장신구" },
-        { OBJ_BOOKS,      "책" },
+        { OBJ_WEAPONS,    "Weapon" },
+        { OBJ_ARMOUR,     "Armour" },
+        { OBJ_JEWELLERY,  "Jewellery" },
+        { OBJ_BOOKS,      "Book" },
         { OBJ_STAVES,     "Staff " },
         { OBJ_MISCELLANY, "Evocables" },
         { OBJ_FOOD,       0 }, // amended below
-        { OBJ_GOLD,       "금화" },
+        { OBJ_GOLD,       "Gold" },
     };
     ASSERT(acq_classes[6].type == OBJ_FOOD);
-    acq_classes[6].name = you_worship(GOD_FEDHAS) ? "과일":
-                          you.species == SP_VAMPIRE  ? "피":
-                                                       "음식";
+    acq_classes[6].name = you_worship(GOD_FEDHAS) ? "Fruit":
+                          you.species == SP_VAMPIRE  ? "Blood":
+                                                       "Food";
 
     int thing_created = NON_ITEM;
 

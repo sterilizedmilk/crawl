@@ -192,7 +192,7 @@ void choose_item_for_quiver()
         ammo_t t = _get_weapon_ammo_type(you.weapon());
         you.m_quiver.empty_quiver(t);
 
-        mprf("%s 보조 장비를 기본 선택으로 설정했다.",
+        mprf("Reset %s quiver to default.",
              t == AMMO_THROW    ? "throwing" :
              t == AMMO_BLOWGUN  ? "blowgun" :
              t == AMMO_SLING    ? "sling" :

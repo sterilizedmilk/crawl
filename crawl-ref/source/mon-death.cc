@@ -596,7 +596,7 @@ static string _milestone_kill_verb(killer_type killer)
     return killer == KILL_BANISHED ? "banished" :
            killer == KILL_PACIFIED ? "pacified" :
            killer == KILL_ENSLAVED ? "enslaved" :
-           killer == KILL_SLIMIFIED ? "slimified" : "죽었다.";
+           killer == KILL_SLIMIFIED ? "slimified" : "killed";
 }
 
 void record_monster_defeat(const monster* mons, killer_type killer)
@@ -1021,10 +1021,10 @@ static void _mummy_curse(monster* mons, int pow, killer_type killer, int index)
         return;
 
     if (target->is_player())
-        mprf(MSGCH_MONSTER_SPELL, "당신은 갑자기 극도의 불안감을 느꼈다...");
+        mprf(MSGCH_MONSTER_SPELL, "You feel extremely nervous for a moment...");
     else if (you.can_see(*target))
     {
-        mprf(MSGCH_MONSTER_SPELL, "악의에 찬 기운이 %s 주위를 둘러쌌다.",
+        mprf(MSGCH_MONSTER_SPELL, "A malignant aura surrounds %s.",
              target->name(DESC_THE).c_str());
     }
     const string cause = make_stringf("%s death curse",
@@ -1397,7 +1397,7 @@ static bool _explode_monster(monster* mons, killer_type killer,
             mprf(MSGCH_MONSTER_DAMAGE, MDAM_DEAD, "%s blazes out!",
                  mons->full_name(DESC_THE).c_str());
         else
-            mprf(MSGCH_MONSTER_DAMAGE, MDAM_DEAD, "%s이(가) 폭발했다!",
+            mprf(MSGCH_MONSTER_DAMAGE, MDAM_DEAD, "%s explodes!",
                  mons->full_name(DESC_THE).c_str());
     }
 
@@ -1638,7 +1638,7 @@ static void _druid_final_boon(const monster* mons)
         if (beasts[i]->heal(roll_dice(3, mons->get_hit_dice()))
             && you.can_see(*beasts[i]))
         {
-            mprf("%s이(가) 회복되었다.%s", beasts[i]->name(DESC_THE).c_str(),
+            mprf("%s %s healed.", beasts[i]->name(DESC_THE).c_str(),
                                   beasts[i]->conj_verb("are").c_str());
         }
     }
@@ -1683,9 +1683,9 @@ static bool _mons_reaped(actor *killer, monster* victim)
     }
 
     if (you.can_see(*victim))
-        mprf("이(가) 좀비로 변했다!", victim->name(DESC_THE).c_str());
+        mprf("%s turns into a zombie!", victim->name(DESC_THE).c_str());
     else if (you.can_see(*zombie))
-        mprf("%s이(가) 갑자기 나타났다!", zombie->name(DESC_THE).c_str());
+        mprf("%s appears out of thin air!", zombie->name(DESC_THE).c_str());
 
     player_angers_monster(zombie);
 
@@ -2160,8 +2160,8 @@ item_def* monster_die(monster& mons, killer_type killer,
             if (you.can_see(mons))
             {
                 mprf(MSGCH_MONSTER_DAMAGE, MDAM_DEAD, silenced(mons.pos()) ?
-                    "촉수가 관문 안쪽으로 다시 끌려들어갔다!" :
-                    "찢어지는 소리와 함께, 촉수가 관문 안쪽으로 다시 끌려들어갔다!");
+                    "The tentacle is hauled back through the portal!" :
+                    "With a roar, the tentacle is hauled back through the portal!");
             }
             silent = true;
         }
@@ -2235,18 +2235,18 @@ item_def* monster_die(monster& mons, killer_type killer,
                 if (killer == KILL_YOU_CONF
                     && (anon || !invalid_monster_index(killer_index)))
                 {
-                    mprf(MSGCH_MONSTER_DAMAGE, MDAM_DEAD, "%s은(는) %s!",
+                    mprf(MSGCH_MONSTER_DAMAGE, MDAM_DEAD, "%s is %s!",
                          mons.name(DESC_THE).c_str(),
-                         exploded                        ? "폭파됐다." :
-                         wounded_damaged(targ_holy)      ? "파괴됐다."
-                                                         : "죽었다.");
+                         exploded                        ? "blown up" :
+                         wounded_damaged(targ_holy)      ? "destroyed"
+                                                         : "killed");
                 }
                 else
                 {
-                    mprf(MSGCH_MONSTER_DAMAGE, MDAM_DEAD, "당신은 %s! %s를!.",
-                         exploded                        ? "폭발시켰다" :
-                         wounded_damaged(targ_holy)      ? "파괴했다"
-                                                         : "죽였다",
+                    mprf(MSGCH_MONSTER_DAMAGE, MDAM_DEAD, "You %s %s!",
+                         exploded                        ? "blow up" :
+                         wounded_damaged(targ_holy)      ? "destroy"
+                                                         : "kill",
                          mons.name(DESC_THE).c_str());
                 }
                 // If this monster would otherwise give xp but didn't because
@@ -2327,7 +2327,7 @@ item_def* monster_die(monster& mons, killer_type killer,
                     && have_passive(passive_t::bottle_mp)
                     && !you_foodless_normally())
                 {
-                    simple_god_message("(은)는 초과된 마력을 수집했다.");
+                    simple_god_message(" collects the excess magic power.");
                     you.attribute[ATTR_PAKELLAS_EXTRA_MP] -= mp_heal;
 
                     if (you.attribute[ATTR_PAKELLAS_EXTRA_MP] <= 0
@@ -2345,7 +2345,7 @@ item_def* monster_die(monster& mons, killer_type killer,
                             mitm[thing_created].flags |= ISFLAG_KNOW_TYPE;
                             // not a conventional gift, but use the same
                             // messaging
-                            simple_god_message("은(는) 당신에게 선물을 하사했다!");
+                            simple_god_message(" grants you a gift!");
                             you.attribute[ATTR_PAKELLAS_EXTRA_MP]
                                 += POT_MAGIC_MP;
                         }
@@ -2842,7 +2842,7 @@ void unawaken_vines(const monster* mons, bool quiet)
 
     if (!quiet && vines_seen)
     {
-        mprf("줄기%s이(가) 흐느적거리며 땅으로 떨어졌다.%s",
+        mprf("The vine%s fall%s limply to the ground.",
               (vines_seen > 1 ? "s" : ""), (vines_seen == 1 ? "s" : ""));
     }
 }
@@ -2859,7 +2859,7 @@ void heal_flayed_effect(actor* act, bool quiet, bool blood_only)
 
         if (you.can_see(*act) && !quiet)
         {
-            mprf("%s의 몸에 난 상처들이 사라졌다.",
+            mprf("The terrible wounds on %s body vanish.",
                  act->name(DESC_ITS).c_str());
         }
 

@@ -1685,7 +1685,7 @@ void canned_msg(canned_message_type which_message)
     switch (which_message)
     {
         case MSG_SOMETHING_APPEARS:
-            mprf("%s에 무언가가 나타났다!",
+            mprf("Something appears %s!",
                  player_has_feet() ? "at your feet" : "before you");
             break;
         case MSG_NOTHING_HAPPENS:
@@ -1721,7 +1721,7 @@ void canned_msg(canned_message_type which_message)
             crawl_state.cancel_cmd_repeat();
             break;
         case MSG_OK:
-            mprf(MSGCH_PROMPT, "좋아, 그럼.");
+            mprf(MSGCH_PROMPT, "Okay, then.");
             crawl_state.cancel_cmd_repeat();
             break;
         case MSG_UNTHINKING_ACT:
@@ -1745,7 +1745,7 @@ void canned_msg(canned_message_type which_message)
             mpr("주문이 흐지부지되었다.");
             break;
         case MSG_HUH:
-            mprf(MSGCH_EXAMINE_FILTER, "뭐라고?");
+            mprf(MSGCH_EXAMINE_FILTER, "Huh?");
             crawl_state.cancel_cmd_repeat();
             break;
         case MSG_EMPTY_HANDED_ALREADY:
@@ -1754,13 +1754,13 @@ void canned_msg(canned_message_type which_message)
             const char* when =
             (which_message == MSG_EMPTY_HANDED_ALREADY ? "already" : "now");
             if (you.species == SP_FELID)
-                mprf("당신은 %s 맨입이다.", when);
+                mprf("Your mouth is %s empty.", when);
             else if (you.has_usable_claws(true))
-                mprf("당신은 %s 맨손이다.", when);
+                mprf("You are %s empty-clawed.", when);
             else if (you.has_usable_tentacles(true))
-                mprf("당신의 촉수에는 %s 아무 것도 없다.", when);
+                mprf("You are %s empty-tentacled.", when);
             else
-                mprf("당신은 %s 맨손이다.", when);
+                mprf("You are %s empty-handed.", when);
             break;
         }
         case MSG_YOU_BLINK:

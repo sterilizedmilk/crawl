@@ -1063,7 +1063,7 @@ monster* place_monster(mgen_data mg, bool force_pos, bool dont_place)
     // Message to player from stairwell/gate/abyss appearance.
     if (shoved)
     {
-        mprf("%s(이)가 당신을 %s(으)로부터 밀어냈다!",
+        mprf("%s shoves you out of the %s!",
              mon->visible_to(&you) ? mon->name(DESC_A).c_str() : "Something",
              stair_type == DCHAR_ARCH ? "gateway" : "stairwell");
     }
@@ -3165,20 +3165,20 @@ bool player_angers_monster(monster* mon)
             switch (why)
             {
             case DID_EVIL:
-                mprf("당신의 신성한 기운이 %s을(를) 분노케 했다!", mname.c_str());
+                mprf("%s is enraged by your holy aura!", mname.c_str());
                 break;
             case DID_CORPSE_VIOLATION:
-                mprf("%s은(는) 당신의 자연 수호에 강한 반감을 드러냈다!", mname.c_str());
+                mprf("%s is revulsed by your support of nature!", mname.c_str());
                 break;
             case DID_HOLY:
-                mprf("%s은(는) 당신의 사악함을 용서하지 않을 모양이다!", mname.c_str());
+                mprf("%s is enraged by your evilness!", mname.c_str());
                 break;
             case DID_UNCLEAN:
             case DID_CHAOS:
-                mprf("%s은(는) 당신의 신성한 기운을 가만 두지 않을 모양이다!", mname.c_str());
+                mprf("%s is enraged by your lawfulness!", mname.c_str());
                 break;
             case DID_SPELL_CASTING:
-                mprf("%s은(는) 마법을 싫어하는 당신의 신에 대한 분노를 드러냈다!", mname.c_str());
+                mprf("%s is enraged by your magic-hating god!", mname.c_str());
                 break;
             case DID_FIRE:
                 mprf("%s is enraged by your darkness!", mname.c_str());
@@ -3187,7 +3187,7 @@ bool player_angers_monster(monster* mon)
                 mprf("%s can only feel hate for you!", mname.c_str());
                 break;
             default:
-                mprf("%s은(는) 아무 이유 없이 화를 냈다! 완전 또라이다. 사실 버그다. 제보해주세요.", mname.c_str());
+                mprf("%s is enraged by a buggy thing about you!", mname.c_str());
                 break;
             }
         }

@@ -215,7 +215,7 @@ static monster* _do_split(monster* thing, const coord_def & target)
         return 0;
 
     if (you.can_see(*thing))
-        mprf("%s은(는) 분열했다.", thing->name(DESC_A).c_str());
+        mprf("%s splits.", thing->name(DESC_A).c_str());
 
     // Inflict the new slime with any enchantments on the parent.
     _split_ench_durations(thing, new_slime);
@@ -392,15 +392,15 @@ static bool _do_merge_crawlies(monster* crawlie, monster* merge_to)
         }
         else if (changed)
         {
-            mprf("%s은(는) 갑자기 %s(으)로 변했다.",
+            mprf("%s suddenly becomes %s.",
                  uppercase_first(old_name).c_str(),
                  merge_to->name(DESC_A).c_str());
         }
         else
-            mprf("%s은(는) 기이한 형상으로 뒤틀렸다.", merge_to->name(DESC_A).c_str());
+            mprf("%s twists grotesquely.", merge_to->name(DESC_A).c_str());
     }
     else if (you.can_see(*crawlie))
-        mprf("%s이(가) 갑자기 사라졌다!", crawlie->name(DESC_A).c_str());
+        mprf("%s suddenly disappears!", crawlie->name(DESC_A).c_str());
 
     // Now kill the other monster.
     monster_die(*crawlie, KILL_DISMISSED, NON_MONSTER, true);
@@ -444,12 +444,12 @@ static void _do_merge_slimes(monster* initial_slime, monster* merge_to)
     {
         if (you.can_see(*initial_slime))
         {
-            mprf("슬라임 두 마리가 합쳐져, %s이(가) 되었다.",
+            mprf("Two slime creatures merge to form %s.",
                  merge_to->name(DESC_A).c_str());
         }
         else
         {
-            mprf("슬라임이 갑자기 %s(으)로 모습을 바꾸었다.",
+            mprf("A slime creature suddenly becomes %s.",
                  merge_to->name(DESC_A).c_str());
         }
 
@@ -899,13 +899,13 @@ bool lost_soul_revive(monster& mons, killer_type killer)
         {
             if (!was_alive)
             {
-                mprf("%s은(는) 스스로를 희생하여, %s을(를) 재결합했다!",
+                mprf("%s sacrifices itself to reknit %s!",
                      mi->name(DESC_THE).c_str(),
                      revivee_name.c_str());
             }
             else
             {
-                mprf("%s이 %s%s의 형태를 취했다!",
+                mprf("%s assumes the form of %s%s!",
                      mi->name(DESC_THE).c_str(),
                      revivee_name.c_str(),
                      (mi->is_summoned() ? " and becomes anchored to this"
@@ -954,7 +954,7 @@ void treant_release_fauna(monster& mons)
 
     if (created && you.can_see(mons))
     {
-        mprf("%s의 잎파리 밑에서 성난 곤충들이 튀어나왔다!",
+        mprf("Angry insects surge out from beneath %s foliage!",
              mons.name(DESC_ITS).c_str());
     }
 }
@@ -1187,9 +1187,9 @@ bool mon_special_ability(monster* mons)
                                        random_range(3, 7) * BASELINE_DELAY));
             if (you.can_see(*mons))
             {
-                mprf(MSGCH_MONSTER_SPELL, "%s이(가) 비틀린 가지와 함께 뻗어나왔다.",
+                mprf(MSGCH_MONSTER_SPELL, "%s reaches out with a gnarled limb.",
                      mons->name(DESC_THE).c_str());
-                mprf("%s 주변에서 뿌리들이 튀어나왔다!",
+                mprf("Grasping roots rise from the ground around %s!",
                      mons->name(DESC_THE).c_str());
             }
             else if (you.see_cell(mons->pos()))

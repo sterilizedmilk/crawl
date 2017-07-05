@@ -456,7 +456,7 @@ spret_type cast_controlled_blink(bool fail, bool safe)
 
     if (orb_limits_translocation())
     {
-        if (!yesno("당신의 순간이동은 제어가 불가능할겁니다. - 그래도 계속하겠습니까?",
+        if (!yesno("Your blink will be uncontrolled - continue anyway?",
                    false, 'n'))
         {
             return SPRET_ABORT;
@@ -493,7 +493,7 @@ void you_teleport()
         }
         else if (orb_limits_translocation())
         {
-            mprf(MSGCH_ORB, "당신은 오브가 당신의 공간이동을 지체시키는 걸 느꼈다!");
+            mprf(MSGCH_ORB, "You feel the Orb delaying your translocation!");
             teleport_delay += 5 + random2(5);
         }
 
@@ -602,8 +602,8 @@ static bool _teleport_player(bool wizard_tele, bool teleportitis)
             // location, so cancel the teleport.
             if (crawl_state.seen_hups)
             {
-                mprf(MSGCH_ERROR, "HUP 신호에 의하여, 공간이동 제어가 실패했다. (버그)"
-                                  "공간이동을 취소한다.");
+                mprf(MSGCH_ERROR, "Controlled teleport interrupted by HUP signal, "
+                                  "cancelling teleport.");
                 return false;
             }
 
