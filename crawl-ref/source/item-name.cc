@@ -290,7 +290,7 @@ string item_def::name(description_level_type descrip, bool terse, bool ident,
                     break;
                 case EQ_AMULET:
                     if (you.species == SP_OCTOPODE && form_keeps_mutations())
-                        buff << " (around mantle)";
+                        buff << " (몸통)";
                     else
                         buff << " (목)";
                     break;
@@ -311,7 +311,7 @@ string item_def::name(description_level_type descrip, bool terse, bool ident,
             }
         }
         else if (item_is_quivered(*this))
-            buff << " (quivered)";
+            buff << " (장전)";
     }
 
     if (descrip != DESC_BASENAME && descrip != DESC_DBNAME && with_inscription)
@@ -482,14 +482,14 @@ static const char* _vorpal_brand_name(const item_def &item, bool terse)
         return "보팔";
 
     if (is_range_weapon(item))
-        return "속도";
+        return "velocity";
 
     // Would be nice to implement this as an array (like other brands), but
     // mapping the DVORP flags to array entries seems very fragile.
     switch (get_vorpal_type(item))
     {
-        case DVORP_CRUSHING: return terse ? "분쇄" :"분쇄의";
-        case DVORP_SLICING:  return terse ? "절단" : "절단의";
+        case DVORP_CRUSHING: return terse ? "crush" :"crushing";
+        case DVORP_SLICING:  return terse ? "slice" : "slicing";
         case DVORP_PIERCING: return terse ? "pierce" : "piercing";
         case DVORP_CHOPPING: return terse ? "chop" : "chopping";
         case DVORP_SLASHING: return terse ? "slash" :"slashing";
