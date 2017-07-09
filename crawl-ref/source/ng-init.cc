@@ -501,5 +501,4 @@ void initialise_item_descriptions()
 void fix_up_jiyva_name()
 {
     you.jiyva_second_name = make_name(get_uint32(), MNAME_JIYVA);
-    ASSERT(you.jiyva_second_name[0] == 'J');
 }

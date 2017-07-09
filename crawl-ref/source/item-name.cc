@@ -61,11 +61,6 @@
 #include "unwind.h"
 #include "viewgeom.h"
 
-static bool _is_consonant(char let);
-static char _random_vowel(int seed);
-static char _random_cons(int seed);
-static string _random_consonant_set(int seed);
-
 static void _maybe_identify_pack_item()
 {
     for (auto &item : you.inv)
@@ -3370,15 +3365,45 @@ void display_runes()
     menu.show();
 }
 
-// Seed ranges for _random_consonant_set: (B)eginning and one-past-the-(E)nd
-// of the (B)eginning, (E)nding, and (M)iddle cluster ranges.
-const size_t RCS_BB = 0;
-const size_t RCS_EB = 27;
-const size_t RCS_BE = 14;
-const size_t RCS_EE = 56;
-const size_t RCS_BM = 0;
-const size_t RCS_EM = 67;
-const size_t RCS_END = RCS_EM;
+                      // ㄱ  ㄲ  ㄴ  ㄷ ㄸ  ㄹ  ㅁ ㅂ ㅃ ㅅ ㅆ  ㅇ ㅈ ㅉ ㅊ ㅋ  ㅌ ㅍ ㅎ
+const int chosung[19] = {10, 2, 10, 10, 3, 10, 9, 8, 2, 7, 2, 8, 7, 2, 6, 6, 5, 6, 6};
+
+                       // ㅏ  ㅐ ㅑ ㅒ ㅓ ㅔ  ㅕ ㅖ  ㅗ ㅘ ㅙ  ㅚ ㅛ ㅜ ㅝ ㅞ ㅟ  ㅠ ㅡ  ㅢ  ㅣ
+const int jungsung[21] = {10, 7, 6, 5, 9, 6, 5, 4, 10, 7, 5, 5, 6, 9, 6, 3, 4, 6, 10, 5, 10};
+
+                       // 없음, ㄱ ㄲ ㄳ  ㄴ ㄵ ㄶ ㄷ ㄹ ㄺ  ㄻ ㄼ ㄽ ㄾ ㄿ ㅀ
+const int jongsung[28] = {200, 10, 2, 2, 10, 1, 1, 8, 9, 2, 2, 2, 1, 1, 1, 2,
+                       // ㅁ ㅂ ㅄ ㅅ ㅆ ㅇ  ㅈ ㅊ ㅋ ㅌ ㅍ ㅎ
+                          8, 8, 1, 9, 2, 7, 7, 2, 2, 3, 2, 3};
+
+int get_sung(int seed, const int *arr)
+{
+    int size = 0, total = 0;
+    
+    if (arr == chosung)
+        size = 19;
+    else if (arr == jungsung)
+        size = 21;
+    else
+        size = 28;
+
+    for (int i = 0; i < size; ++i)
+    {
+        total += arr[i];
+    }
+    
+    int var = abs(seed) % total;
+    for (int j = 0; j < size; ++j)
+    {
+        var -= arr[j];
+
+        if (var < 0)
+            return j;
+
+    }
+
+    return 0;
+}
 
 #define ITEMNAME_SIZE 200
 /**
@@ -3409,138 +3434,50 @@ string make_name(uint32_t seed, makename_type name_type)
 
     bool has_space  = false; // Keep track of whether the name contains a space.
 
-    size_t len = 3 + rng.get_uint32() % 5
-                   + ((rng.get_uint32() % 5 == 0) ? rng.get_uint32() % 6 : 1);
+    size_t len = 5 + rng.get_uint32() % 8
+                   + ((rng.get_uint32() % 8 == 0) ? rng.get_uint32() % 9 : 1);
 
     if (name_type == MNAME_SCROLL)   // scrolls have longer names
-        len += 6;
+        len += 9;
 
     const size_t maxlen = name_type == MNAME_JIYVA ? 8 : SIZE_MAX;
     len = min(len, maxlen);
 
     ASSERT_RANGE(len, 1, ITEMNAME_SIZE + 1);
+    
+    int cho, jung, jong;
+    wstring lett;
 
     static const int MAX_ITERS = 150;
     for (int iters = 0; iters < MAX_ITERS && name.length() < len; ++iters)
     {
-        const char prev_char = name.length() ? name[name.length() - 1]
-                                              : '\0';
-        const char penult_char = name.length() > 1 ? name[name.length() - 2]
-                                                    : '\0';
-
         if (name.empty() && name_type == MNAME_JIYVA)
         {
-            // Start the name with a predefined letter.
-            name += 'j';
+            // Start the name with a predefined letter
+            cho = 12;  // ㅈ
         }
-        else if (name.empty() || prev_char == ' ')
-        {
-            // Start the word with any letter.
-            name += 'a' + (rng.get_uint32() % 26);
-        }
-        else if (!has_space && name_type != MNAME_JIYVA
-                 && name.length() > 5 && name.length() < len - 4
-                 && rng.get_uint32() % 5 != 0) // 4/5 chance
+        else
+            cho = get_sung(rng.get_uint32(), chosung);
+
+        if (!has_space && name_type != MNAME_JIYVA
+                 && name.length() > 5 && name.length() < len - 5
+                 && rng.get_uint32() % 2 == 0) // 1/2 chance
         {
              // Hand out a space.
             name += ' ';
-        }
-        else if (name.length()
-                 && (_is_consonant(prev_char)
-                     || (name.length() > 1
-                         && !_is_consonant(prev_char)
-                         && _is_consonant(penult_char)
-                         && rng.get_uint32() % 5 <= 1))) // 2/5
-        {
-            // Place a vowel.
-            const char vowel = _random_vowel(rng.get_uint32());
-
-            if (vowel == ' ')
-            {
-                if (len < 7
-                         || name.length() <= 2 || name.length() >= len - 3
-                         || prev_char == ' ' || penult_char == ' '
-                         || name_type == MNAME_JIYVA
-                         || name.length() > 2
-                            && _is_consonant(prev_char)
-                            && _is_consonant(penult_char))
-                {
-                    // Replace the space with something else if ...
-                    // * the name is really short
-                    // * we're close to the start/end of the name
-                    // * we just got a space
-                    // * we're generating a jiyva name, or
-                    // * the last two letters were consonants
-                    continue;
-                }
-            }
-            else if (name.length() > 1
-                     && vowel == prev_char
-                     && (vowel == 'y' || vowel == 'i'
-                         || rng.get_uint32() % 5 <= 1))
-            {
-                // Replace the vowel with something else if the previous
-                // letter was the same, and it's a 'y', 'i' or with 2/5 chance.
-                continue;
-            }
-
-            name += vowel;
-        }
-        else // We want a consonant.
-        {
-            // Are we at start or end of the (sub) name?
-            const bool beg = (name.empty() || prev_char == ' ');
-            const bool end = (name.length() >= len - 2);
-
-            // Use one of number of predefined letter combinations.
-            if ((len > 3 || !name.empty())
-                && rng.get_uint32() % 7 <= 1 // 2/7 chance
-                && (!beg || !end))
-            {
-                const int first = (beg ? RCS_BB : (end ? RCS_BE : RCS_BM));
-                const int last  = (beg ? RCS_EB : (end ? RCS_EE : RCS_EM));
-
-                const int range = last - first;
-
-                const int cons_seed = rng.get_uint32() % range + first;
-
-                const string consonant_set = _random_consonant_set(cons_seed);
-
-                ASSERT(consonant_set.size() > 1);
-                len += consonant_set.size() - 2; // triples increase len
-                name += consonant_set;
-            }
-            else // Place a single letter instead.
-            {
-                // Pick a random consonant.
-                name += _random_cons(rng.get_uint32());
-            }
-        }
-
-        if (name[name.length() - 1] == ' ')
-        {
-            ASSERT(name_type != MNAME_JIYVA);
             has_space = true;
+            continue;
         }
-    }
 
-    // Catch early exit and try to give a final letter.
-    const char last_char = name[name.length() - 1];
-    if (!name.empty()
-        && last_char != ' '
-        && last_char != 'y'
-        && !_is_consonant(name[name.length() - 1])
-        && (name.length() < len    // early exit
-            || (len < 8
-                && rng.get_uint32() % 3 != 0))) // 2/3 chance for other short names
-    {
-        // Specifically, add a consonant.
-        name += _random_cons(rng.get_uint32());
-    }
+        jung = get_sung(rng.get_uint32(), jungsung);
+        jong = get_sung(rng.get_uint32(), jongsung);
 
-    if (maxlen != SIZE_MAX)
-        name = chop_string(name, maxlen);
-    trim_string_right(name);
+        unsigned short letter = 0xAC00;
+        letter += 588 * cho + 28 * jung + jong;
+        lett = letter;
+
+        name += utf16_to_8(lett);
+    }
 
     // Fallback if the name was too short.
     if (name.length() < 4)
@@ -3552,95 +3489,10 @@ string make_name(uint32_t seed, makename_type name_type)
         name = "plog";
     }
 
-    string uppercased_name;
-    for (size_t i = 0; i < name.length(); i++)
-    {
-        if (name_type == MNAME_JIYVA)
-            ASSERT(name[i] != ' ');
-
-        if (name_type == MNAME_SCROLL || i == 0 || name[i - 1] == ' ')
-            uppercased_name += toupper(name[i]);
-        else
-            uppercased_name += name[i];
-    }
-
-    return uppercased_name;
+    return name;
 }
 #undef ITEMNAME_SIZE
 
-/**
- * Is the given character a lower-case ascii consonant?
- *
- * For our purposes, y is not a consonant.
- */
-static bool _is_consonant(char let)
-{
-    static const set<char> all_consonants = { 'b', 'c', 'd', 'f', 'g',
-                                              'h', 'j', 'k', 'l', 'm',
-                                              'n', 'p', 'q', 'r', 's',
-                                              't', 'v', 'w', 'x', 'z' };
-    return all_consonants.count(let);
-}
-
-// Returns a random vowel (a, e, i, o, u with equal probability) or space
-// or 'y' with lower chances.
-static char _random_vowel(int seed)
-{
-    static const char vowels[] = "aeiouaeiouaeiouy  ";
-    return vowels[ seed % (sizeof(vowels) - 1) ];
-}
-
-// Returns a random consonant with not quite equal probability.
-// Does not include 'y'.
-static char _random_cons(int seed)
-{
-    static const char consonants[] = "bcdfghjklmnpqrstvwxzcdfghlmnrstlmnrst";
-    return consonants[ seed % (sizeof(consonants) - 1) ];
-}
-
-/**
- * Choose a random consonant tuple/triple, based on the given seed.
- *
- * @param seed  The index into the consonant array; different seed ranges are
- *              expected to correspond with the place in the name being
- *              generated where the consonants should be inserted.
- * @return      A random length 2 or 3 consonant set; e.g. "kl", "str", etc.
- *              If the seed is out of bounds, return "";
- */
-static string _random_consonant_set(int seed)
-{
-    // Pick a random combination of consonants from the set below.
-    //   begin  -> [RCS_BB, RCS_EB) = [ 0, 27)
-    //   middle -> [RCS_BM, RCS_EM) = [ 0, 67)
-    //   end    -> [RCS_BE, RCS_EE) = [14, 56)
-
-    static const string consonant_sets[] = {
-        // 0-13: start, middle
-        "kl", "gr", "cl", "cr", "fr",
-        "pr", "tr", "tw", "br", "pl",
-        "bl", "str", "shr", "thr",
-        // 14-26: start, middle, end
-        "sm", "sh", "ch", "th", "ph",
-        "pn", "kh", "gh", "mn", "ps",
-        "st", "sk", "sch",
-        // 27-55: middle, end
-        "ts", "cs", "xt", "nt", "ll",
-        "rr", "ss", "wk", "wn", "ng",
-        "cw", "mp", "ck", "nk", "dd",
-        "tt", "bb", "pp", "nn", "mm",
-        "kk", "gg", "ff", "pt", "tz",
-        "dgh", "rgh", "rph", "rch",
-        // 56-66: middle only
-        "cz", "xk", "zx", "xz", "cv",
-        "vv", "nl", "rh", "dw", "nw",
-        "khl",
-    };
-    COMPILE_CHECK(ARRAYSZ(consonant_sets) == RCS_END);
-
-    ASSERT_RANGE(seed, 0, (int) ARRAYSZ(consonant_sets));
-
-    return consonant_sets[seed];
-}
 
 /**
  * Write all possible scroll names to the given file.
@@ -3683,7 +3535,7 @@ static void _test_jiyva_names(const string& fname)
     for (int i = 0; i < 1000000; i++)
     {
         const string name = make_name(get_uint32(), MNAME_JIYVA);
-        ASSERT(name[0] == 'J');
+
         if (name.length() > longest.length())
             longest = name;
         fprintf(f, "%s\n", name.c_str());
