@@ -135,7 +135,7 @@ static void _CEREBOV_melee_effects(item_def* weapon, actor* attacker,
         {
             if (you.can_see(*attacker))
             {
-                mprf("The sword of Cerebov burns away %s fire resistance.",
+                mprf("세레보브의 검이 %s의 화염 저항을 불태웠다.",
                      defender->name(DESC_ITS).c_str());
             }
             defender->as_monster()->add_ench(
@@ -304,11 +304,11 @@ static void _SINGING_SWORD_equip(item_def *item, bool *show_msgs, bool unmeld)
 
     if (!item->props.exists(SS_WELCOME_KEY))
     {
-        mprf(MSGCH_TALK, "The sword says, \"Hi! I'm the Singing Sword!\"");
+        mprf(MSGCH_TALK, "검이 말했다, \"안녕! 나는 노래하는 검이야!\"");
         item->props[SS_WELCOME_KEY].get_bool() = true;
     }
     else
-        mprf(MSGCH_TALK, "The Singing Sword hums in delight!");
+        mprf(MSGCH_TALK, "노래하는 검의 칼날이 기쁨으로 웅웅 떨었다!");
 
     *show_msgs = false;
 }
@@ -616,8 +616,8 @@ static void _DEMON_AXE_world_reacts(item_def *item)
 
     if (!you.beheld_by(closest))
     {
-        mprf("Visions of slaying %s flood into your mind.",
-             closest.name(DESC_THE).c_str());
+        mprf("%s 살육하는 환상이 당신의 머리속으로 넘쳐흘렀다.",
+             closest.name("을").c_str());
 
         // The monsters (if any) currently mesmerising the player do not include
         // this monster. To avoid trapping the player, all other beholders
@@ -704,9 +704,9 @@ static void _WYRMBANE_melee_effects(item_def* weapon, actor* attacker,
 
     if (!mondied)
     {
-        mprf("%s %s!",
-            defender->name(DESC_THE).c_str(),
-            defender->conj_verb("convulse").c_str());
+        mprf("%s이(가) %s!",
+            defender->name(DESC_PLAIN).c_str(),
+            defender->conj_verb("경련했다").c_str());
 
         defender->hurt(attacker, 1 + random2(3*dam/2));
 
@@ -737,13 +737,13 @@ static void _WYRMBANE_melee_effects(item_def* weapon, actor* attacker,
         // Including you, if you were a dragonform felid with lives left.
         if (weapon->plus == 18)
         {
-            mprf("<white>The lance glows brightly as it skewers %s. You feel "
-                 "that it has reached its full power.</white>",
+            mprf("<white>%s을(를) 꿰뚫는 순간 창이 밝게 빛났다. "
+                 "당신은 이 무기의 힘이 최고조에 달했음을 깨달았다.</white>",
                  name.c_str());
         }
         else
         {
-            mprf("<green>The lance glows as it skewers %s.</green>",
+            mprf("<green>%s을(를) 꿰뚫자 창이 빛났다.</green>",
                  name.c_str());
         }
 
@@ -759,9 +759,8 @@ static void _UNDEADHUNTER_melee_effects(item_def* item, actor* attacker,
     if (defender->holiness() & MH_UNDEAD && !one_chance_in(3)
         && !mondied && dam)
     {
-        mprf("%s %s blasted by disruptive energy!",
-              defender->name(DESC_THE).c_str(),
-              defender->conj_verb("be").c_str());
+        mprf("%s은(는) 붕괴 에너지에 폭파당했다!",
+              defender->name(DESC_PLAIN).c_str());
         defender->hurt(attacker, random2avg((1 + (dam * 3)), 3));
     }
 }
@@ -1082,8 +1081,8 @@ static void _FIRESTARTER_melee_effects(item_def* weapon, actor* attacker,
             && !mondied
             && !defender->as_monster()->has_ench(ENCH_INNER_FLAME))
         {
-            mprf("%s is filled with an inner flame.",
-                 defender->name(DESC_THE).c_str());
+            mprf("%s은(는) 내면의 불꽃으로 가득찼다.",
+                 defender->name(DESC_PLAIN).c_str());
             defender->as_monster()->add_ench(
                 mon_enchant(ENCH_INNER_FLAME, 0, attacker,
                             (3 + random2(dam)) * BASELINE_DELAY));
@@ -1112,8 +1111,8 @@ static void _CHILLY_DEATH_melee_effects(item_def* weapon, actor* attacker,
             && !mondied
             && !defender->as_monster()->has_ench(ENCH_FROZEN))
         {
-            mprf("%s is flash-frozen.",
-                 defender->name(DESC_THE).c_str());
+            mprf("%s은(는) 급속도로 얼어붙었다.",
+                 defender->name(DESC_PLAIN).c_str());
             defender->as_monster()->add_ench(
                 mon_enchant(ENCH_FROZEN, 0, attacker,
                             (5 + random2(dam)) * BASELINE_DELAY));
@@ -1121,7 +1120,7 @@ static void _CHILLY_DEATH_melee_effects(item_def* weapon, actor* attacker,
         else if (defender->is_player()
             && !you.duration[DUR_FROZEN])
         {
-            mprf(MSGCH_WARN, "You are encased in ice.");
+            mprf(MSGCH_WARN, "당신은 얼음으로 뒤덮혔다.");
             you.increase_duration(DUR_FROZEN, 5 + random2(dam));
         }
     }
@@ -1236,11 +1235,11 @@ static void _CAPTAIN_melee_effects(item_def* weapon, actor* attacker,
         item_def *wpn = defender->as_monster()->disarm();
         if (wpn)
         {
-            mprf("The captain's cutlass flashes! You lacerate %s!!",
-                defender->name(DESC_THE).c_str());
-            mprf("%s %s falls to the floor!",
-                apostrophise(defender->name(DESC_THE)).c_str(),
-                wpn->name(DESC_PLAIN).c_str());
+            mprf("선장의 커틀러스가 번쩍였다! 당신은 %s의 손아귀를 찢어버렸다!!",
+                defender->name(DESC_PLAIN).c_str());
+            mprf("%s의 %s 바닥에 떨어졌다!",
+                apostrophise(defender->name(DESC_PLAIN)).c_str(),
+                wpn->name("이").c_str());
             defender->hurt(attacker, 18 + random2(18));
         }
     }
@@ -1376,11 +1375,11 @@ static void _THERMIC_ENGINE_melee_effects(item_def* weapon, actor* attacker,
                                                random2(dam) / 2 + 1);
     if (bonus_dam > 0)
     {
-        mprf("%s %s %s.",
-            attacker->name(DESC_THE).c_str(),
-            attacker->conj_verb("freeze").c_str(),
+        mprf("%s은(는) %s을(를) %s.",
+            attacker->name(DESC_PLAIN).c_str(),
             (attacker == defender ? defender->pronoun(PRONOUN_REFLEXIVE)
-                                : defender->name(DESC_THE)).c_str());
+                                : defender->name(DESC_PLAIN)).c_str(),
+            attacker->conj_verb("얼렸다").c_str());
 
         defender->hurt(attacker, bonus_dam, BEAM_COLD);
         if (defender->alive())

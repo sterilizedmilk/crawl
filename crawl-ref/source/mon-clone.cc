@@ -128,14 +128,14 @@ static void _mons_summon_monster_illusion(monster* caster,
         {
             if (!you.can_see(*caster))
             {
-                mprf("%s seems to step out of %s!",
-                     foe->name(DESC_THE).c_str(),
+                mprf("%s은(는) %s에서 빠져나온 것으로 보인다!",
+                     foe->name(DESC_PLAIN).c_str(),
                      foe->pronoun(PRONOUN_REFLEXIVE).c_str());
             }
             else
-                mprf("%s seems to draw %s out of %s!",
-                     caster->name(DESC_THE).c_str(),
-                     foe->name(DESC_THE).c_str(),
+                mprf("%s %s을 %s으로부터 끌어낸 것으로 보인다!",
+                     caster->name("은").c_str(),
+                     foe->name(DESC_PLAIN).c_str(),
                      foe->pronoun(PRONOUN_REFLEXIVE).c_str());
         }
     }
@@ -213,7 +213,7 @@ void mons_summon_illusion_from(monster* mons, actor *foe,
             if (card_power >= 0)
                 mpr("순간 당신은 당신 옆에 서 있었다.");
             else
-                mprf(MSGCH_WARN, "There is a horrible, sudden wrenching feeling in your soul!");
+                mprf(MSGCH_WARN, "갑자기 당신의 영혼이 뒤틀리는 것 처럼 느껴졌다. 정말 끔찍하다!");
 
             _init_player_illusion_properties(
                 get_monster_data(MONS_PLAYER_ILLUSION));

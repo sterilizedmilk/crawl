@@ -187,7 +187,7 @@ void logfile_new_entry(const scorefile_entry &ne)
     logfile = _hs_open("a", _log_file_name());
     if (logfile == nullptr)
     {
-        mprf(MSGCH_ERROR, "ERROR: failure writing to the logfile.");
+        mprf(MSGCH_ERROR, "에러: 로그파일에 쓰지 못했습니다.");
         return;
     }
 

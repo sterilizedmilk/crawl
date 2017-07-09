@@ -471,10 +471,10 @@ static void _create_monster_hide(const item_def &corpse, bool silent)
     if (you.see_cell(pos) && !silent)
     {
         // XXX: tweak for uniques/named monsters, somehow?
-        mprf("%s %s intact enough to wear.",
-             item.name(DESC_THE).c_str(),
-             mons_genus(mtyp) == MONS_DRAGON ? "are"  // scales are
-                                             : "is"); // hide is
+        mprf("%s %s손상되지 않았다.",
+             item.name("은").c_str(),
+             mons_genus(mtyp) == MONS_DRAGON ? ""  // scales are
+                                             : ""); // hide is
                                                       // XXX: refactor
     }
 
@@ -593,10 +593,10 @@ static void _hints_inspect_kill()
 
 static string _milestone_kill_verb(killer_type killer)
 {
-    return killer == KILL_BANISHED ? "banished" :
-           killer == KILL_PACIFIED ? "pacified" :
-           killer == KILL_ENSLAVED ? "enslaved" :
-           killer == KILL_SLIMIFIED ? "slimified" : "killed";
+    return killer == KILL_BANISHED ? "추방된" :
+           killer == KILL_PACIFIED ? "진정된" :
+           killer == KILL_ENSLAVED ? "노예화된" :
+           killer == KILL_SLIMIFIED ? "슬라임화된" : "살해된";
 }
 
 void record_monster_defeat(const monster* mons, killer_type killer)
@@ -704,8 +704,8 @@ static bool _ely_protect_ally(monster* mons, killer_type killer)
 
     mons->hit_points = 1;
 
-    const string msg = " protects " + mons->name(DESC_THE) + " from harm!";
-    simple_god_message(msg.c_str());
+    const string msg = mons->name(DESC_PLAIN) + "의 상해부터 " + " 당신은 보호받았다!";
+
 
     return true;
 }
@@ -749,9 +749,9 @@ static bool _ely_heal_monster(monster* mons, killer_type killer, int i)
 
     dprf("new hp: %d", mons->hit_points);
 
-    const string msg = make_stringf("%s heals %s%s",
+    const string msg = make_stringf("%s이 %s 치료하였다%s",
              god_name(god, false).c_str(),
-             mons->name(DESC_THE).c_str(),
+             mons->name("을").c_str(),
              mons->hit_points * 2 <= mons->max_hit_points ? "." : "!");
 
     god_speaks(god, msg.c_str());
@@ -1021,14 +1021,14 @@ static void _mummy_curse(monster* mons, int pow, killer_type killer, int index)
         return;
 
     if (target->is_player())
-        mprf(MSGCH_MONSTER_SPELL, "You feel extremely nervous for a moment...");
+        mprf(MSGCH_MONSTER_SPELL, "당신은 순간 소름이 끼쳤다...");
     else if (you.can_see(*target))
     {
-        mprf(MSGCH_MONSTER_SPELL, "A malignant aura surrounds %s.",
-             target->name(DESC_THE).c_str());
+        mprf(MSGCH_MONSTER_SPELL, "악의적인 기운이 %s 감싼다.",
+             target->name("을").c_str());
     }
-    const string cause = make_stringf("%s death curse",
-                            apostrophise(mons->name(DESC_A)).c_str());
+    const string cause = make_stringf("%s의 사망저주",
+                            apostrophise(mons->name(DESC_PLAIN)).c_str());
     MiscastEffect(target, mons, MUMMY_MISCAST, SPTYP_NECROMANCY,
                   pow, random2avg(88, 3), cause.c_str());
 }
@@ -1224,7 +1224,7 @@ static void _setup_base_explosion(bolt & beam, const monster& origin)
     beam.source       = origin.pos();
     beam.source_name  = origin.base_name(DESC_BASENAME, true);
     beam.target       = origin.pos();
-    beam.explode_noise_msg = "You hear an explosion!";
+    beam.explode_noise_msg = "당신은 폭발음을 들었다!";
 
     if (!crawl_state.game_is_arena() && origin.attitude == ATT_FRIENDLY
         && !origin.is_summoned())
@@ -1243,7 +1243,7 @@ void setup_spore_explosion(bolt & beam, const monster& origin)
     _setup_base_explosion(beam, origin);
     beam.flavour = BEAM_SPORE;
     beam.damage  = dice_def(3, 15);
-    beam.name    = "explosion of spores";
+    beam.name    = "포자의 폭발";
     beam.colour  = LIGHTGREY;
     beam.ex_size = 2;
 }
@@ -1253,8 +1253,8 @@ static void _setup_lightning_explosion(bolt & beam, const monster& origin)
     _setup_base_explosion(beam, origin);
     beam.flavour   = BEAM_ELECTRICITY;
     beam.damage    = dice_def(3, 5 + origin.get_hit_dice() * 5 / 4);
-    beam.name      = "blast of lightning";
-    beam.explode_noise_msg = "You hear a clap of thunder!";
+    beam.name      = "번개의 파열";
+    beam.explode_noise_msg = "당신은 천둥소리를 들었다!";
     beam.colour    = LIGHTCYAN;
     beam.ex_size   = x_chance_in_y(origin.get_hit_dice(), 24) ? 3 : 2;
     // Don't credit the player for ally-summoned ball lightning explosions.
@@ -1269,7 +1269,7 @@ static void _setup_prism_explosion(bolt& beam, const monster& origin)
     beam.damage  = (origin.prism_charge == 2 ?
                         dice_def(3, 6 + origin.get_hit_dice() * 7 / 4)
                         : dice_def(2, 6 + origin.get_hit_dice() * 7 / 4));
-    beam.name    = "blast of energy";
+    beam.name    = "에너지의 파열";
     beam.colour  = MAGENTA;
     beam.ex_size = origin.prism_charge;
 }
@@ -1279,8 +1279,8 @@ static void _setup_bennu_explosion(bolt& beam, const monster& origin)
     _setup_base_explosion(beam, origin);
     beam.flavour = BEAM_NEG;
     beam.damage  = dice_def(3, 5 + origin.get_hit_dice() * 5 / 4);
-    beam.name    = "pyre of ghostly fire";
-    beam.explode_noise_msg = "You hear an otherworldly crackling!";
+    beam.name    = "타오르는 유령의 화염";
+    beam.explode_noise_msg = "당신은 저승세계가 찰칵이는 소리를 들었다!";
     beam.colour  = CYAN;
     beam.ex_size = 2;
 }
@@ -1294,7 +1294,7 @@ static void _setup_inner_flame_explosion(bolt & beam, const monster& origin,
     beam.damage      = (size > SIZE_BIG)  ? dice_def(3, 25) :
                        (size > SIZE_TINY) ? dice_def(3, 20) :
                                             dice_def(3, 15);
-    beam.name        = "fiery explosion";
+    beam.name        = "불타는 폭발";
     beam.colour      = RED;
     beam.ex_size     = (size > SIZE_BIG) ? 2 : 1;
     beam.source_name = origin.name(DESC_A, true);
@@ -1322,26 +1322,26 @@ static bool _explode_monster(monster* mons, killer_type killer,
     if (type == MONS_BALLISTOMYCETE_SPORE)
     {
         setup_spore_explosion(beam, *mons);
-        sanct_msg    = "By Zin's power, the ballistomycete spore's explosion is "
-                       "contained.";
+        sanct_msg    = "진의 힘에 의해, 발리스토마이셋 포자의 폭발이 "
+                       "억제되었다.";
     }
     else if (type == MONS_BALL_LIGHTNING)
     {
         _setup_lightning_explosion(beam, *mons);
-        sanct_msg    = "By Zin's power, the ball lightning's explosion "
-                       "is contained.";
+        sanct_msg    = "진의 힘에 의해, 번개구체의 폭발이 "
+                       "억제되었다.";
     }
     else if (type == MONS_LURKING_HORROR)
-        sanct_msg = "The lurking horror fades away harmlessly.";
+        sanct_msg = "잠복한 공포가 무해하게 사라진다.";
     else if (type == MONS_FULMINANT_PRISM)
     {
         _setup_prism_explosion(beam, *mons);
-        sanct_msg = "By Zin's power, the prism's explosion is contained.";
+        sanct_msg = "진의 힘에 의해, 프리즘의 폭발은 억제되었다.";
     }
     else if (type == MONS_BENNU)
     {
         _setup_bennu_explosion(beam, *mons);
-        sanct_msg = "By Zin's power, the bennu's fires are quelled.";
+        sanct_msg = "진의 힘에 의해, 베누의 불꽃은 진압되었다.";
     }
     else if (mons->has_ench(ENCH_INNER_FLAME))
     {
@@ -1352,13 +1352,13 @@ static bool _explode_monster(monster* mons, killer_type killer,
         // This might need to change if monsters ever get the ability to cast
         // Inner Flame...
         if (agent && agent->is_player())
-            mons_add_blame(mons, "hexed by the player character");
+            mons_add_blame(mons, "은(는) 플레이어 캐릭터에게 저주받았다");
         else if (agent)
-            mons_add_blame(mons, "hexed by " + agent->name(DESC_A, true));
+            mons_add_blame(mons, "은(는) " + agent->name(DESC_PLAIN, true) + "에게 저주받았다");
         mons->flags    |= MF_EXPLODE_KILL;
-        sanct_msg       = "By Zin's power, the fiery explosion "
-                          "is contained.";
-        beam.aux_source = "exploding inner flame";
+        sanct_msg       = "진의 힘에 의해, 화염폭발은 "
+                         "억제되었다.";
+        beam.aux_source = "폭발하는 내면의 불꽃";
     }
     else
     {
@@ -1373,16 +1373,16 @@ static bool _explode_monster(monster* mons, killer_type killer,
         if (type == MONS_BENNU)
         {
             if (YOU_KILL(killer))
-                beam.aux_source = "ignited by themself";
+                beam.aux_source = "그들 자신에게서 점화된";
             else if (pet_kill)
-                beam.aux_source = "ignited by their pet";
+                beam.aux_source = "그들의 애완동물에게서 점화된";
         }
         else
         {
             if (YOU_KILL(killer))
-                beam.aux_source = "set off by themself";
+                beam.aux_source = "그들 자신에게서 출발한";
             else if (pet_kill)
-                beam.aux_source = "set off by their pet";
+                beam.aux_source = "그들의 애완동물에게서 출발한";
         }
     }
 
@@ -1394,11 +1394,11 @@ static bool _explode_monster(monster* mons, killer_type killer,
         if (is_sanctuary(mons->pos()))
             mprf(MSGCH_GOD, "%s", sanct_msg);
         else if (type == MONS_BENNU)
-            mprf(MSGCH_MONSTER_DAMAGE, MDAM_DEAD, "%s blazes out!",
-                 mons->full_name(DESC_THE).c_str());
+            mprf(MSGCH_MONSTER_DAMAGE, MDAM_DEAD, "%s 뛰쳐나왔다!",
+                 mons->full_name("이").c_str());
         else
-            mprf(MSGCH_MONSTER_DAMAGE, MDAM_DEAD, "%s explodes!",
-                 mons->full_name(DESC_THE).c_str());
+            mprf(MSGCH_MONSTER_DAMAGE, MDAM_DEAD, "%s 폭발했다!",
+                 mons->full_name("이").c_str());
     }
 
     if (is_sanctuary(mons->pos()))
@@ -1566,8 +1566,8 @@ static void _make_derived_undead(monster* mons, bool quiet, bool bound_soul)
             {
                 if (!quiet)
                 {
-                    mprf("A %s mist gathers momentarily, then fades.",
-                         bound_soul ? "freezing" : "glowing");
+                    mprf("%s 안개가 순간적으로 모여들었다가, 흩어졌다.",
+                         bound_soul ? "얼어붙은" : "빛나는");
                 }
                 return;
             }
@@ -1579,8 +1579,8 @@ static void _make_derived_undead(monster* mons, bool quiet, bool bound_soul)
         {
             if (!quiet)
             {
-                mprf("A %s mist starts to gather...",
-                     bound_soul ? "freezing" : "glowing");
+                mprf("%s 안개가 모여들기 시작한다...",
+                     bound_soul ? "얼어붙은" : "빛나는");
             }
 
             // If the original monster has been levelled up, its HD might be
@@ -1601,7 +1601,7 @@ static void _make_derived_undead(monster* mons, bool quiet, bool bound_soul)
                 if (agent)
                 {
                     mons_add_blame(undead,
-                        "animated by " + agent->as_monster()->full_name(DESC_A));
+                        agent->as_monster()->full_name(DESC_PLAIN) + "에 의해 움직임");
                 }
             }
         }
@@ -1622,9 +1622,9 @@ static void _druid_final_boon(const monster* mons)
 
     if (you.can_see(*mons))
     {
-        mprf(MSGCH_MONSTER_SPELL, "With its final breath, %s offers up its power "
-                                  "to the beasts of the wild!",
-                                  mons->name(DESC_THE).c_str());
+        mprf(MSGCH_MONSTER_SPELL, "마지막 숨결과 함께, %s 야수에게 "
+                                  "힘을 선사하였다!",
+                                  mons->name("은").c_str());
     }
 
     shuffle_array(beasts);
@@ -1638,14 +1638,14 @@ static void _druid_final_boon(const monster* mons)
         if (beasts[i]->heal(roll_dice(3, mons->get_hit_dice()))
             && you.can_see(*beasts[i]))
         {
-            mprf("%s %s healed.", beasts[i]->name(DESC_THE).c_str(),
-                                  beasts[i]->conj_verb("are").c_str());
+            mprf("%s %s치유되었다.", beasts[i]->name("은").c_str(),
+                                  beasts[i]->conj_verb("").c_str());
         }
     }
 
     for (int i = 0; i < num; ++i)
     {
-        simple_monster_message(*beasts[i], " seems to grow more fierce.");
+        simple_monster_message(*beasts[i], "은 훨씬 흉폭해졌다.");
         beasts[i]->add_ench(mon_enchant(ENCH_MIGHT, 1, mons,
                                         random_range(100, 160)));
     }
@@ -1683,9 +1683,9 @@ static bool _mons_reaped(actor *killer, monster* victim)
     }
 
     if (you.can_see(*victim))
-        mprf("%s turns into a zombie!", victim->name(DESC_THE).c_str());
+        mprf("%s 좀비로 되살아났다!", victim->name("이").c_str());
     else if (you.can_see(*zombie))
-        mprf("%s appears out of thin air!", zombie->name(DESC_THE).c_str());
+        mprf("%s 희미한 대기 사이에서 나타났다!", zombie->name("이").c_str());
 
     player_angers_monster(zombie);
 
@@ -1846,9 +1846,9 @@ static void _special_corpse_messaging(monster &mons)
         // something else.
         if (!(mons.flags & MF_KNOWN_SHIFTER))
         {
-            const string message = "'s shape twists and changes as "
-                                    + mons.pronoun(PRONOUN_SUBJECTIVE)
-                                    + " dies.";
+            const string message = mons.pronoun(PRONOUN_SUBJECTIVE) +
+                                   "이(가) 죽으며 형상이 변형되고 튀틀렸다.";
+
             simple_monster_message(mons, message.c_str());
         }
 
@@ -1861,11 +1861,11 @@ static void _special_corpse_messaging(monster &mons)
                     ? mons.props["old_heads"].get_int()
                     : mons.number;
     unwind_var<unsigned int> number(mons.number, num);
-    const string message = " returns to " +
-                            mons.pronoun(PRONOUN_POSSESSIVE) +
-                            " original shape as " +
-                            mons.pronoun(PRONOUN_SUBJECTIVE) +
-                            " dies.";
+    const string message = mons.pronoun(PRONOUN_POSSESSIVE) +
+                           "이(가) 원래의 형태인 " +
+                           mons.pronoun(PRONOUN_SUBJECTIVE) +
+                           "으로 되돌아가며 죽었다.";
+
     simple_monster_message(mons, message.c_str());
 }
 
@@ -2031,7 +2031,7 @@ item_def* monster_die(monster& mons, killer_type killer,
             you.increase_duration(DUR_BERSERK, bonus);
 
             mprf(MSGCH_GOD, you.religion,
-                 "You feel the power of %s in you as your rage grows.",
+                 "격렬해진 분노 속에서 당신은 %s의 힘을 느꼈다.",
                  uppercase_first(god_name(you.religion)).c_str());
         }
         else if (player_equip_unrand(UNRAND_BLOODLUST) && coinflip())
@@ -2069,7 +2069,7 @@ item_def* monster_die(monster& mons, killer_type killer,
     {
         if (!silent && !hard_reset && !was_banished)
         {
-            simple_monster_message(mons, " detonates feebly.",
+            simple_monster_message(mons, "은 약하게 펑 터졌다.",
                                    MSGCH_MONSTER_DAMAGE, MDAM_DEAD);
             silent = true;
         }
@@ -2080,7 +2080,7 @@ item_def* monster_die(monster& mons, killer_type killer,
     {
         if (!silent && !mons_reset && !was_banished)
         {
-            simple_monster_message(mons, " dissipates!",
+            simple_monster_message(mons, "는 소산했다!",
                                    MSGCH_MONSTER_DAMAGE, MDAM_DEAD);
             silent = true;
         }
@@ -2098,7 +2098,7 @@ item_def* monster_die(monster& mons, killer_type killer,
     {
         if (!silent && !mons_reset && !was_banished)
         {
-            simple_monster_message(mons, " vapourises!",
+            simple_monster_message(mons, "은 기화되었다!",
                                    MSGCH_MONSTER_DAMAGE, MDAM_DEAD);
             silent = true;
         }
@@ -2135,7 +2135,7 @@ item_def* monster_die(monster& mons, killer_type killer,
                 && (!have_passive(passive_t::goldify_corpses)
                     || mons.has_ench(ENCH_ABJ)))
             {
-                simple_monster_message(mons, " falls from the air.",
+                simple_monster_message(mons, "이(가) 대기 중으로 무너져내렸다.",
                                        MSGCH_MONSTER_DAMAGE, MDAM_DEAD);
                 silent = true;
             }
@@ -2160,8 +2160,8 @@ item_def* monster_die(monster& mons, killer_type killer,
             if (you.can_see(mons))
             {
                 mprf(MSGCH_MONSTER_DAMAGE, MDAM_DEAD, silenced(mons.pos()) ?
-                    "The tentacle is hauled back through the portal!" :
-                    "With a roar, the tentacle is hauled back through the portal!");
+                    "촉수가 포탈을 통해 끌려 나간다!" :
+                    "포효와 함께, 촉수가 포탈을 통해 끌려 나간다!");
             }
             silent = true;
         }
@@ -2203,7 +2203,7 @@ item_def* monster_die(monster& mons, killer_type killer,
              && mons.mindex() == killer_index)
     {
         if (!silent)
-            simple_monster_message(mons, " exhausts itself and dries up.");
+            simple_monster_message(mons, "은 자신을 배출해버리곤 말라버렸다.");
         silent = true;
     }
 
@@ -2235,19 +2235,20 @@ item_def* monster_die(monster& mons, killer_type killer,
                 if (killer == KILL_YOU_CONF
                     && (anon || !invalid_monster_index(killer_index)))
                 {
-                    mprf(MSGCH_MONSTER_DAMAGE, MDAM_DEAD, "%s is %s!",
-                         mons.name(DESC_THE).c_str(),
-                         exploded                        ? "blown up" :
-                         wounded_damaged(targ_holy)      ? "destroyed"
-                                                         : "killed");
+                    mprf(MSGCH_MONSTER_DAMAGE, MDAM_DEAD, "%s %s!",
+                         mons.name("은").c_str(),
+                         exploded                        ? "터져버렸다" :
+                         wounded_damaged(targ_holy)      ? "박살나버렸다"
+                                                         : "죽었다");
                 }
                 else
                 {
-                    mprf(MSGCH_MONSTER_DAMAGE, MDAM_DEAD, "You %s %s!",
-                         exploded                        ? "blow up" :
-                         wounded_damaged(targ_holy)      ? "destroy"
-                                                         : "kill",
-                         mons.name(DESC_THE).c_str());
+                    mprf(MSGCH_MONSTER_DAMAGE, MDAM_DEAD, "당신은 %s %s!",
+                         mons.name(“을”).c_str()),
+                         exploded                        ? "터뜨렸다" :
+                         wounded_damaged(targ_holy)      ? "박살내버렸다"
+                                                         : "죽였다");
+
                 }
                 // If this monster would otherwise give xp but didn't because
                 // it grants no reward or was neutral, give a message.
@@ -2327,7 +2328,7 @@ item_def* monster_die(monster& mons, killer_type killer,
                     && have_passive(passive_t::bottle_mp)
                     && !you_foodless_normally())
                 {
-                    simple_god_message(" collects the excess magic power.");
+                    simple_god_message(" 넘치는 마력을 수집했다.");
                     you.attribute[ATTR_PAKELLAS_EXTRA_MP] -= mp_heal;
 
                     if (you.attribute[ATTR_PAKELLAS_EXTRA_MP] <= 0
@@ -2345,7 +2346,7 @@ item_def* monster_die(monster& mons, killer_type killer,
                             mitm[thing_created].flags |= ISFLAG_KNOW_TYPE;
                             // not a conventional gift, but use the same
                             // messaging
-                            simple_god_message(" grants you a gift!");
+                            simple_god_message(" 당신에게 선물을 하사했다!");
                             you.attribute[ATTR_PAKELLAS_EXTRA_MP]
                                 += POT_MAGIC_MP;
                         }
@@ -2378,9 +2379,9 @@ item_def* monster_die(monster& mons, killer_type killer,
             if (death_message)
             {
                 const char* msg =
-                    exploded                   ? " is blown up!" :
-                    wounded_damaged(targ_holy) ? " is destroyed!"
-                                               : " dies!";
+                    exploded                   ? "은(는) 터졌다!" :
+                    wounded_damaged(targ_holy) ? "은(는) 박살났다!"
+                                               : "은(는) 죽었다!";
                 simple_monster_message(mons, msg, MSGCH_MONSTER_DAMAGE,
                                        MDAM_DEAD);
             }
@@ -2437,22 +2438,22 @@ item_def* monster_die(monster& mons, killer_type killer,
                 {
                     // Sticks to Snakes
                     if (mons_genus(mons.type) == MONS_SNAKE)
-                        simple_monster_message(mons, " withers and dies!");
+                        simple_monster_message(mons, "은(는) 말라서 죽었다!");
                     // ratskin cloak
                     else if (mons_genus(mons.type) == MONS_RAT)
                     {
-                        simple_monster_message(mons, " returns to the shadows"
-                                                      " of the Dungeon!");
+                        simple_monster_message(mons, "은(는) 던전 속의 그림자로"
+                                                      " 되돌아갔다!");
                     }
                     // Death Channel
                     else if (mons.type == MONS_SPECTRAL_THING)
-                        simple_monster_message(mons, " fades into mist!");
+                        simple_monster_message(mons, "은(는) 안개가 되어 사라졌다!");
                     // Animate Skeleton/Animate Dead/Infestation
                     else if (mons.type == MONS_ZOMBIE
                              || mons.type == MONS_SKELETON
                              || mons.type == MONS_DEATH_SCARAB)
                     {
-                        simple_monster_message(mons, " crumbles into dust!");
+                        simple_monster_message(mons, "은(는) 먼지로 바스러졌다!");
                     }
                     else
                     {
@@ -2463,9 +2464,9 @@ item_def* monster_die(monster& mons, killer_type killer,
                 else
                 {
                     const char* msg =
-                        exploded                     ? " is blown up!" :
-                        wounded_damaged(targ_holy)   ? " is destroyed!"
-                                                     : " dies!";
+                        exploded                     ? "은(는) 터졌다!" :
+                        wounded_damaged(targ_holy)   ? "은(는) 박살났다!"
+                                                     : "은(는) 죽었다!";
                     simple_monster_message(mons, msg, MSGCH_MONSTER_DAMAGE,
                                            MDAM_DEAD);
                 }
@@ -2785,7 +2786,7 @@ item_def* monster_die(monster& mons, killer_type killer,
             ASSERT(hepliaklqana_ancestor() == MID_NOBODY);
             if (!you.can_see(mons))
             {
-                mprf("%s has departed this plane of existence.",
+                mprf("%s의 존재는 이 세상에서 소멸했다.",
                      hepliaklqana_ally_name().c_str());
             }
             // respawn in ~30-60 turns
@@ -2842,8 +2843,8 @@ void unawaken_vines(const monster* mons, bool quiet)
 
     if (!quiet && vines_seen)
     {
-        mprf("The vine%s fall%s limply to the ground.",
-              (vines_seen > 1 ? "s" : ""), (vines_seen == 1 ? "s" : ""));
+        mprf("덩굴%s이 흐느적 거리며 땅으로 떨어졌다.",
+              (vines_seen > 1 ? "들" : ""), (vines_seen == 1 ? "" : ""));
     }
 }
 
@@ -2859,8 +2860,8 @@ void heal_flayed_effect(actor* act, bool quiet, bool blood_only)
 
         if (you.can_see(*act) && !quiet)
         {
-            mprf("The terrible wounds on %s body vanish.",
-                 act->name(DESC_ITS).c_str());
+            mprf("%s의 신체의 끔찍한 상처가 사라졌다.",
+                 act->name(DESC_PLAIN).c_str());
         }
 
         act->heal(act->props["flay_damage"].get_int());
@@ -2891,7 +2892,7 @@ void monster_cleanup(monster* mons)
 
     if (mons->has_ench(ENCH_AWAKEN_FOREST))
     {
-        forest_message(mons->pos(), "The forest abruptly stops moving.");
+        forest_message(mons->pos(), "숲이 갑자기 움직이는 것을 멈췄다.");
         env.forest_awoken_until = 0;
     }
 
@@ -2997,25 +2998,25 @@ void mons_check_pool(monster* mons, const coord_def &oldpos,
     // something has fallen into the lava.
     if (you.see_cell(mons->pos()) && (oldpos == mons->pos() || grd(oldpos) != grid))
     {
-         mprf("%s falls into the %s!",
-             mons->name(DESC_THE).c_str(),
-             grid == DNGN_LAVA ? "lava" : "water");
+         mprf("%s %s에 빠졌다!",
+             mons->name("은").c_str(),
+             grid == DNGN_LAVA ? "용암" : "물");
     }
 
     // Even fire resistant monsters perish in lava.
     if (grid == DNGN_LAVA && mons->res_fire() < 2)
     {
-        simple_monster_message(*mons, " is incinerated.",
+        simple_monster_message(*mons, "은(는) 소각되었다.",
                                MSGCH_MONSTER_DAMAGE, MDAM_DEAD);
     }
     else if (mons->can_drown())
     {
-        simple_monster_message(*mons, " drowns.",
+        simple_monster_message(*mons, "은(는) 빠졌다.",
                                MSGCH_MONSTER_DAMAGE, MDAM_DEAD);
     }
     else
     {
-        simple_monster_message(*mons, " falls apart.",
+        simple_monster_message(*mons, "은(는) 붕괴되었다.",
                                MSGCH_MONSTER_DAMAGE, MDAM_DEAD);
     }
 
@@ -3090,33 +3091,33 @@ string summoned_poof_msg(const monster* mons, bool plural)
         valid_mon = true;
     }
 
-    string msg      = "disappear%s in a puff of smoke";
+    string msg      = "연기%s 속으로 사라졌다";
     bool   no_chaos = false;
 
     switch (summon_type)
     {
     case SPELL_SHADOW_CREATURES:
     case MON_SUMM_SCROLL:
-        msg      = "dissolve%s into shadows";
+        msg      = "그림자%s로 용해되었다";
         no_chaos = true;
         break;
 
     case MON_SUMM_CHAOS:
-        msg = "degenerate%s into a cloud of primal chaos";
+        msg = "원시 혼돈의 구름%s으로 퇴보했다";
         break;
 
     case MON_SUMM_WRATH:
     case MON_SUMM_AID:
         if (valid_mon && is_good_god(mons->god))
         {
-            msg      = "dissolve%s into sparkling lights";
+            msg      = "반짝이는 빛%s으로 용해되었다";
             no_chaos = true;
         }
         break;
 
     case SPELL_SPECTRAL_CLOUD:
     case SPELL_CALL_LOST_SOUL:
-        msg = "fade%s away";
+        msg = "스르륵%s 사라졌다";
         break;
     }
 
@@ -3125,27 +3126,27 @@ string summoned_poof_msg(const monster* mons, bool plural)
         if (mons->god == GOD_XOM && !no_chaos && one_chance_in(10)
             || mons->type == MONS_CHAOS_SPAWN)
         {
-            msg = "degenerate%s into a cloud of primal chaos";
+            msg = "원시 혼돈의 구름%s으로 퇴보했다";
         }
 
         if (mons->is_holy()
             && summon_type != SPELL_SHADOW_CREATURES
             && summon_type != MON_SUMM_CHAOS)
         {
-            msg = "dissolve%s into sparkling lights";
+            msg = "반짝이는 빛%s으로 용해되었다";
         }
 
         if (mons_is_slime(*mons)
             && mons->god == GOD_JIYVA)
         {
-            msg = "dissolve%s into a puddle of slime";
+            msg = "점액질 웅덩이%s로 용해되었다";
         }
 
         if (mons->type == MONS_DROWNED_SOUL)
-            msg = "return%s to the deep";
+            msg = "깊은 곳%s으로 되돌아갔다";
 
         if (mons->has_ench(ENCH_PHANTOM_MIRROR))
-            msg = "shimmer%s and vanish" + string(plural ? "" : "es"); // Ugh
+            msg = "어른거리더니%s 사라졌다" + string(plural ? "" : ""); // Ugh
     }
 
     // Conjugate.
@@ -3204,17 +3205,16 @@ void pikel_band_neutralise()
     {
         if (you.get_mutation_level(MUT_NO_LOVE))
         {
-            const char *substr = visible_slaves > 1 ? "slaves" : "slave";
-            final_msg = make_stringf("Pikel's spell is broken, but the former "
-                                     "%s can only feel hate for you!", substr);
+            const char *substr = visible_slaves > 1 ? "노예들" : "노예";
+            final_msg = make_stringf("피켈의 주문이 깨졌지만, 이전의 %s은(는) "
+                                     "당신을 증오하는 감정만을 느낄 수 있다!", substr);
         }
         else
         {
             const char *substr = visible_slaves > 1
-                ? "slaves thank you for their"
-                : "slave thanks you for its";
-            final_msg = make_stringf("With Pikel's spell broken, the former %s "
-                                     "freedom.", substr);
+                ? "노예들은 당신에게 고마워했다"
+                : "노예는 당신에게 고마워했다";
+            final_msg = make_stringf("피켈의 주문이 깨졌으므로, 자유를 되찾은 이전의 %s", substr);
         }
     }
     delayed_action_fineff::schedule(DACT_PIKEL_SLAVES, final_msg);
@@ -3260,11 +3260,11 @@ void hogs_to_humans()
     string final_msg;
     if (any > 0)
     {
-        final_msg = make_stringf("No longer under Kirke's spell, the %s %s %s!",
-                                 any > 1 ? "hogs return to their"
-                                         : "hog returns to its",
-                                 any == human ? "human" : "original",
-                                 any > 1 ? "forms" : "form");
+        final_msg = make_stringf("더 이상 키르케의 주문에 속박 되어있지 않으므로, "
+                                 " %s %s 형태로 되돌아갔다!",
+                                 any > 1 ? "돼지들은"
+                                         : "돼지는",
+                                 any == human ? "인간의" : "원래의");
     }
     kirke_death_fineff::schedule(final_msg);
 }
@@ -3414,7 +3414,7 @@ void elven_twin_energize(monster* mons)
     {
         ASSERT(mons_is_mons_class(mons, MONS_DOWAN));
         if (mons->observable())
-            simple_monster_message(*mons, " seems to find hidden reserves of power!");
+            simple_monster_message(*mons, "은(는) 숨겨진 잠재력을 찾은것으로 보인다!");
 
         mons->add_ench(ENCH_HASTE);
     }
@@ -3440,7 +3440,7 @@ void elven_twins_pacify(monster* twin)
     if (mons->neutral())
         return;
 
-    simple_monster_message(*mons, " likewise turns neutral.");
+    simple_monster_message(*mons, "은(는) 똑같이 중립으로 돌아갔다.");
 
     record_monster_defeat(mons, KILL_PACIFIED);
     mons_pacify(*mons, ATT_NEUTRAL);

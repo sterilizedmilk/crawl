@@ -1351,9 +1351,9 @@ void behaviour_event(monster* mon, mon_event_type event, const actor *src,
             {
                 ASSERT_RANGE(get_talent(ABIL_CONVERT_TO_BEOGH, false).hotkey,
                              'A', 'z' + 1);
-                mprf("(press <w>%c</w> on the <w>%s</w>bility menu to convert to Beogh)",
-                     get_talent(ABIL_CONVERT_TO_BEOGH, false).hotkey,
-                     command_to_string(CMD_USE_ABILITY).c_str());
+                mprf("(베오그로 개종하려면 <w>%s</w>능력 메뉴창에서 <w>%c</w>을 누르시오)",
+                     command_to_string(CMD_USE_ABILITY).c_str(),
+                     get_talent(ABIL_CONVERT_TO_BEOGH, false).hotkey);
                 you.attribute[ATTR_SEEN_BEOGH] = 1;
             }
         }

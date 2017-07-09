@@ -271,8 +271,7 @@ NORETURN void end_game(scorefile_entry &se, int hiscore_index)
             else if (se.get_death_type() != KILLED_BY_DISINT
                      && se.get_death_type() != KILLED_BY_LAVA)
             {
-                mprf(MSGCH_GOD, "Your body rises from the dead as a mindless "
-                     "zombie.");
+                mprf(MSGCH_GOD, "당신의 육체는 죽음으로부터 영혼없는 좀비로 되살아났다.");
             }
             // No message if you're not undead and your corpse is lost.
             break;
@@ -302,7 +301,7 @@ NORETURN void end_game(scorefile_entry &se, int hiscore_index)
                 && se.get_death_type() != KILLED_BY_DISINT
                 && se.get_death_type() != KILLED_BY_LAVA)
             {
-                mprf(MSGCH_GOD, "Your body crumbles into a pile of gold.");
+                mprf(MSGCH_GOD, "당신의 육체는 한 무더기의 금으로 변했다.");
             }
             break;
         }

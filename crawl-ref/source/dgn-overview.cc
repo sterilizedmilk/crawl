@@ -947,7 +947,7 @@ void do_annotate(level_id& li)
     string old = get_level_annotation(li, true, true);
     if (!old.empty())
     {
-        mprf(MSGCH_PROMPT, "Current level annotation: <lightgrey>%s</lightgrey>",
+        mprf(MSGCH_PROMPT, "현재 층 관련 알림: <lightgrey>%s</lightgrey>",
              old.c_str());
     }
 

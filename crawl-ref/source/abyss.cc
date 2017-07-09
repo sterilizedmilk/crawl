@@ -402,7 +402,7 @@ void banished(const string &who, const int power)
         else
         {
             // On Abyss:5 we can't go deeper; cause a shift to a new area
-            mprf(MSGCH_BANISHMENT, "You are banished to a different region of the Abyss.");
+            mprf(MSGCH_BANISHMENT, "당신은 심연의 다른 구역으로 추방되었다.");
             abyss_teleport();
         }
         return;
@@ -1663,7 +1663,7 @@ void abyss_teleport()
 {
     xom_abyss_feature_amusement_check xomcheck;
     dprf(DIAG_ABYSS, "New area Abyss teleport.");
-    mprf(MSGCH_BANISHMENT, "You are suddenly pulled into a different region of the Abyss!");
+    mprf(MSGCH_BANISHMENT, "당신은 갑자기 심연의 다른 구역으로 끌려 들어갔다!");
     _abyss_generate_new_area();
     _write_abyssal_features();
     grd(you.pos()) = _veto_dangerous_terrain(grd(you.pos()));
@@ -2051,8 +2051,8 @@ void abyss_maybe_spawn_xp_exit()
     big_cloud(CLOUD_TLOC_ENERGY, &you, you.pos(), 3 + random2(3), 3, 3);
     redraw_screen(); // before the force-more
     mprf(MSGCH_BANISHMENT,
-         "The substance of the Abyss twists violently,"
-         " and a gateway leading %s appears!", stairs ? "down" : "out");
+         "심연의 물질계가 격렬하게 뒤틀리고, "
+         " %s으로 향하는 관문이 나타났다!", stairs ? "더 깊은 곳" : "밖");
 
     you.props[ABYSS_STAIR_XP_KEY] = EXIT_XP_COST;
     you.props[ABYSS_SPAWNED_XP_EXIT_KEY] = true;

@@ -98,8 +98,8 @@ void set_auto_exclude(const monster* mon)
         //        (as is possible for some vaults), this could be really
         //        annoying. (jpeg)
         mprf(MSGCH_WARN,
-             "Marking area around %s as unsafe for travelling.",
-             mon->name(DESC_THE).c_str());
+             "%s 주위의 구역을 안전하지 않은 구역으로 지정한다.",
+             mon->name(DESC_PLAIN).c_str());
 
 #ifdef USE_TILE
         viewwindow();
@@ -155,7 +155,7 @@ bool travel_exclude::affects(const coord_def& p) const
 {
     if (!uptodate)
     {
-        mprf(MSGCH_ERROR, "exclusion not up-to-date: e (%d,%d) p (%d,%d)",
+        mprf(MSGCH_ERROR, "예외사항이 업데이트 되지 않음: e (%d,%d) p (%d,%d)",
              pos.x, pos.y, p.x, p.y);
     }
     if (radius == 0)

@@ -1070,8 +1070,8 @@ void shoals_release_tide(monster* mons)
     {
         if (player_can_hear(mons->pos()))
         {
-            mprf(MSGCH_SOUND, "The tide is released from %s call.",
-                 apostrophise(mons->name(DESC_YOUR, true)).c_str());
+            mprf(MSGCH_SOUND, "당신의 %s에 의해 조류가 퍼져나갔다.",
+                 apostrophise(mons->name(DESC_PLAIN, true)).c_str());
             if (you.see_cell(mons->pos()))
                 flash_view_delay(UA_MONSTER, ETC_WATER, 150);
         }
@@ -1106,7 +1106,7 @@ void wizard_mod_tide()
 {
     if (!player_in_branch(BRANCH_SHOALS) || !env.heightmap.get())
     {
-        mprf(MSGCH_WARN, "Not in Shoals or no heightmap; tide not available.");
+        mprf(MSGCH_WARN, "해안이나 그에 준하는 층이 아님; 조류 생성 불가.");
         return;
     }
 
@@ -1114,8 +1114,8 @@ void wizard_mod_tide()
     while (true)
     {
         mprf(MSGCH_PROMPT,
-             "Tide inertia: %d. New value "
-             "(smaller = faster tide) or use +/- to change tide: ",
+             "기존 조류값: %d. 새 값 "
+             "(작아질수록 조석주기가 짧아짐) 또는 +/- 를 눌러 조류값 조정 가능: ",
              TIDE_MULTIPLIER);
         mpr("");
         const int res =

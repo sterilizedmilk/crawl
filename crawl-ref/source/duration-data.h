@@ -14,9 +14,9 @@ static void _end_weapon_brand()
 static void _end_invis()
 {
     if (you.invisible())
-        mprf(MSGCH_DURATION, "You feel more conspicuous.");
+        mprf(MSGCH_DURATION, "당신은 더 뚜렷해졌음을 느꼈다.");
     else
-        mprf(MSGCH_DURATION, "You flicker back into view.");
+        mprf(MSGCH_DURATION, "당신은 깜빡거리더니 다시 시야에 들어왔다.");
     you.attribute[ATTR_INVIS_UNCANCELLABLE] = 0;
 }
 
@@ -175,7 +175,7 @@ static const duration_def duration_data[] =
       "", D_DISPELLABLE,
       {{ "", []() {
           if (!you.backlit())
-              mprf(MSGCH_DURATION, "You are no longer glowing.");
+              mprf(MSGCH_DURATION, "당신은 더이상 발광하지 않는다.");
       }}}},
     { DUR_DEATH_CHANNEL,
       MAGENTA, "DChan",
@@ -479,7 +479,7 @@ static const duration_def duration_data[] =
       "You cannot drink potions.", D_NO_FLAGS,
       {{ "", []() {
           if (!you_foodless())
-              mprf(MSGCH_RECOVERY, "You can drink potions again.");
+              mprf(MSGCH_RECOVERY, "당신은 이제 다시 물약을 마실 수 있다.");
       }}}},
     { DUR_QAZLAL_FIRE_RES,
       LIGHTBLUE, "rF+",

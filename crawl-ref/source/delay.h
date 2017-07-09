@@ -219,8 +219,8 @@ class ArmourOnDelay : public Delay
 
     void tick() override
     {
-        mprf(MSGCH_MULTITURN_ACTION, "You continue putting on %s.",
-             armour.name(DESC_YOUR).c_str());
+        mprf(MSGCH_MULTITURN_ACTION, "당신은 계속 %s 착용했다.",
+             armour.name("을").c_str());
     }
 
     void finish() override;
@@ -246,7 +246,7 @@ class ArmourOffDelay : public Delay
 
     void tick() override
     {
-        mprf(MSGCH_MULTITURN_ACTION, "You continue taking off %s.",
+        mprf(MSGCH_MULTITURN_ACTION, "당신은 계속 %s 벗었다.",
              armour.name(DESC_YOUR).c_str());
     }
 
@@ -288,7 +288,7 @@ class MemoriseDelay : public Delay
 
     void tick() override
     {
-        mprf(MSGCH_MULTITURN_ACTION, "You continue memorising.");
+        mprf(MSGCH_MULTITURN_ACTION, "당신은 주문을 배우는 것을 계속했다.");
     }
 
     void finish() override;
@@ -374,7 +374,7 @@ class PasswallDelay : public Delay
 
     void tick() override
     {
-        mprf(MSGCH_MULTITURN_ACTION, "You continue meditating on the rock.");
+        mprf(MSGCH_MULTITURN_ACTION, "당신은 바위 속에서 명상을 했다.");
     }
 
     void finish() override;
@@ -641,7 +641,7 @@ class ShaftSelfDelay : public Delay
 
     void tick() override
     {
-        mprf(MSGCH_MULTITURN_ACTION, "You continue digging a shaft.");
+        mprf(MSGCH_MULTITURN_ACTION, "당신은 계속 구덩이를 팠다.");
     }
 
     void finish() override;
@@ -672,7 +672,7 @@ class BlurryScrollDelay : public Delay
 
     void tick() override
     {
-        mprf(MSGCH_MULTITURN_ACTION, "You continue reading the scroll.");
+        mprf(MSGCH_MULTITURN_ACTION, "당신은 두루마리를 계속 읽었다.");
     }
 
     void finish() override;

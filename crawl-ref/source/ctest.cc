@@ -62,7 +62,7 @@ static void _reset_test_data()
 
 static int crawl_begin_test(lua_State *ls)
 {
-    mprf(MSGCH_PROMPT, "Starting %s: %s",
+    mprf(MSGCH_PROMPT, "%s 시작: %s",
          activity,
          luaL_checkstring(ls, 1));
     lua_pushnumber(ls, ++ntests);
@@ -72,7 +72,7 @@ static int crawl_begin_test(lua_State *ls)
 static int crawl_test_success(lua_State *ls)
 {
     if (!crawl_state.script)
-        mprf(MSGCH_PROMPT, "Test success: %s", luaL_checkstring(ls, 1));
+        mprf(MSGCH_PROMPT, "시험 성공: %s", luaL_checkstring(ls, 1));
     lua_pushnumber(ls, ++nsuccess);
     return 1;
 }
@@ -124,7 +124,7 @@ static void run_test(const string &file)
         return;
 
     ++ntests;
-    mprf(MSGCH_DIAGNOSTICS, "Running %s %d: %s",
+    mprf(MSGCH_DIAGNOSTICS, "%s %d회 가동: %s",
          activity, ntests, file.c_str());
     flush_prev_message();
 

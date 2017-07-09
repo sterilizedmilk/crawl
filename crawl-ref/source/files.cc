@@ -966,14 +966,14 @@ static void _grab_followers()
         // Summons won't follow and will time out.
         if (non_stair_using_summons > 0)
         {
-            mprf("Your summoned %s left behind.",
-                 non_stair_using_allies > 1 ? "allies are" : "ally is");
+            mprf("당신의 소환된 %s 뒤에 남겨졌다.",
+                 non_stair_using_allies > 1 ? "아군들은" : "아군은");
         }
         else
         {
             // Permanent undead are left behind but stay.
-            mprf("Your mindless thrall%s behind.",
-                 non_stair_using_allies > 1 ? "s stay" : " stays");
+            mprf("당신의 감정없는 노예%s 뒤에 남았다.",
+                 non_stair_using_allies > 1 ? "들은" : "는");
         }
     }
 
@@ -1117,9 +1117,9 @@ static bool _leave_level(dungeon_feature_type stair_taken,
         if (you.wizard)
         {
             // warn about breakage so testers know it's an abnormal situation.
-            mprf(MSGCH_ERROR, "Error: you smelly wizard, how dare you enter "
-                 "the same level (%s) twice! It will be trampled upon return.\n"
-                 "The stack has: %s.",
+            mprf(MSGCH_ERROR, "오류: 치트를 사용한 느낌이 난다. 어떻게 (%s)층에 "
+                 "두 번 들어올 수 있는가! 돌아가는 것은 불가능할 것이다.\n"
+                 "쌓인 횟수: %s.",
                  level_id::current().describe().c_str(),
                  comma_separated_line(stack.begin(), stack.end(),
                                       ", ", ", ").c_str());
@@ -1293,7 +1293,7 @@ bool load_level(dungeon_feature_type stair_taken, load_mode_type load_mode,
     unwind_bool ylev(you.entering_level, load_mode != LOAD_VISITOR, false);
 
 #ifdef DEBUG_LEVEL_LOAD
-    mprf(MSGCH_DIAGNOSTICS, "Loading... branch: %d, level: %d",
+    mprf(MSGCH_DIAGNOSTICS, "불러오는 중... 서브던전: %d, 층: %d",
                             you.where_are_you, you.depth);
 #endif
 
@@ -1449,7 +1449,7 @@ bool load_level(dungeon_feature_type stair_taken, load_mode_type load_mode,
         && !get_level_annotation().empty()
         && !crawl_state.level_annotation_shown)
     {
-        mprf(MSGCH_PLAIN, YELLOW, "Level annotation: %s",
+        mprf(MSGCH_PLAIN, YELLOW, "층 알림: %s",
              get_level_annotation().c_str());
     }
 
@@ -1476,7 +1476,7 @@ bool load_level(dungeon_feature_type stair_taken, load_mode_type load_mode,
         you.global_info += delta;
 #ifdef DEBUG_LEVEL_LOAD
         mprf(MSGCH_DIAGNOSTICS,
-             "global_info:: num_visits: %d, levels_seen: %d",
+             "전체 정보:: 방문 횟수: %d, 가본 층: %d",
              you.global_info.num_visits, you.global_info.levels_seen);
 #endif
         you.global_info.assert_validity();
@@ -1484,7 +1484,7 @@ bool load_level(dungeon_feature_type stair_taken, load_mode_type load_mode,
         curr_PlaceInfo += delta;
 #ifdef DEBUG_LEVEL_LOAD
         mprf(MSGCH_DIAGNOSTICS,
-             "curr_PlaceInfo:: num_visits: %d, levels_seen: %d",
+             "현재 위치 정보:: 방문 횟수: %d, 가본 층: %d",
              curr_PlaceInfo.num_visits, curr_PlaceInfo.levels_seen);
 #endif
         curr_PlaceInfo.assert_validity();
@@ -1514,14 +1514,14 @@ bool load_level(dungeon_feature_type stair_taken, load_mode_type load_mode,
                 if (coinflip()
                     && slide_feature_over(you.pos()))
                 {
-                    mprf("%s slides away from you right after you %s it!",
-                         stair_str.c_str(), verb.c_str());
+                    mprf("당신이 %s 직후 %s(이)가 당신으로부터 미끄러지듯이 멀어졌다!",
+                         verb.c_str(), stair_str.c_str());
                 }
 
                 if (coinflip())
                 {
                     // Stairs stop fleeing from you now you actually caught one.
-                    mprf("%s settles down.", stair_str.c_str());
+                    mprf("%s은(는) 다시 바닥에 내려앉았다.", stair_str.c_str());
                     you.duration[DUR_REPEL_STAIRS_MOVE]  = 0;
                     you.duration[DUR_REPEL_STAIRS_CLIMB] = 0;
                 }
@@ -1796,7 +1796,7 @@ bool load_ghost(bool creating_level)
     if (ghost_filename.empty())
     {
         if (wiz_cmd && !creating_level)
-            mprf(MSGCH_PROMPT, "No ghost files for this level.");
+            mprf(MSGCH_PROMPT, "이 층엔 관련 유령 파일이 없다.");
         return false; // no such ghost.
     }
 
@@ -1804,7 +1804,7 @@ bool load_ghost(bool creating_level)
     if (!inf.valid())
     {
         if (wiz_cmd && !creating_level)
-            mprf(MSGCH_PROMPT, "Ghost file invalidated before read.");
+            mprf(MSGCH_PROMPT, "무효인 유령 파일이다.");
         return false;
     }
 
@@ -1819,7 +1819,7 @@ bool load_ghost(bool creating_level)
         }
         catch (short_read_exception &short_read)
         {
-            mprf(MSGCH_ERROR, "Broken bones file: %s",
+            mprf(MSGCH_ERROR, "파손된 유골 파일: %s",
                  ghost_filename.c_str());
         }
     }
@@ -1831,7 +1831,7 @@ bool load_ghost(bool creating_level)
     if (!debug_check_ghosts())
     {
         mprf(MSGCH_DIAGNOSTICS,
-             "Refusing to load buggy ghost from file \"%s\"!",
+             "다음 파일에서 버그 유령을 불러오는 것을 중단했다 \"%s\"!",
              ghost_filename.c_str());
 
         return false;
@@ -1840,7 +1840,7 @@ bool load_ghost(bool creating_level)
 #ifdef BONES_DIAGNOSTICS
     if (do_diagnostics)
     {
-        mprf(MSGCH_DIAGNOSTICS, "Loaded ghost file with %u ghost(s)",
+        mprf(MSGCH_DIAGNOSTICS, "%u 개체의 유령이 있는 유령 파일을 불러온다",
              (unsigned int)ghosts.size());
     }
 #endif
@@ -1872,13 +1872,13 @@ bool load_ghost(bool creating_level)
             unplaced_ghosts--;
             if (!mons->alive())
             {
-                mprf(MSGCH_DIAGNOSTICS, "Placed ghost is not alive.");
+                mprf(MSGCH_DIAGNOSTICS, "그 유령은 살아있지 않다.");
                 ghost_errors = true;
             }
             else if (mons->type != MONS_PLAYER_GHOST)
             {
                 mprf(MSGCH_DIAGNOSTICS,
-                     "Placed ghost is not MONS_PLAYER_GHOST, but %s",
+                     "그 유령은 MONS_PLAYER_GHOST은 아니지만, %s이다.",
                      mons->name(DESC_PLAIN, true).c_str());
                 ghost_errors = true;
             }
@@ -1889,7 +1889,7 @@ bool load_ghost(bool creating_level)
 #ifdef BONES_DIAGNOSTICS
     if (do_diagnostics && unplaced_ghosts > 0)
     {
-        mprf(MSGCH_DIAGNOSTICS, "Unable to place %u ghost(s)",
+        mprf(MSGCH_DIAGNOSTICS, "%u 개체의 유령(들)을 배치할 수 없다",
              (unsigned int)ghosts.size());
         ghost_errors = true;
     }
@@ -2330,7 +2330,7 @@ static bool _ghost_version_compatible(reader &inf)
     catch (short_read_exception &E)
     {
         mprf(MSGCH_ERROR,
-             "Ghost file \"%s\" seems to be invalid (short read); deleting it.",
+             "유령 파일 \"%s\" 가 무효인 파일 같다; 삭제함.",
              inf.filename().c_str());
         return false;
     }
@@ -2399,7 +2399,7 @@ void save_ghost(bool force)
     {
 #ifdef BONES_DIAGNOSTICS
         if (do_diagnostics)
-            mprf(MSGCH_DIAGNOSTICS, "Could not find any ghosts for this level.");
+            mprf(MSGCH_DIAGNOSTICS, "이 층엔 관련 유령 파일이 없다.");
 #endif
         return;
     }
@@ -2416,7 +2416,7 @@ void save_ghost(bool force)
     {
 #ifdef BONES_DIAGNOSTICS
         if (do_diagnostics)
-            mprf(MSGCH_DIAGNOSTICS, "Too many ghosts for this level already!");
+            mprf(MSGCH_DIAGNOSTICS, "이미 이 층엔 유령이 너무 많다!");
 #endif
         return;
     }
@@ -2428,7 +2428,7 @@ void save_ghost(bool force)
     {
 #ifdef BONES_DIAGNOSTICS
         if (do_diagnostics)
-            mprf(MSGCH_DIAGNOSTICS, "Could not open file to save ghosts.");
+            mprf(MSGCH_DIAGNOSTICS, "유령 관련 정보를 저장하기 위한 파일을 열 수 없다.");
 #endif
         return;
     }
@@ -2442,7 +2442,7 @@ void save_ghost(bool force)
 
 #ifdef BONES_DIAGNOSTICS
     if (do_diagnostics)
-        mprf(MSGCH_DIAGNOSTICS, "Saved ghosts (%s).", g_file_name.c_str());
+        mprf(MSGCH_DIAGNOSTICS, "(%s)유령관련 정보를 저장한다.", g_file_name.c_str());
 #endif
 }
 
@@ -2477,7 +2477,7 @@ FILE *lk_open(const char *mode, const string &file)
     const bool write_lock = mode[0] != 'r' || strchr(mode, '+');
     if (!lock_file_handle(handle, write_lock))
     {
-        mprf(MSGCH_ERROR, "ERROR: Could not lock file %s", file.c_str());
+        mprf(MSGCH_ERROR, "오류: 파일 %s을(를) 잠글 수 없다.", file.c_str());
         fclose(handle);
         handle = nullptr;
     }
@@ -2501,7 +2501,7 @@ FILE *lk_open_exclusive(const string &file)
 
     if (!lock_file(fd, true))
     {
-        mprf(MSGCH_ERROR, "ERROR: Could not lock file %s", file.c_str());
+        mprf(MSGCH_ERROR, "오류: 파일 %s을(를) 잠글 수 없다.", file.c_str());
         close(fd);
         return nullptr;
     }

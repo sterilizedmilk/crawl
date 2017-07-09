@@ -358,15 +358,15 @@ static void _jiyva_convert_slime(monster* slime)
     {
         if (mons_genus(slime->type) == MONS_FLOATING_EYE)
         {
-            mprf(MSGCH_GOD, "%s stares at you suspiciously for a moment, "
-                            "then relaxes.",
+            mprf(MSGCH_GOD, "%s 당신을 잠시 의심스럽게 응시하다가, "
+                            "안정을 되찾았다.",
 
-            slime->name(DESC_THE).c_str());
+            slime->name("은").c_str());
         }
         else
         {
-            mprf(MSGCH_GOD, "%s trembles before you.",
-                 slime->name(DESC_THE).c_str());
+            mprf(MSGCH_GOD, "%s 당신 앞에서 하늘거렸다.",
+                 slime->name("은").c_str());
         }
     }
 
