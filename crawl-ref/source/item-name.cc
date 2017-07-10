@@ -3276,7 +3276,7 @@ static MenuEntry* _fixup_runeorb_entry(MenuEntry* me)
         if (!you.runes[rune])
         {
             text += " (";
-            text += branches[rune_location(rune)].longname;
+            text += branch_korean_name(rune_location(rune));
             text += ")";
         }
         text += "</";

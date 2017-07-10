@@ -11,6 +11,7 @@
 
 #include "art-enum.h"
 #include "book-type.h"
+#include "branch-type.h"
 #include "item-prop-enum.h"
 #include "job-type.h"
 #include "libutil.h"
@@ -558,7 +559,89 @@ map<int, const char*> Job_name =
     {JOB_ABYSSAL_KNIGHT,        "심연의 기사"},
 };
 
-const char* job_name_korean(int type)
+const char* job_korean_name(int type)
 {
     return lookup(Job_name, type, "무직");
+}
+
+map<int, string> Branch_long_name =
+{
+    {BRANCH_DUNGEON,            "던전"},
+    {BRANCH_TEMPLE,             "만신전"},
+    {BRANCH_ORC,                "오크 광산"},
+    {BRANCH_ELF,                "엘프의 방"},
+    {BRANCH_LAIR,               "짐승굴"},
+    {BRANCH_SWAMP,              "늪지"},
+    {BRANCH_SHOALS,             "해안가"},
+    {BRANCH_SNAKE,              "뱀 구덩이"},
+    {BRANCH_SPIDER,             "거미의 둥지"},
+    {BRANCH_SLIME,              "점액질 구덩이"},
+    {BRANCH_VAULTS,             "금고"},
+    {BRANCH_CRYPT,              "지하 묘지"},
+    {BRANCH_TOMB,               "무덤"},
+    {BRANCH_DEPTHS,             "심층부"},
+    {BRANCH_VESTIBULE,          "지옥의 현관"},
+    {BRANCH_DIS,                "디스의 강철도시"},
+    {BRANCH_GEHENNA,            "게헨나"},
+    {BRANCH_COCYTUS,            "코퀴투스"},
+    {BRANCH_TARTARUS,           "타르타로스"},
+    {BRANCH_ZOT,                "조트의 영역"},
+    {BRANCH_ABYSS,              "어비스"},
+    {BRANCH_PANDEMONIUM,        "판데모니움"},
+    {BRANCH_ZIGGURAT,           "지구라트"},
+    {BRANCH_LABYRINTH,          "미궁"},
+    {BRANCH_BAZAAR,             "벼룩시장"},
+    {BRANCH_TROVE,              "보물 창고"},
+    {BRANCH_SEWER,              "하수구"},
+    {BRANCH_OSSUARY,            "납골당"},
+    {BRANCH_BAILEY,             "성채"},
+    {BRANCH_ICE_CAVE,           "얼음 동굴"},
+    {BRANCH_VOLCANO,            "화산"},
+    {BRANCH_WIZLAB,             "마법사의 연구소"},
+    {BRANCH_DESOLATION,         "소금의 황무지"},
+};
+
+map<int, string> Branch_short_name =
+{
+    {BRANCH_DUNGEON,            "던전"},
+    {BRANCH_TEMPLE,             "만신전"},
+    {BRANCH_ORC,                "오크"},
+    {BRANCH_ELF,                "엘프"},
+    {BRANCH_LAIR,               "짐승굴"},
+    {BRANCH_SWAMP,              "늪지"},
+    {BRANCH_SHOALS,             "해안가"},
+    {BRANCH_SNAKE,              "뱀"},
+    {BRANCH_SPIDER,             "거미"},
+    {BRANCH_SLIME,              "슬라임"},
+    {BRANCH_VAULTS,             "금고"},
+    {BRANCH_CRYPT,              "지하 묘지"},
+    {BRANCH_TOMB,               "무덤"},
+    {BRANCH_DEPTHS,             "심층부"},
+    {BRANCH_VESTIBULE,          "지옥"},
+    {BRANCH_DIS,                "디스"},
+    {BRANCH_GEHENNA,            "게헨나"},
+    {BRANCH_COCYTUS,            "코퀴투스"},
+    {BRANCH_TARTARUS,           "타르타로스"},
+    {BRANCH_ZOT,                "조트"},
+    {BRANCH_ABYSS,              "어비스"},
+    {BRANCH_PANDEMONIUM,        "판데모니움"},
+    {BRANCH_ZIGGURAT,           "지구라트"},
+    {BRANCH_LABYRINTH,          "미궁"},
+    {BRANCH_BAZAAR,             "벼룩시장"},
+    {BRANCH_TROVE,              "보물 창고"},
+    {BRANCH_SEWER,              "하수구"},
+    {BRANCH_OSSUARY,            "납골당"},
+    {BRANCH_BAILEY,             "성채"},
+    {BRANCH_ICE_CAVE,           "얼음"},
+    {BRANCH_VOLCANO,            "화산"},
+    {BRANCH_WIZLAB,             "연구소"},
+    {BRANCH_DESOLATION,         "황무지"},
+};
+
+string branch_korean_name(int type, bool long_name)
+{
+    if (long_name)
+        return lookup(Branch_long_name, type, "");
+    else
+        return lookup(Branch_short_name, type, "");
 }

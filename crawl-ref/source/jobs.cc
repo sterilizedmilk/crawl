@@ -41,7 +41,7 @@ const char *get_job_name(job_type which_job)
     if (which_job == JOB_UNKNOWN)
         return "Unemployed";
 
-    return job_name_korean(which_job);
+    return job_korean_name(which_job);
 }
 
 job_type get_job_by_name(const char *name)

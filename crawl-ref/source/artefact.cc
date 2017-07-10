@@ -224,7 +224,7 @@ string replace_name_parts(const string &name_in, const item_def& item)
 
     if (name.find("@branch_name@", 0) != string::npos)
     {
-        string place = branches[random2(NUM_BRANCHES)].longname;
+        string place = branch_korean_name(random2(NUM_BRANCHES));
         if (!place.empty())
             name = replace_all(name, "@branch_name@", place);
     }
