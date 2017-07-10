@@ -508,20 +508,20 @@ public:
         {
             vector<const char *> afflictions;
             if (you.haloed() && !you.umbraed())
-                afflictions.push_back("halo");
+                afflictions.push_back("후광");
             if (player_severe_contamination())
-                afflictions.push_back("magical contamination");
+                afflictions.push_back("마법 오염");
             if (you.duration[DUR_CORONA])
-                afflictions.push_back("corona");
+                afflictions.push_back("코로나");
             if (you.duration[DUR_LIQUID_FLAMES])
-                afflictions.push_back("liquid flames");
+                afflictions.push_back("액체 불꽃");
             if (you.duration[DUR_QUAD_DAMAGE])
                 afflictions.push_back("!!!QUAD DAMAGE!!!");
             mprf(MSGCH_DURATION,
-                 "당신은 %s투명해졌으나, 마법 오염에 의한 광채가 "
-                 "당신을 완전히 투명하게 만드는 것을 방해하고있다.",
-                 you.duration[DUR_INVIS] ? "more " : "",
-                 you.haloed() && you.halo_radius() == -1 ? "the" : "your",
+                 "당신은 %s투명해졌으나, %s%s에 의한 빛이 "
+                 "당신을 완전히 투명하게 만드는 것을 막고있다.",
+                 you.duration[DUR_INVIS] ? "더욱 " : "",
+                 you.haloed() && you.halo_radius() == -1 ? "" : "당신의 ",
                  comma_separated_line(afflictions.begin(),
                                       afflictions.end()).c_str());
         }

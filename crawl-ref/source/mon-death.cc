@@ -1395,10 +1395,10 @@ static bool _explode_monster(monster* mons, killer_type killer,
             mprf(MSGCH_GOD, "%s", sanct_msg);
         else if (type == MONS_BENNU)
             mprf(MSGCH_MONSTER_DAMAGE, MDAM_DEAD, "%s 뛰쳐나왔다!",
-                 mons->full_name("이").c_str());
+                 josa(mons->full_name(DESC_PLAIN), "이").c_str());
         else
             mprf(MSGCH_MONSTER_DAMAGE, MDAM_DEAD, "%s 폭발했다!",
-                 mons->full_name("이").c_str());
+                 josa(mons->full_name(DESC_PLAIN), "이").c_str());
     }
 
     if (is_sanctuary(mons->pos()))
@@ -2244,7 +2244,7 @@ item_def* monster_die(monster& mons, killer_type killer,
                 else
                 {
                     mprf(MSGCH_MONSTER_DAMAGE, MDAM_DEAD, "당신은 %s %s!",
-                         mons.name(“을”).c_str()),
+                         mons.name("을").c_str(),
                          exploded                        ? "터뜨렸다" :
                          wounded_damaged(targ_holy)      ? "박살내버렸다"
                                                          : "죽였다");
@@ -2844,7 +2844,7 @@ void unawaken_vines(const monster* mons, bool quiet)
     if (!quiet && vines_seen)
     {
         mprf("덩굴%s이 흐느적 거리며 땅으로 떨어졌다.",
-              (vines_seen > 1 ? "들" : ""), (vines_seen == 1 ? "" : ""));
+              (vines_seen > 1 ? "들" : ""));
     }
 }
 

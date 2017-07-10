@@ -591,10 +591,10 @@ static void _maybe_spawn_monsters(int dam, const bool is_torment,
             }
             else
             {
-                mprf("당신의 육체는 격렬하게 떨려 충격을 입었다!",
-                     death_type == KILLED_BY_MONSTER ? "blow" : "blast",
-                     count_created > 1 ? "flood of jellies pours out from you"
-                                       : "jelly pops out");
+                mprf("당신이 %s으로 인해 몸서리치자 %s나왔다!",
+                     death_type == KILLED_BY_MONSTER ? "충격" : "폭발",
+                     count_created > 1 ? "젤리가 당신으로부터 물밀듯이 쏟아져 "
+                                       : "젤리가 튀어");
             }
         }
     }

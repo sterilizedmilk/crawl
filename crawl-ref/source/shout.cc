@@ -521,7 +521,7 @@ static int _issue_orders_prompt()
     {
         string cap_shout = you.shout_verb(false);
         cap_shout[0] = toupper(cap_shout[0]);
-        mprf("t - 외치기!", cap_shout.c_str());
+        mprf("t - %s!", cap_shout.c_str());
     }
 
     if (!you.berserk())
