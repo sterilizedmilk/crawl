@@ -49,7 +49,7 @@ spret_type cast_iood(actor *caster, int pow, bolt *beam, float vx, float vy,
                 mtarg).set_summoned(caster, 0, SPELL_IOOD), true, true);
     if (!mon)
     {
-        mprf(MSGCH_ERROR, "Failed to spawn projectile.");
+        mprf(MSGCH_ERROR, "발사체의 소환에 실패했다.");
         return SPRET_ABORT;
     }
 
@@ -446,7 +446,7 @@ move_again:
             && you.see_cell(pos)
             && you.see_cell(mon.pos()))
         {
-            mprf("%s hits %s", mon.name(DESC_THE, true).c_str(),
+            mprf("%s은(는) %s을(를) 공격했다.", mon.name(DESC_THE, true).c_str(),
                  feature_description_at(pos, false, DESC_A).c_str());
         }
 
@@ -510,7 +510,7 @@ move_again:
             if ((!shield || !shield_reflects(*shield)) && !victim->reflection())
             {
                 if (victim->is_player())
-                    mprf("You block %s.", mon.name(DESC_THE, true).c_str());
+                    mprf("당신은 %s을(를) 막았다.", mon.name(DESC_THE, true).c_str());
                 else
                 {
                     simple_monster_message(*mons, (" blocks "
@@ -525,7 +525,7 @@ move_again:
             {
                 if (shield && shield_reflects(*shield))
                 {
-                    mprf("Your %s reflects %s!",
+                    mprf("%s은(는) %s을(를) 반사했다!",
                          shield->name(DESC_PLAIN).c_str(),
                          mon.name(DESC_THE, true).c_str());
                     ident_reflector(shield);
@@ -562,7 +562,7 @@ move_again:
                 }
                 else
                 {
-                    mprf("%s bounces off thin air!",
+                    mprf("%s이(가) 공중에서 튕겨져나갔다!",
                          mon.name(DESC_THE, true).c_str());
                 }
             }

@@ -50,7 +50,7 @@ spret_type conjure_flame(const actor *agent, int pow, const coord_def& where,
         if (agent->is_player())
         {
             const char *feat = feat_type_name(grd(where));
-            mprf("You can't place the cloud on %s.", article_a(feat).c_str());
+            mprf("%s 바로 위에는 구름을 생성할 수 없다.", article_a(feat).c_str());
         }
         return SPRET_ABORT;
     }
@@ -185,7 +185,7 @@ spret_type cast_big_c(int pow, spell_type spl, const actor *caster, bolt &beam,
     if (cell_is_solid(beam.target))
     {
         const char *feat = feat_type_name(grd(beam.target));
-        mprf("You can't place clouds on %s.", article_a(feat).c_str());
+        mprf("%s 안에는 구름을 생성할 수 없다.", article_a(feat).c_str());
         return SPRET_ABORT;
     }
 
@@ -331,7 +331,7 @@ void corpse_rot(actor* caster)
     }
 
     if (saw_rot)
-        mprf("You %s decay.", you.can_smell() ? "smell" : "sense");
+        mprf("무언가 썩는 것을 %s.", you.can_smell() ? "smell" : "sense");
     else
         canned_msg(MSG_NOTHING_HAPPENS);
 }
@@ -418,7 +418,7 @@ spret_type cast_cloud_cone(const actor *caster, int pow, const coord_def &pos,
                     5 + random2avg(12 + div_rand_round(pow * 3, 4), 3),
                     caster);
     }
-    mprf("%s %s a blast of %s!",
+    mprf("%1$s(은)는 %3$s 폭풍을 %2$s했다.",
          caster->name(DESC_THE).c_str(),
          caster->conj_verb("create").c_str(),
          cloud_type_name(cloud).c_str());

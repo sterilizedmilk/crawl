@@ -197,7 +197,7 @@ void mirror_damage_fineff::fire()
     }
     else if (def == MID_PLAYER)
     {
-        simple_god_message(" mirrors your injury!");
+        simple_god_message("은(는) 당신의 피해를 반사했다!");
 #ifndef USE_TILE_LOCAL
         flash_monster_colour(monster_by_mid(att), RED, 200);
 #endif

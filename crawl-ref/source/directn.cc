@@ -912,7 +912,7 @@ bool direction_chooser::move_is_ok() const
                 else if (self != CONFIRM_NONE
                          && Options.allow_self_target != CONFIRM_NONE)
                 {
-                    return yesno("Really target yourself?", false, 'n');
+                    return yesno("정말로 자기 자신을 목표로 하는가?", false, 'n');
                 }
             }
 
@@ -926,7 +926,7 @@ bool direction_chooser::move_is_ok() const
 
     // Some odd cases
     if (!moves.isValid && !moves.isCancel)
-        return yesno("Are you sure you want to fizzle?", false, 'n');
+        return yesno("정말로 그런 행동을 할 것인가?", false, 'n');
 
     return true;
 }

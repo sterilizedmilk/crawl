@@ -4913,7 +4913,7 @@ static int _mons_control_undead(monster* mons, bool actual)
             retval = 1;
             if (you.can_see(**mi))
             {
-                mprf("%s submits to %s will!",
+                mprf("%s은(는) %s에게 복종했다!",
                      mi->name(DESC_YOUR).c_str(),
                      apostrophise(mons->name(DESC_THE)).c_str());
             }

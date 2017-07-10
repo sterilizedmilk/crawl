@@ -711,3 +711,24 @@ tutorial5 exit
 
                                  <cyan><input>아무 버튼</input>이나 누르세요...</cyan>
 %%%%
+tutorial2 tomahawks
+
+이제, 원거리 전투의 시간입니다! 이렇게 해서 바닥의 
+토마호크를 집어보세요.
+ <input>$cmd[CMD_PICKUP]</input> or <input>g</input><localtiles>
+, or by <input>mouseclick</input>,</localtiles> and continue.
+%%%%
+tutorial3 battle
+
+만약 당신이 성공적으로 몬스터를 중독시킨다면, 때때로 그냥 도망가서 독이 제 할 일을 할 때까지 기다리는게 더 낫습니다. 필요하다면 회복을 위해 후퇴하는 것도 잊지 마세요.
+%%%%
+tutorial3 scroll_remove_curse
+
+이 목걸이는 저주받았으며 벗겨지지 않습니다. 이 스크롤은 당신에게 작용하는 모든 저주를 제거해 줄 것입니다. 이렇게 해서 이 스크롤을 읽어보세요.
+<input>$cmd[CMD_READ]</input><localtiles> or by <input>clicking</input> it in
+the inventory panel</localtiles>.
+%%%%
+tutorial3 trap
+
+함정은 여러가지 해로운 효과를 가질 수 있으며, 당신이 밟아서 알아채기 전까지 숨겨져 있을수도 있습니다. 만약 다른 길이 없다면, 당신은 이것을 밟아 발동시켜야만 합니다.
+%%%%

@@ -1085,11 +1085,11 @@ static void _input()
         if (!has_pending_input() && !kbhit())
         {
             if (++crawl_state.lua_calls_no_turn > 1000)
-                mprf(MSGCH_ERROR, "Infinite lua loop detected, aborting.");
+                mprf(MSGCH_ERROR, "무한루아루프 발견, 무시.");
             else
             {
                 if (!clua.callfn("ready", 0, 0) && !clua.error.empty())
-                    mprf(MSGCH_ERROR, "Lua error: %s", clua.error.c_str());
+                    mprf(MSGCH_ERROR, "Lua 스크립트 에러 : %s", clua.error.c_str());
             }
         }
 
@@ -1739,7 +1739,7 @@ void process_command(command_type cmd)
             mprf(MSGCH_DANGER, "당신은 무모하게 싸워서는 안 된다!");
         }
         else if (!clua.callfn(fnname, 0, 0))
-            mprf(MSGCH_ERROR, "Lua error: %s", clua.error.c_str());
+            mprf(MSGCH_ERROR, "Lua 스크립트 에러 : %s", clua.error.c_str());
         break;
     }
 #endif
@@ -3525,7 +3525,7 @@ static void _do_prev_cmd_again()
 
     if (crawl_state.doing_prev_cmd_again)
     {
-        mprf(MSGCH_ERROR, "Trying to re-do re-do command, aborting.");
+        mprf(MSGCH_ERROR, "'이전 명령어 실행'명령을 이전 명령어 실행으로 실행하려고 하여, 중단한다.");
         crawl_state.cancel_cmd_all();
         return;
     }

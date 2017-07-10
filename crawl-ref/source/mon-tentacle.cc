@@ -903,7 +903,7 @@ void move_solo_tentacle(monster* tentacle)
     {
         if (you.can_see(*tentacle))
         {
-            mprf("The vine drags %s backwards!",
+            mprf("줄기가 %s을(를) 뒤로 밀어냈다!",
                     constrictee->name(DESC_THE).c_str());
         }
 
@@ -1098,7 +1098,7 @@ void move_child_tentacles(monster* mons)
         {
             if (you.can_see(*tentacle))
             {
-                mprf("The tentacle pulls %s backwards!",
+                mprf("촉수가 %s을(를) 뒤로 밀어냈다!",
                      constrictee->name(DESC_THE).c_str());
             }
 

@@ -304,7 +304,7 @@ bool remove_sanctuary(bool did_attack)
     if (did_attack)
     {
         if (seen_change)
-            simple_god_message(" revokes the gift of sanctuary.", GOD_ZIN);
+            simple_god_message("은(는) 성지의 선물을 해지하였다.", GOD_ZIN);
         did_god_conduct(DID_ATTACK_IN_SANCTUARY, 3);
     }
 

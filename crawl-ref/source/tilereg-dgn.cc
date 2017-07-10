@@ -575,7 +575,7 @@ static bool _cast_spell_on_target(actor* target)
 
     if (!_spell_in_range(spell, target))
     {
-        mprf("%s is out of range for that spell.",
+        mprf("%s은(는) 주문의 사정거리에서 벗어났다.",
              target->name(DESC_THE).c_str());
         return true;
     }

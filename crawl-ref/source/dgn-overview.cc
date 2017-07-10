@@ -935,7 +935,7 @@ void annotate_level()
 
     if (li2 != level_id::current())
     {
-        if (yesno("Annotate level on other end of current stairs?", true, 'n'))
+        if (yesno("현재 계단의 마지막에 주석을 추가하겠는가?", true, 'n'))
             li = li2;
     }
 

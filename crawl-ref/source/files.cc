@@ -1635,7 +1635,7 @@ static void _save_game_exit()
     // Prompt for saving macros.
     if (crawl_state.unsaved_macros
         && !crawl_state.seen_hups
-        && yesno("Save macros?", true, 'n'))
+        && yesno("매크로를 저장합니까?", true, 'n'))
     {
         macro_save();
     }

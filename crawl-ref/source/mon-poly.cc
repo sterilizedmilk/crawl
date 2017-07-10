@@ -529,7 +529,7 @@ bool monster_polymorph(monster* mons, monster_type targetc,
     }
     else if (can_see)
     {
-        mprf("%s appears out of thin air!", mons->name(DESC_A).c_str());
+        mprf("%s이(가) 갑자기 나타났다!", mons->name(DESC_A).c_str());
         autotoggle_autopickup(false);
     }
     else

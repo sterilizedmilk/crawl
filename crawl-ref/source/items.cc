@@ -560,8 +560,8 @@ void unlink_item(int dest)
                 return;
             }
         }
-        mprf(MSGCH_ERROR, "Item %s claims to be held by monster %s, but "
-                          "it isn't in the monster's inventory.",
+        mprf(MSGCH_ERROR, "아이템 %s을(를) 몬스터 %s이(가) 장비하도록 시도했지만, "
+                          "그 몬스터는 해당 아이템을 소지하고 있지 않다.",
              mitm[dest].name(DESC_PLAIN, false, true).c_str(),
              mons->name(DESC_PLAIN, true).c_str());
         // Don't return so the debugging code can take a look at it.
@@ -1324,7 +1324,7 @@ bool pickup_single_item(int link, int qty)
         return false;
     }
     if (item->base_type == OBJ_GOLD && !qty && !i_feel_safe()
-        && !yesno("Are you sure you want to pick up this pile of gold now?",
+        && !yesno("정말로 지금 이 금화 더미를 주울 것인가?",
                   true, 'n'))
     {
         canned_msg(MSG_OK);
@@ -4079,7 +4079,7 @@ static void _rune_from_specs(const char* _specs, item_def &item)
                 line.clear();
             }
         }
-        mprf(MSGCH_PROMPT, "Which rune (ESC to exit)? ");
+        mprf(MSGCH_PROMPT, "어느 룬을 선택하는가? (ESC키로 종료)");
 
         int keyin = toalower(get_ch());
 

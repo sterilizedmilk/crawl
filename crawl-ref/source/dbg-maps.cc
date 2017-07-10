@@ -87,7 +87,7 @@ static bool _do_build_level()
     no_messages mx;
     if (kbhit() && key_is_escape(getchk()))
     {
-        mprf(MSGCH_WARN, "User requested cancel");
+        mprf(MSGCH_WARN, "사용자 요청으로 취소");
         return false;
     }
 

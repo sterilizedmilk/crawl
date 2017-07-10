@@ -306,7 +306,7 @@ static bool _fire_choose_item_and_target(int& slot, dist& target,
     if (teleport && cell_is_solid(target.target))
     {
         const char *feat = feat_type_name(grd(target.target));
-        mprf("There is %s there.", article_a(feat).c_str());
+        mprf("거기엔 %s가 있다.", article_a(feat).c_str());
         return false;
     }
 
@@ -377,14 +377,14 @@ bool fire_warn_if_impossible(bool silent)
         if (!weapon || !is_range_weapon(*weapon))
         {
             if (!silent)
-                mprf("You cannot throw anything while %s.", held_status());
+                mprf("%s 상태에서는 무언가를 던질 수 없다.<darkgrey>throw.cc.mprf:2</darkgrey>", held_status());
             return true;
         }
         else if (weapon->sub_type != WPN_BLOWGUN)
         {
             if (!silent)
             {
-                mprf("You cannot shoot with your %s while %s.",
+                mprf("현재 상태에서는 %s로 발사할 수 없다. ( 상태 %s )<darkgrey>throw.cc.mprf:3</darkgrey>",
                      weapon->name(DESC_BASENAME).c_str(), held_status());
             }
             return true;
@@ -859,7 +859,7 @@ bool throw_it(bolt &pbolt, int throw_2, dist *target)
     you.time_taken = you.attack_delay(&item).roll();
 
     // Create message.
-    mprf("You %s%s %s.",
+    mprf("당신은_%s_%s_%s.<darkgrey>throw.cc.mprf:4</darkgrey>",
           teleport ? "magically " : "",
           (projected == LRET_FUMBLED ? "toss away" :
            projected == LRET_LAUNCHED ? "shoot" : "throw"),
