@@ -3270,8 +3270,9 @@ static MenuEntry* _fixup_runeorb_entry(MenuEntry* me)
         string text = "<";
         text += colour_to_str(colour);
         text += ">";
-        text += rune_type_name(rune);
-        text += " rune of Zot";
+        text += "조트의 ";
+        text += item_korean_name(OBJ_RUNES, rune);
+        text += " 룬";
         if (!you.runes[rune])
         {
             text += " (";
@@ -3290,10 +3291,10 @@ static MenuEntry* _fixup_runeorb_entry(MenuEntry* me)
     else if (entry->item->is_type(OBJ_ORBS, ORB_ZOT))
     {
         if (player_has_orb())
-            entry->text = "<magenta>The Orb of Zot</magenta>";
+            entry->text = "<magenta>조트의 오브</magenta>";
         else
         {
-            entry->text = "<darkgrey>The Orb of Zot"
+            entry->text = "<darkgrey>조트의 오브"
                           " (the Realm of Zot)</darkgrey>";
         }
     }
@@ -3307,8 +3308,8 @@ void display_runes()
                runes_in_pack() < you.obtainable_runes ? "green" :
                                                    "lightgreen";
 
-    auto title = make_stringf("<white>Runes of Zot (</white>"
-                              "<%s>%d</%s><white> collected) & Orbs of Power</white>",
+    auto title = make_stringf("<white>조트의 룬 (</white>"
+                              "<%s>%d</%s><white>개 얻음) & 힘의 오브</white>",
                               col, runes_in_pack(), col);
     title = string(max(0, 39 - printed_width(title) / 2), ' ') + title;
 

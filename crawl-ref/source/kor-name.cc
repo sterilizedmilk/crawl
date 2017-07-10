@@ -12,6 +12,7 @@
 #include "art-enum.h"
 #include "book-type.h"
 #include "item-prop-enum.h"
+#include "job-type.h"
 #include "libutil.h"
 #include "potion-type.h"
 #include "object-class-type.h"
@@ -527,4 +528,37 @@ string get_unrand_korean(int type, bool unid)
 
     name = lookup(Unrand_name, type, "오류");
     return name;
+}
+
+map<int, const char*> Job_name =
+{
+    {JOB_FIGHTER,               "전사"},
+    {JOB_WIZARD,                "마법사"},
+    {JOB_GLADIATOR,             "검투사"},
+    {JOB_NECROMANCER,           "강령술사"},
+    {JOB_ASSASSIN,              "암살자"},
+    {JOB_BERSERKER,             "광전사"},
+    {JOB_HUNTER,                "사냥꾼"},
+    {JOB_CONJURER,              "파괴술사"},
+    {JOB_ENCHANTER,             "주술사"},
+    {JOB_FIRE_ELEMENTALIST,     "화염술사"},
+    {JOB_ICE_ELEMENTALIST,      "냉기술사"},
+    {JOB_SUMMONER,              "소환사"},
+    {JOB_AIR_ELEMENTALIST,      "대기술사"},
+    {JOB_EARTH_ELEMENTALIST,    "대지술사"},
+    {JOB_SKALD,                 "음유시인"},
+    {JOB_VENOM_MAGE,            "독술사"},
+    {JOB_CHAOS_KNIGHT,          "혼돈의 기사"},
+    {JOB_TRANSMUTER,            "변이술사"},
+    {JOB_MONK,                  "수도사"},
+    {JOB_WARPER,                "전이술사"},
+    {JOB_WANDERER,              "방랑자"},
+    {JOB_ARTIFICER,             "발동술사"},
+    {JOB_ARCANE_MARKSMAN,       "마법궁수"},
+    {JOB_ABYSSAL_KNIGHT,        "심연의 기사"},
+};
+
+const char* job_name_korean(int type)
+{
+    return lookup(Job_name, type, "무직");
 }
