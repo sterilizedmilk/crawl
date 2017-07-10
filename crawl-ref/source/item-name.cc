@@ -3365,16 +3365,16 @@ void display_runes()
     menu.show();
 }
 
-                      // ㄱ  ㄲ  ㄴ  ㄷ ㄸ  ㄹ  ㅁ ㅂ ㅃ ㅅ ㅆ  ㅇ ㅈ ㅉ ㅊ ㅋ  ㅌ ㅍ ㅎ
-const int chosung[19] = {10, 2, 10, 10, 3, 10, 9, 8, 2, 7, 2, 8, 7, 2, 6, 6, 5, 6, 6};
+                      // ㄱ  ㄲ ㄴ  ㄷ  ㄸ ㄹ  ㅁ ㅂ ㅃ ㅅ ㅆ ㅇ ㅈ ㅉ ㅊ ㅋ ㅌ ㅍ ㅎ
+const int chosung[19] = {10, 1, 10, 10, 3, 10, 9, 7, 1, 7, 1, 9, 7, 1, 5, 6, 4, 4, 6};
 
-                       // ㅏ  ㅐ ㅑ ㅒ ㅓ ㅔ  ㅕ ㅖ  ㅗ ㅘ ㅙ  ㅚ ㅛ ㅜ ㅝ ㅞ ㅟ  ㅠ ㅡ  ㅢ  ㅣ
-const int jungsung[21] = {10, 7, 6, 5, 9, 6, 5, 4, 10, 7, 5, 5, 6, 9, 6, 3, 4, 6, 10, 5, 10};
+                       // ㅏ  ㅐ ㅑ ㅒ ㅓ ㅔ ㅕ ㅖ ㅗ ㅘ ㅙ ㅚ ㅛ ㅜ ㅝ ㅞ ㅟ ㅠ  ㅡ ㅢ ㅣ
+const int jungsung[21] = {10, 7, 2, 0, 9, 7, 7, 1, 9, 3, 5, 2, 3, 9, 2, 2, 3, 6, 10, 3, 10};
 
-                       // 없음, ㄱ ㄲ ㄳ  ㄴ ㄵ ㄶ ㄷ ㄹ ㄺ  ㄻ ㄼ ㄽ ㄾ ㄿ ㅀ
-const int jongsung[28] = {200, 10, 2, 2, 10, 1, 1, 8, 9, 2, 2, 2, 1, 1, 1, 2,
-                       // ㅁ ㅂ ㅄ ㅅ ㅆ ㅇ  ㅈ ㅊ ㅋ ㅌ ㅍ ㅎ
-                          8, 8, 1, 9, 2, 7, 7, 2, 2, 3, 2, 3};
+                       // 없음,ㄱ ㄲ ㄳ ㄴ ㄵ ㄶ ㄷ ㄹ ㄺ ㄻ ㄼ ㄽ ㄾ ㄿ ㅀ
+const int jongsung[28] = {200, 5, 0, 0, 9, 0, 0, 8, 9, 0, 0, 0, 0, 0, 0, 0,
+                       // ㅁ ㅂ ㅄ ㅅ ㅆ ㅇ ㅈ ㅊ ㅋ ㅌ ㅍ ㅎ
+                          5, 6, 1, 4, 2, 8, 3, 1, 1, 2, 1, 2};
 
 int get_sung(int seed, const int *arr)
 {
@@ -3535,7 +3535,6 @@ static void _test_jiyva_names(const string& fname)
     for (int i = 0; i < 1000000; i++)
     {
         const string name = make_name(get_uint32(), MNAME_JIYVA);
-
         if (name.length() > longest.length())
             longest = name;
         fprintf(f, "%s\n", name.c_str());
