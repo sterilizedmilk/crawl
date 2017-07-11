@@ -111,6 +111,7 @@ public:
     // until we refactor the whole pronoun / desc usage from these lowly
     // classes all the way up to monster/player (and actor) classes.
     string defender_name(bool allow_reflexive);
+    string defender_name(string postpostion, bool allow_reflexive);
 
 // Private Properties
     string aux_source;
@@ -179,8 +180,15 @@ protected:
     void stab_message();
 
     string atk_name(description_level_type desc);
+    string atk_name(string postpostion, description_level_type desc = DESC_PLAIN);
+
     string def_name(description_level_type desc);
+    string def_name(string postpostion, description_level_type desc = DESC_PLAIN);
+
     string wep_name(description_level_type desc = DESC_YOUR,
+                    iflags_t ignore_flags = ISFLAG_KNOW_CURSE
+                                            | ISFLAG_KNOW_PLUSES);
+    string wep_name(string postpostion, description_level_type desc = DESC_YOUR,
                     iflags_t ignore_flags = ISFLAG_KNOW_CURSE
                                             | ISFLAG_KNOW_PLUSES);
 

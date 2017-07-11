@@ -54,7 +54,7 @@ static void _read_each_message()
     FILE *mf = fopen_u(SysEnv.messagefile.c_str(), "r+");
     if (!mf)
     {
-        mprf(MSGCH_ERROR, "Couldn't read %s: %s", SysEnv.messagefile.c_str(),
+        mprf(MSGCH_ERROR, "%s을(를) 읽을 수 없다: %s", SysEnv.messagefile.c_str(),
              strerror(errno));
         _kill_messaging(mf);
         return;
@@ -65,7 +65,7 @@ static void _read_each_message()
 
     if (!lock_file_handle(mf, false))
     {
-        mprf(MSGCH_ERROR, "Failed to lock %s: %s", SysEnv.messagefile.c_str(),
+        mprf(MSGCH_ERROR, "%s을(를) 잠그는 데 실패했다: %s", SysEnv.messagefile.c_str(),
              strerror(errno));
         _kill_messaging(mf);
         return;
@@ -92,7 +92,7 @@ static void _read_each_message()
 
         if (!lock_file_handle(mf, false))
         {
-            mprf(MSGCH_ERROR, "Failed to lock %s: %s",
+            mprf(MSGCH_ERROR, "%s을(를) 잠그는 데 실패했다: %s",
                  SysEnv.messagefile.c_str(),
                  strerror(errno));
             _kill_messaging(mf);
@@ -101,7 +101,7 @@ static void _read_each_message()
     }
     if (!lock_file_handle(mf, true))
     {
-        mprf(MSGCH_ERROR, "Unable to write lock %s: %s",
+        mprf(MSGCH_ERROR, "%s의 쓰기 잠금 설정을 할 수 없다: %s",
              SysEnv.messagefile.c_str(),
              strerror(errno));
     }
@@ -122,7 +122,7 @@ void read_messages()
 static void _announce_messages()
 {
     // XXX: We could do a NetHack-like mail daemon here at some point.
-    mprf(MSGCH_DGL_MESSAGE, "Beep! Your pager goes off! Use _ to check your messages.");
+    mprf(MSGCH_DGL_MESSAGE, "삐빅! 당신의 호출기가 울렸다! _를 눌러 메시지 확인.");
 }
 
 void check_messages()

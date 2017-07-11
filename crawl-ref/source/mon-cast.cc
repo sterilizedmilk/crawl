@@ -302,8 +302,8 @@ static const map<spell_type, mons_spell_logic> spell_to_logic = {
         [](monster &caster, mon_spell_slot, bolt&) {
             if (you.can_see(caster))
             {
-                mprf("%s liquefies the ground around %s!",
-                     caster.name(DESC_THE).c_str(),
+                mprf("%s이(가) %s 주변의 땅을 액화시켰다!",
+                     caster.name(DESC_PLAIN).c_str(),
                      caster.pronoun(PRONOUN_REFLEXIVE).c_str());
                 flash_view_delay(UA_MONSTER, BROWN, 80);
             }
@@ -768,12 +768,12 @@ static void _cast_smiting(monster &caster, mon_spell_slot slot, bolt&)
     ASSERT(foe);
 
     if (foe->is_player())
-        mprf("%s smites you!", _god_name(god).c_str());
+        mprf("%s이(가) 당신을 강타했다!", _god_name(god).c_str());
     else
-        simple_monster_message(*foe->as_monster(), " is smitten.");
+        simple_monster_message(*foe->as_monster(), "이(가) 강타당했다.");
 
     foe->hurt(&caster, 7 + random2avg(11, 2), BEAM_MISSILE, KILLED_BY_BEAM,
-              "", "by divine providence");
+              "", "신의 섭리에 의해");
 }
 
 /// Is the given full-LOS attack spell worth casting for the given monster?
@@ -2058,8 +2058,8 @@ static void _print_battlecry_announcement(const monster& chief,
 
     if (seen_affected.size() == 1)
     {
-        mprf(channel, "%s goes into a battle-frenzy!",
-             seen_affected[0]->name(DESC_THE).c_str());
+        mprf(channel, "%s이(가) 전투의 광란에 빠져들었다!",
+             seen_affected[0]->name(DESC_PLAIN).c_str());
         return;
     }
 
@@ -2076,8 +2076,8 @@ static void _print_battlecry_announcement(const monster& chief,
 
     const string ally_desc
         = pluralise_monster(mons_type_name(group_type, DESC_PLAIN));
-    mprf(channel, "%s %s go into a battle-frenzy!",
-         chief.friendly() ? "Your" : "The", ally_desc.c_str());
+    mprf(channel, "%s %s이(가) 전투의 광란에 빠져들었다!",
+         chief.friendly() ? "당신의" : "", ally_desc.c_str());
 }
 
 /**
@@ -2579,9 +2579,9 @@ static bool _seal_doors_and_stairs(const monster* warden,
     if (had_effect)
     {
         ASSERT(!check_only);
-        mprf(MSGCH_MONSTER_SPELL, "%s activates a sealing rune.",
-                (warden->visible_to(&you) ? warden->name(DESC_THE, true).c_str()
-                                          : "Someone"));
+        mprf(MSGCH_MONSTER_SPELL, "%s이(가) 봉인의 룬을 발동했다.",
+                (warden->visible_to(&you) ? warden->name(DESC_PLAIN, true).c_str()
+                                          : "누군가"));
         if (num_closed > 1)
             mpr("그 문이 쾅 하고 닫혔다!");
         else if (num_closed == 1)
@@ -2677,14 +2677,14 @@ static bool _make_monster_angry(const monster* mon, monster* targ, bool actual)
         if (mon->type == MONS_QUEEN_BEE && (targ->type == MONS_KILLER_BEE ||
                                             targ->type == MONS_MELIAI))
         {
-            mprf("%s calls on %s to defend %s!",
-                mon->name(DESC_THE).c_str(),
-                targ->name(DESC_THE).c_str(),
+            mprf("%s가 %s에게 %s을(를) 지킬 것을 명령했다!",
+                mon->name("이").c_str(),
+                targ->name(DESC_PLAIN).c_str(),
                 mon->pronoun(PRONOUN_OBJECTIVE).c_str());
         }
         else
-            mprf("%s goads %s on!", mon->name(DESC_THE).c_str(),
-                 targ->name(DESC_THE).c_str());
+            mprf("%s %s을(를) 부추겼다!", mon->name("이").c_str(),
+                 targ->name(DESC_PLAIN).c_str());
     }
 
     targ->go_berserk(false);
@@ -2874,7 +2874,7 @@ static bool _awaken_vines(monster* mon, bool test_only = false)
 {
     if (_is_wiz_cast())
     {
-        mprf("Sorry, this spell isn't supported for dummies!"); //mons dummy
+        mprf("유감이지만, 이 주문은 가짜에게는 적용되지 않는다!"); //mons dummy
         return false;
     }
 
@@ -3300,9 +3300,9 @@ void aura_of_brilliance(monster* agent)
         {
             if (!mon->has_ench(ENCH_EMPOWERED_SPELLS) && you.can_see(*mon))
             {
-               mprf("%s is empowered by %s aura!",
-                    mon->name(DESC_THE).c_str(),
-                    apostrophise(agent->name(DESC_THE)).c_str());
+               mprf("%s %s의 오라를 받아 강화되었다!",
+                    mon->name("은").c_str(),
+                    apostrophise(agent->name(DESC_PLAIN)).c_str());
             }
             mon_enchant ench = mon->get_ench(ENCH_EMPOWERED_SPELLS);
             if (ench.ench != ENCH_NONE)
@@ -3610,8 +3610,8 @@ static bool _prepare_ghostly_sacrifice(monster &caster, bolt &beam)
 
     if (you.see_cell(victim->pos()))
     {
-        mprf("%s animating energy erupts into ghostly fire!",
-             apostrophise(victim->name(DESC_THE)).c_str());
+        mprf("%s에게 생기를 주는 에너지가 유령화염 속으로 분출된다!",
+             apostrophise(victim->name(DESC_PLAIN)).c_str());
     }
     monster_die(*victim, &caster, true);
     return true;
@@ -4157,8 +4157,8 @@ bool handle_mon_spell(monster* mons)
 
             if (ignore_good_idea)
             {
-                mprf(MSGCH_GOD, "You redirect %s's attack!",
-                     mons->name(DESC_THE).c_str());
+                mprf(MSGCH_GOD, "당신은 %s의 공격을 되돌려보냈다!",
+                     mons->name(DESC_PLAIN).c_str());
             }
         }
     }
@@ -4180,7 +4180,7 @@ bool handle_mon_spell(monster* mons)
     {
         // This may be a bad idea -- if we decide monsters shouldn't
         // lose a turn like players do not, please make this just return.
-        simple_monster_message(*mons, " falters for a moment.");
+        simple_monster_message(*mons, "은(는) 잠시 비틀거렸다.");
         mons->lose_energy(EUT_SPELL);
         return true;
     }
@@ -4269,8 +4269,8 @@ static int _monster_abjure_target(monster* target, int pow, bool actual)
         pow = pow * (30 - target->get_hit_dice()) / 30;
         if (pow < duration)
         {
-            simple_god_message(" protects your fellow warrior from evil "
-                               "magic!");
+            simple_god_message(" 동료전사를 사악한 마법으로 부터 "
+                               "보호했다!");
             shielded = true;
         }
     }
@@ -4279,14 +4279,14 @@ static int _monster_abjure_target(monster* target, int pow, bool actual)
         pow = pow / 2;
         if (pow < duration)
         {
-            simple_god_message(" shields your ally from puny magic!");
+            simple_god_message(" 동료를 자그마한 마법으로부터 방어했다!");
             shielded = true;
         }
     }
     else if (is_sanctuary(target->pos()))
     {
         pow = 0;
-        mprf(MSGCH_GOD, "Zin's power protects your fellow warrior from evil magic!");
+        mprf(MSGCH_GOD, "진의 권능이 동료전사를 사악한 마법으로부터 보호했다!");
         shielded = true;
     }
 
@@ -4296,7 +4296,7 @@ static int _monster_abjure_target(monster* target, int pow, bool actual)
     if (!target->lose_ench_duration(abj, pow))
     {
         if (!shielded)
-            simple_monster_message(*target, " shudders.");
+            simple_monster_message(*target, "은(는) 떨었다.");
         return 1;
     }
 
@@ -4582,8 +4582,8 @@ static bool _mons_cast_freeze(monster* mons)
 
     if (you.can_see(*target))
     {
-        mprf("%s %s frozen.", target->name(DESC_THE).c_str(),
-                              target->conj_verb("are").c_str());
+        mprf("%s %s 얼어붙었다.", target->name(DESC_PLAIN).c_str(),
+                              target->conj_verb("").c_str());
     }
 
     target->hurt(mons, damage, BEAM_COLD, KILLED_BY_BEAM, "", "by Freeze");
@@ -4653,13 +4653,13 @@ static int _mons_mesmerise(monster* mons, bool actual)
     {
         if (!already_mesmerised)
         {
-            simple_monster_message(*mons, " attempts to bespell you!");
+            simple_monster_message(*mons, "이(가) 당신을 현혹하려 시도한다!");
             flash_view(UA_MONSTER, LIGHTMAGENTA);
         }
         else
         {
-            mprf("%s draws you further into %s thrall.",
-                    mons->name(DESC_THE).c_str(),
+            mprf("%s 당신을 %s의 노예로 이끈다.",
+                    mons->name("은").c_str(),
                     mons->pronoun(PRONOUN_POSSESSIVE).c_str());
         }
     }
@@ -4679,7 +4679,7 @@ static int _mons_mesmerise(monster* mons, bool actual)
             else if (you.duration[DUR_MESMERISE_IMMUNE] && !already_mesmerised)
                 canned_msg(MSG_YOU_RESIST);
             else
-                mprf("You%s", you.resist_margin_phrase(res_magic).c_str());
+                mprf("당신은%s", you.resist_margin_phrase(res_magic).c_str());
         }
 
         return 0;
@@ -4726,7 +4726,7 @@ static int _mons_cause_fear(monster* mons, bool actual)
             if (you.clarity())
                 canned_msg(MSG_YOU_UNAFFECTED);
             else if (res_margin > 0)
-                mprf("You%s", you.resist_margin_phrase(res_margin).c_str());
+                mprf("당신은%s", you.resist_margin_phrase(res_margin).c_str());
             else if (you.add_fearmonger(mons))
             {
                 retval = 1;
@@ -4808,7 +4808,7 @@ static int _mons_mass_confuse(monster* mons, bool actual)
         {
             const int res_magic = you.check_res_magic(pow);
             if (res_magic > 0)
-                mprf("You%s", you.resist_margin_phrase(res_magic).c_str());
+                mprf("당신%s", you.resist_margin_phrase(res_magic).c_str());
             else
             {
                 you.confuse(mons, 5 + random2(3));
@@ -4869,7 +4869,7 @@ static int _mons_control_undead(monster* mons, bool actual)
         {
             int res_margin = you.check_res_magic(pow);
             if (res_margin > 0)
-                mprf("You%s", you.resist_margin_phrase(res_margin).c_str());
+                mprf("당신%s", you.resist_margin_phrase(res_margin).c_str());
             else
             {
                 enchant_actor_with_flavour(&you, mons, BEAM_ENSLAVE);
@@ -4913,7 +4913,7 @@ static int _mons_control_undead(monster* mons, bool actual)
             retval = 1;
             if (you.can_see(**mi))
             {
-                mprf("%s submits to %s will!",
+                mprf("%s은(는) %s에게 복종했다!",
                      mi->name(DESC_YOUR).c_str(),
                      apostrophise(mons->name(DESC_THE)).c_str());
             }
@@ -5375,13 +5375,13 @@ void flay(const monster &caster, actor &defender, int damage)
     {
         if (was_flayed)
         {
-            mprf("Terrible wounds spread across more of %s body!",
-                 defender.name(DESC_ITS).c_str());
+            mprf("끔찍한 상처들이 %s 몸 전체에 더욱 퍼져나갔다!",
+                 defender.name(DESC_PLAIN).c_str());
         }
         else
         {
-            mprf("Terrible wounds open up all over %s body!",
-                 defender.name(DESC_ITS).c_str());
+            mprf("끔찍한 상처들이 %s의 몸 전체에서 터져나왔다!",
+                 defender.name(DESC_PLAIN).c_str());
         }
     }
 
@@ -5478,12 +5478,12 @@ static void _cast_resonance_strike(monster &caster, mon_spell_slot, bolt&)
 
     if (you.see_cell(target->pos()))
     {
-        mprf("A blast of power from the earth%s strikes %s!",
+        mprf("땅으로 부터의 %s의 힘의 폭발이 %s을(를) 강타했다!",
              constructs_desc.c_str(),
-             target->name(DESC_THE).c_str());
+             target->name(DESC_PLAIN).c_str());
     }
     target->hurt(&caster, dam, BEAM_MISSILE, KILLED_BY_BEAM,
-                 "", "by a resonance strike");
+                 "", "공명하는 일격에 의해");
 }
 
 static bool _spell_charged(monster *mons)
@@ -5543,20 +5543,20 @@ static void _sheep_message(int num_sheep, int sleep_pow, actor& foe)
 
     // Determine messaging based on sleep strength.
     if (sleep_pow >= 125)
-        message = "You are overwhelmed by glittering dream dust!";
+        message = "당신은 반짝이는 꿈 가루에 휩싸였다!";
     else if (sleep_pow >= 75)
-        message = "The dream sheep are wreathed in dream dust.";
+        message = "꿈 양은 꿈 가루로 둘러싸여있다.";
     else if (sleep_pow >= MIN_DREAM_SUCCESS_POWER)
     {
-        message = make_stringf("The dream sheep shake%s wool and sparkle%s.",
-                               num_sheep == 1 ? "s its" : " their",
-                               num_sheep == 1 ? "s": "");
+        message = make_stringf("꿈 양은 %s털을 흔들어서 반짝였다%s.",
+                               num_sheep == 1 ? "그의 " : "그들의 ",
+                               num_sheep == 1 ? "": "");
     }
     else // if sleep fails
     {
-        message = make_stringf("The dream sheep ruffle%s wool and motes of "
-                               "dream dust sparkle, to no effect.",
-                               num_sheep == 1 ? "s its" : " their");
+        message = make_stringf("꿈 양이 %s털을 헝클어 반짝이는 꿈가루를 "
+                               "뿜었지만 효과가 없었다.",
+                               num_sheep == 1 ? "그의 " : "그들의 ");
     }
 
     // Messaging for non-player targets
@@ -5568,7 +5568,7 @@ static void _sheep_message(int num_sheep, int sleep_pow, actor& foe)
         {
             mprf(foe.as_monster()->friendly() ? MSGCH_FRIEND_SPELL
                                               : MSGCH_MONSTER_SPELL,
-                 "As the sheep sparkle%s and sway%s, %s falls asleep.",
+                 "양이 반짝%s 빛나고%s 흔들림으로서 %s은(는) 잠에 빠져들었다.",
                  pluralize,
                  pluralize,
                  foe_name.c_str());
@@ -5577,16 +5577,16 @@ static void _sheep_message(int num_sheep, int sleep_pow, actor& foe)
         {
             mprf(foe.as_monster()->friendly() ? MSGCH_FRIEND_SPELL
                                               : MSGCH_MONSTER_SPELL,
-                 "The dream sheep attempt%s to lull %s to sleep.",
-                 pluralize,
-                 foe_name.c_str());
-            mprf("%s is unaffected.", foe_name.c_str());
+                 "꿈 양은 %s을(를) 안심시키기 위에 %s 노력했다.",
+                 foe_name.c_str(),
+                 pluralize);
+            mprf("%s은(는) 영향을 받지 않았다.", foe_name.c_str());
         }
     }
     else if (foe.is_player())
     {
         mprf(MSGCH_MONSTER_SPELL, "%s%s", message.c_str(),
-             sleep_pow ? " You feel drowsy..." : "");
+             sleep_pow ? " 나른한 기분이 들었다..." : "");
     }
 }
 
@@ -5855,9 +5855,9 @@ void mons_cast(monster* mons, bolt pbolt, spell_type spell_cast,
         if (you.can_see(*foe))
         {
             if (foe->airborne())
-                mprf("The water rises up and strikes %s!", foe->name(DESC_THE).c_str());
+                mprf("물이 솟아 올라 %s을(를) 덮쳤다!", foe->name(DESC_PLAIN).c_str());
             else
-                mprf("The water swirls and strikes %s!", foe->name(DESC_THE).c_str());
+                mprf("물이 소용돌이치며 %s을(를) 강타했다!", foe->name(DESC_PLAIN).c_str());
         }
 
         pbolt.flavour    = BEAM_WATER;
@@ -5867,7 +5867,7 @@ void mons_cast(monster* mons, bolt pbolt, spell_type spell_cast,
         damage_taken = foe->apply_ac(damage_taken);
 
         foe->hurt(mons, damage_taken, BEAM_MISSILE, KILLED_BY_BEAM,
-                      "", "by the raging water");
+                      "", "몰아치는 물에 의해");
         return;
     }
 
@@ -5942,8 +5942,8 @@ void mons_cast(monster* mons, bolt pbolt, spell_type spell_cast,
         {
             if (you.can_see(*foe))
             {
-                mprf("%s%s",
-                     foe->name(DESC_THE).c_str(),
+                mprf("%s이(가) %s",
+                     foe->name(DESC_PLAIN).c_str(),
                      foe->resist_margin_phrase(res_margin).c_str());
             }
             return;
@@ -5955,7 +5955,7 @@ void mons_cast(monster* mons, bolt pbolt, spell_type spell_cast,
 
     case SPELL_MAJOR_HEALING:
         if (mons->heal(50 + random2avg(mons->spell_hd(spell_cast) * 10, 2)))
-            simple_monster_message(*mons, " is healed.");
+            simple_monster_message(*mons, "은(는) 치유되었다.");
         return;
 
     case SPELL_BERSERKER_RAGE:
@@ -5969,13 +5969,13 @@ void mons_cast(monster* mons, bolt pbolt, spell_type spell_cast,
 #endif
     case SPELL_SPRINT:
         mons->add_ench(ENCH_SWIFT);
-        simple_monster_message(*mons, " puts on a burst of speed!");
+        simple_monster_message(*mons, "은(는) 폭발적으로 속도를 올렸다!");
         return;
 
     case SPELL_SILENCE:
         mons->add_ench(ENCH_SILENCE);
         invalidate_agrid(true);
-        simple_monster_message(*mons, "'s surroundings become eerily quiet.");
+        simple_monster_message(*mons, "의 주위가 으스스하게 조용해지기 시작했다.");
         return;
 
     case SPELL_CALL_TIDE:
@@ -5988,7 +5988,7 @@ void mons_cast(monster* mons, bolt pbolt, spell_type spell_cast,
             mons->props[TIDE_CALL_TURN].get_int() = you.num_turns;
             if (simple_monster_message(*
                     mons,
-                    " sings a water chant to call the tide!"))
+                    "은(는) 파도의 조수를 부르는 물의 성가를 불렀다!"))
             {
                 flash_view_delay(UA_MONSTER, ETC_WATER, 300);
             }
@@ -6003,7 +6003,7 @@ void mons_cast(monster* mons, bolt pbolt, spell_type spell_cast,
 
         simple_monster_message(*
             mons,
-            " squirts a massive cloud of ink into the water!");
+            "은(는) 물에 거대한 잉크구름을 뿜어냈다!");
         return;
 
 #if TAG_MAJOR_VERSION == 34
@@ -6088,9 +6088,9 @@ void mons_cast(monster* mons, bolt pbolt, spell_type spell_cast,
 
         if (you.can_see(*mons))
         {
-            mprf("%s shimmers and seems to become %s!", mons->name(DESC_THE).c_str(),
-                                                        sumcount2 == 1 ? "two"
-                                                                       : "three");
+            mprf("%s 어른거리더니 %s(으)로 보이기 시작했다!", mons->name("이").c_str(),
+                                                        sumcount2 == 1 ? "둘"
+                                                                       : "셋");
         }
 
         return;
@@ -6124,8 +6124,8 @@ void mons_cast(monster* mons, bolt pbolt, spell_type spell_cast,
         harvest_corpses(*mons);
         if (crawl_state.game_is_arena() || you.can_see(*mons))
         {
-            mprf("The bodies of the dead form a shell around %s.",
-                 mons->name(DESC_THE).c_str());
+            mprf("죽은 자들의 육체가 %s 감싸 껍질을 형성했다.",
+                 mons->name("을").c_str());
         }
         mons->add_ench(ENCH_BONE_ARMOUR);
         return;
@@ -6346,10 +6346,10 @@ void mons_cast(monster* mons, bolt pbolt, spell_type spell_cast,
         if (you.can_see(*mons))
         {
             bool flying = mons->airborne();
-            mprf("A great vortex of raging winds appears %s%s%s!",
-                 flying ? "around " : "and lifts ",
-                 mons->name(DESC_THE).c_str(),
-                 flying ? "" : " up!");
+            mprf("소용돌이치는 거대한 돌풍이 %s%s%s!",
+                 flying ? "나타났다" : "나타나고 ",
+                 mons->name("이").c_str(),
+                 flying ? "" : " 날아올랐다!");
         }
         else if (you.see_cell(mons->pos()))
             mpr("맹렬한 소용돌이가 공기중에 나타났다!");
@@ -6549,8 +6549,8 @@ void mons_cast(monster* mons, bolt pbolt, spell_type spell_cast,
         {
             if (you.can_see(*mons))
             {
-                mprf("%s commands the forest to attack, but nothing happens.",
-                     mons->name(DESC_THE).c_str());
+                mprf("%s 숲에게 공격을 명령 했지만 아무일도 일어나지 않았다.",
+                     mons->name("은").c_str());
             }
             return;
         }
@@ -6562,7 +6562,7 @@ void mons_cast(monster* mons, bolt pbolt, spell_type spell_cast,
         env.forest_awoken_until = you.elapsed_time + duration;
 
         // You may be unable to see the monster, but notice an affected tree.
-        forest_message(mons->pos(), "The forest starts to sway and rumble!");
+        forest_message(mons->pos(), "숲이 흔들리고 웅웅거리기 시작한다!");
         return;
 
     case SPELL_SUMMON_DRAGON:
@@ -6596,7 +6596,7 @@ void mons_cast(monster* mons, bolt pbolt, spell_type spell_cast,
     case SPELL_REGENERATION:
     {
         simple_monster_message(*mons,
-                               "'s wounds begin to heal before your eyes!");
+                               "의 상처가 눈 앞에서 치유되기 시작한다!");
         const int dur = BASELINE_DELAY
             * min(5 + roll_dice(2, (mons->spell_hd(spell_cast) * 10) / 3 + 1), 100);
         mons->add_ench(mon_enchant(ENCH_REGENERATION, 0, mons, dur));
@@ -6607,8 +6607,8 @@ void mons_cast(monster* mons, bolt pbolt, spell_type spell_cast,
     {
         if (you.can_see(*mons))
         {
-            mprf("A film of ice covers %s body!",
-                 apostrophise(mons->name(DESC_THE)).c_str());
+            mprf("얼음으로 된 얇은 막이 %s의 몸을 감싼다!",
+                 apostrophise(mons->name(DESC_PLAIN)).c_str());
         }
         const int power = (mons->spell_hd(spell_cast) * 15) / 10;
         mons->add_ench(mon_enchant(ENCH_OZOCUBUS_ARMOUR,
@@ -6719,20 +6719,20 @@ void mons_cast(monster* mons, bolt pbolt, spell_type spell_cast,
                 mpr("당신은 부서지는 소리를 들었다.");
             else if (coinflip())
             {
-                mprf("The air around %s crackles with electrical energy.",
-                     mons->name(DESC_THE).c_str());
+                mprf("%s의 주변의 대기가 전류 에너지로 파직거렸다.",
+                     mons->name(DESC_PLAIN).c_str());
             }
             else
             {
                 const bool plural = coinflip();
-                mprf("%s blue arc%s ground%s harmlessly %s %s.",
-                     plural ? "Some" : "A",
-                     plural ? "s" : "",
-                     plural ? " themselves" : "s itself",
-                     plural ? "around" : random_choose_weighted(2, "beside",
-                                                                1, "behind",
-                                                                1, "before"),
-                     mons->name(DESC_THE).c_str());
+                mprf("%s 푸른 전하%s은(는) %s 무해하게 %s%s와 땅으로 흘렀다.",
+                     plural ? "약간의" : "",
+                     plural ? "들" : "",
+                     plural ? "저들끼리" : "그것들 끼리",
+                     plural ? "돌아다니며" : random_choose_weighted(2, "옆에서",
+                                                                1, "뒤에서",
+                                                                1, "앞에서"),
+                     mons->name(DESC_PLAIN).c_str());
             }
         }
         return;
@@ -6803,9 +6803,9 @@ void mons_cast(monster* mons, bolt pbolt, spell_type spell_cast,
     case SPELL_SHROUD_OF_GOLUBRIA:
         if (you.can_see(*mons))
         {
-            mprf("Space distorts along a thin shroud covering %s %s.",
-                 apostrophise(mons->name(DESC_THE)).c_str(),
-                 mons->is_insubstantial() ? "form" : "body");
+            mprf("%s의 %s 주위의 장막을 따라 공간이 일그러졌다.",
+                 apostrophise(mons->name(DESC_PLAIN)).c_str(),
+                 mons->is_insubstantial() ? "형상" : "몸");
         }
         mons->add_ench(mon_enchant(ENCH_SHROUD));
         return;
@@ -7587,9 +7587,9 @@ static void _throw_ally_to(const monster &thrower, monster &throwee,
                                                 foe->name(DESC_THE).c_str()) :
                                    "out of sight";
 
-        mprf("%s throws %s %s!",
-             (thrower_seen ? thrower.name(DESC_THE).c_str() : "Something"),
-             (throwee_seen ? throwee.name(DESC_THE, true).c_str() : "something"),
+        mprf("%s은(는) %s의 %s를 투척했다!",
+             (thrower_seen ? thrower.name(DESC_THE).c_str() : "무언가"),
+             (throwee_seen ? throwee.name(DESC_THE, true).c_str() : "무언가"),
              destination.c_str());
 
         bolt beam;
@@ -7700,9 +7700,9 @@ static bool _should_siren_sing(monster* mons, bool avatar)
  */
 static void _doom_howl(monster &mon)
 {
-    mprf("%s unleashes a %s howl, and it begins to echo in your mind!",
+    mprf("%s 목놓아서 %s 짖었고, 그 울음은 당신의 마음 속에서 울리기 시작했다!",
          mon.name(DESC_THE).c_str(),
-         silenced(mon.pos()) ? "silent" : "terrible");
+         silenced(mon.pos()) ? "조용히" : "끔찍하게");
     you.duration[DUR_DOOM_HOWL] = random_range(120, 180);
     mon.props[DOOM_HOUND_HOWLED_KEY] = true;
 }
@@ -7754,12 +7754,12 @@ static void _mons_awaken_earth(monster &mon, const coord_def &target)
     if (seen)
     {
         noisy(20, target);
-        mprf("Some walls %s!",
-             count > 0 ? "begin to move on their own"
-                       : "crumble away");
+        mprf("일부 벽들이 %s!",
+             count > 0 ? "자기들 끼리 움직이기 시작했다"
+                       : "무너져 사라졌다");
     }
     else
-        noisy(20, target, "You hear rumbling.");
+        noisy(20, target, "당신은 우르릉 하는 소리를 들었다.");
 
     if (!seen && !count && you.can_see(mon))
         canned_msg(MSG_NOTHING_HAPPENS);
@@ -7784,17 +7784,17 @@ static void _siren_sing(monster* mons, bool avatar)
 
     if (you.can_see(*mons))
     {
-        const char * const song_adj = already_mesmerised ? "its luring"
-                                                         : "a haunting";
-        const string song_desc = make_stringf(" chants %s song.", song_adj);
+        const char * const song_adj = already_mesmerised ? "그것은 유혹하는"
+                                                         : "홀리는 듯 한";
+        const string song_desc = make_stringf("%s 노래를 부른다.", song_adj);
         simple_monster_message(*mons, song_desc.c_str(), spl);
     }
     else
     {
-        mprf(MSGCH_SOUND, "You hear %s.",
-                          already_mesmerised ? "a luring song" :
-                          coinflip()         ? "a haunting song"
-                                             : "an eerie melody");
+        mprf(MSGCH_SOUND, "당신은 %s을(를) 들었다.",
+                          already_mesmerised ? "유혹하는 노래" :
+                          coinflip()         ? "뇌리에 박히는"
+                                             : "으스스한 선율");
 
         // If you're already mesmerised by an invisible siren, it
         // can still prolong the enchantment.
@@ -7816,7 +7816,7 @@ static void _siren_sing(monster* mons, bool avatar)
         else if (you.duration[DUR_MESMERISE_IMMUNE] && !already_mesmerised)
             canned_msg(MSG_YOU_RESIST);
         else
-            mprf("You%s", you.resist_margin_phrase(res_magic).c_str());
+            mprf("당신은 %s", you.resist_margin_phrase(res_magic).c_str());
         return;
     }
 

@@ -521,7 +521,7 @@ static int _issue_orders_prompt()
     {
         string cap_shout = you.shout_verb(false);
         cap_shout[0] = toupper(cap_shout[0]);
-        mprf(" t - %s!", cap_shout.c_str());
+        mprf("t - %s!", cap_shout.c_str());
     }
 
     if (!you.berserk())
@@ -534,7 +534,7 @@ static int _issue_orders_prompt()
                 previous = "   p - Attack previous target.";
         }
 
-        mprf("Orders for allies: a - Attack new target.%s", previous.c_str());
+        mprf("아군에게 명령:     a - 새로운 목표를 공격.%s", previous.c_str());
         mpr("                   r - 후퇴!                s - 공격 중지.");
         mpr("                   g - 지역 방어.           f - 날 따르라.");
     }
@@ -728,14 +728,14 @@ void yell(const actor* mon)
         {
             if (you.paralysed() || you.duration[DUR_WATER_HOLD])
             {
-                mprf("You feel a strong urge to %s, but "
-                     "you are unable to make a sound!",
+                mprf("당신은 %s을(를) 지르려고 하였으나, "
+                     "당신은 소리를 낼 수 없었다!",
                      shout_verb.c_str());
             }
             else
             {
-                mprf("You feel a %s rip itself from your throat, "
-                     "but you make no sound!",
+                mprf("%s이(가) 목구멍으로부터 절로 새어나왔으나, "
+                     "아무 소리도 나지 않았다!",
                      shout_verb.c_str());
             }
         }
@@ -747,14 +747,14 @@ void yell(const actor* mon)
 
     if (mon)
     {
-        mprf("You %s%s at %s!",
+        mprf("You %s%s at %s!<darkgrey>shout.cc.mprf:5</darkgrey>",
              shout_verb.c_str(),
              you.duration[DUR_RECITE] ? " your recitation" : "",
              mon->name(DESC_THE).c_str());
     }
     else
     {
-        mprf(MSGCH_SOUND, "You %s%s!",
+        mprf(MSGCH_SOUND, "You %s%s!<darkgrey>shout.cc.mprf:8</darkgrey>",
              shout_verb.c_str(),
              you.berserk() ? " wildly" : " for attention");
     }

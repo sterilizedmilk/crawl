@@ -1288,7 +1288,7 @@ vector<SelItem> prompt_drop_items(const vector<SelItem> &preselected_items)
 
         if (need_prompt)
         {
-            mprf(MSGCH_PROMPT, "%s (<w>?</w> for menu, <w>Esc</w> to quit)",
+            mprf(MSGCH_PROMPT, "%s (메뉴로 돌아가기 <w>?</w>, 종료하기 <w>Esc</w>)",
                  prompt.c_str());
         }
 
@@ -1845,7 +1845,7 @@ int prompt_invent_item(const char *prompt,
 
         if (need_prompt)
         {
-            mprf(MSGCH_PROMPT, "%s (<w>?</w> for menu, <w>Esc</w> to quit)",
+            mprf(MSGCH_PROMPT, "%s (메뉴로 돌아가기 <w>?</w>, 종료하기 <w>Esc</w>)",
                  prompt);
         }
         else

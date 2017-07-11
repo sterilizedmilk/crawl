@@ -935,7 +935,7 @@ void annotate_level()
 
     if (li2 != level_id::current())
     {
-        if (yesno("Annotate level on other end of current stairs?", true, 'n'))
+        if (yesno("현재 계단의 마지막에 주석을 추가하겠는가?", true, 'n'))
             li = li2;
     }
 
@@ -947,7 +947,7 @@ void do_annotate(level_id& li)
     string old = get_level_annotation(li, true, true);
     if (!old.empty())
     {
-        mprf(MSGCH_PROMPT, "Current level annotation: <lightgrey>%s</lightgrey>",
+        mprf(MSGCH_PROMPT, "현재 층 관련 알림: <lightgrey>%s</lightgrey>",
              old.c_str());
     }
 

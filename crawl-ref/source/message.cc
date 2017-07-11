@@ -1685,8 +1685,8 @@ void canned_msg(canned_message_type which_message)
     switch (which_message)
     {
         case MSG_SOMETHING_APPEARS:
-            mprf("Something appears %s!",
-                 player_has_feet() ? "at your feet" : "before you");
+            mprf("무엇인가 %s 나타났다!",
+                 player_has_feet() ? "당신의 발 밑에" : "당신 앞에");
             break;
         case MSG_NOTHING_HAPPENS:
             mpr("아무 일도 일어나지 않았다.");
@@ -1721,7 +1721,7 @@ void canned_msg(canned_message_type which_message)
             crawl_state.cancel_cmd_repeat();
             break;
         case MSG_OK:
-            mprf(MSGCH_PROMPT, "Okay, then.");
+            mprf(MSGCH_PROMPT, "알았다, 그럼.");
             crawl_state.cancel_cmd_repeat();
             break;
         case MSG_UNTHINKING_ACT:
@@ -1745,22 +1745,22 @@ void canned_msg(canned_message_type which_message)
             mpr("주문이 흐지부지되었다.");
             break;
         case MSG_HUH:
-            mprf(MSGCH_EXAMINE_FILTER, "Huh?");
+            mprf(MSGCH_EXAMINE_FILTER, "뭐?");
             crawl_state.cancel_cmd_repeat();
             break;
         case MSG_EMPTY_HANDED_ALREADY:
         case MSG_EMPTY_HANDED_NOW:
         {
             const char* when =
-            (which_message == MSG_EMPTY_HANDED_ALREADY ? "already" : "now");
+            (which_message == MSG_EMPTY_HANDED_ALREADY ? "이미" : "지금");
             if (you.species == SP_FELID)
-                mprf("Your mouth is %s empty.", when);
+                mprf("당신의 입은 %s 비어있다.", when);
             else if (you.has_usable_claws(true))
-                mprf("You are %s empty-clawed.", when);
+                mprf("당신의 손톱은 %s 비어있다.", when);
             else if (you.has_usable_tentacles(true))
-                mprf("You are %s empty-tentacled.", when);
+                mprf("당신의 촉수는 %s 비어있다.", when);
             else
-                mprf("You are %s empty-handed.", when);
+                mprf("당신의 손은 %s 비어있다.", when);
             break;
         }
         case MSG_YOU_BLINK:
@@ -1840,7 +1840,7 @@ bool simple_monster_message(const monster& mons, const char *event,
     {
         string msg = mons.name(descrip);
         string events(event);
-        msg += josa(msg, events.substr(0, 3));
+        msg += _josa(msg, events.substr(0, 3));
         msg += events;
 
         if (channel == MSGCH_PLAIN && mons.wont_attack())
@@ -1862,7 +1862,7 @@ void simple_god_message(const char *event, god_type which_deity)
        msg = uppercase_first(string("The Council") + event); // wu zian in korean?
     else
        msg = uppercase_first(god_name(which_deity))
-                      + josa(god_name(which_deity), events.substr(0, 3)) + event;
+                      + _josa(god_name(which_deity), events.substr(0, 3)) + event;
 
     god_speaks(which_deity, msg.c_str());
 }

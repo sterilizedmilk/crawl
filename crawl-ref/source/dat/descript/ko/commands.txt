@@ -339,3 +339,39 @@ CMD_ZOOM_OUT verbose
 
 던전 구역 줌 아웃
 %%%%
+CMD_LOOKUP_HELP
+
+도움말 찾기
+%%%%
+CMD_LOOKUP_HELP verbose
+
+몬스터, 주문, 능력, 아이템 등의 설명을 찾는다.
+%%%%
+CMD_MAP_EXPLORE
+
+다음 자동탐험 목표 찾기
+%%%%
+CMD_MAP_EXPLORE verbose
+
+자동탐험이 여행할 지역으로 마우스 커서를 이동한다.
+%%%%
+CMD_SAFE_WAIT
+
+안전하다면 한 턴을 기다린다.
+%%%%
+CMD_SAFE_WAIT verbose
+
+기다리면서 휴식을 취한다. 한턴을 소비한다.
+%%%%
+monsters in view.
+
+
+%%%%
+CMD_SHOW_KEYBOARD
+
+키보드 보기
+%%%%
+CMD_SHOW_KEYBOARD verbose
+
+적용 가능할 경우, 온-스크린 키보드를 불러온다.
+%%%%

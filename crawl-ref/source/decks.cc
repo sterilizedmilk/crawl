@@ -388,9 +388,9 @@ static card_type _draw_top_card(item_def& deck, bool message,
 
     if (message)
     {
-        const char *verb = (_flags & CFLAG_DEALT) ? "deal" : "draw";
+        const char *verb = (_flags & CFLAG_DEALT) ? "뽑았다" : "뒤집었다";
 
-        mprf("You %s a card... It is %s.", verb, card_name(card));
+        mprf("당신은 카드 한 장을 %s... 이건 %s다.", verb, card_name(card));
     }
 
     return card;
@@ -663,7 +663,7 @@ static void _deck_ident(item_def& deck)
     if (in_inventory(deck) && !item_ident(deck, ISFLAG_KNOW_TYPE))
     {
         set_ident_flags(deck, ISFLAG_KNOW_TYPE);
-        mprf("This is %s.", deck.name(DESC_A).c_str());
+        mprf("이건 %s이다.", deck.name(DESC_A).c_str());
         you.wield_change = true;
     }
 }
@@ -697,7 +697,7 @@ bool deck_deal()
     if (num_cards == 1)
         mpr("그 덱에는 카드 한 장만이 남아있다!");
     else if (num_cards < 4)
-        mprf("The deck only has %d cards.", num_cards);
+        mprf("이 덱엔 카드가 %d장 뿐이다.", num_cards);
 
     const int num_to_deal = (num_cards < 4 ? num_cards : 4);
 
@@ -841,12 +841,12 @@ bool deck_stack()
     if (num_cards == 1)
         mpr("그 덱에는 카드 한 장만이 남아있다!");
     else if (num_cards < 5)
-        mprf("The deck only has %d cards.", num_cards);
+        mprf("이 덱엔 카드가 %d장 뿐이다.", num_cards);
     else if (num_cards == 5)
         mpr("그 덱에는 정확히 다섯 장의 카드가 있다.");
     else
     {
-        mprf("You draw the first five cards out of %d and discard the rest.",
+        mprf("당신은 %d장의 카드 중 다섯 장을 뽑고 나머지는 버렸다.",
              num_cards);
     }
     // these are included in default force_more_message to show them before menu
@@ -1091,7 +1091,7 @@ void draw_from_deck_of_punishment(bool deal)
         flags |= CFLAG_DEALT;
     card_type card = _random_card(MISC_DECK_OF_PUNISHMENT, DECK_RARITY_COMMON);
 
-    mprf("You %s a card...", deal ? "deal" : "draw");
+    mprf("당신은 카드를 %s...", deal ? "뒤집었다" : "뽑았다");
     card_effect(card, DECK_RARITY_COMMON, flags);
 }
 
@@ -1171,7 +1171,7 @@ static void _suppressed_card_message(god_type god, conduct_type done)
         default: forbidden_act = "buggy"; break;
     }
 
-    mprf("By %s power, the %s magic on the card dissipates harmlessly.",
+    mprf("%s의 권능으로, 카드에 있던 %s의 마법이 아무 일 없이 사라졌다.",
          apostrophise(god_name(you.religion)).c_str(), forbidden_act.c_str());
 }
 
@@ -2070,7 +2070,7 @@ void card_effect(card_type which_card, deck_rarity_type rarity,
             && which_card != CARD_PAIN
             && which_card != CARD_ORB)
         {
-            mprf("You have %s %s.", participle, card_name(which_card));
+            mprf("당신은 %s을(를) %s.", card_name(which_card), participle);
         }
     }
 
@@ -2160,7 +2160,7 @@ void card_effect(card_type which_card, deck_rarity_type rarity,
 
     case NUM_CARDS:
         // The compiler will complain if any card remains unhandled.
-        mprf("You have %s a buggy card!", participle);
+        mprf("당신은 버그 카드를 %s!", participle);
         break;
     }
 }

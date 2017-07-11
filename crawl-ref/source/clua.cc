@@ -156,7 +156,7 @@ void CLua::save_persist()
     f = fopen_u(persistfile.c_str(), "w");
     if (!f)
     {
-        mprf(MSGCH_ERROR, "Couldn't open %s for writing!", persistfile.c_str());
+        mprf(MSGCH_ERROR, "기록을 위해 %s를 열 수 없다!", persistfile.c_str());
         return;
     }
 

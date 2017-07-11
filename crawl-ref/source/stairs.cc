@@ -61,7 +61,7 @@ bool check_annotation_exclusion_warning()
         && next_level_id != level_id::current()
         && is_connected_branch(next_level_id))
     {
-        mprf(MSGCH_PROMPT, "Warning, next level annotated: <yellow>%s</yellow>",
+        mprf(MSGCH_PROMPT, "경고, 다음 층의 주석: <yellow>%s</yellow>",
              get_level_annotation(next_level_id).c_str());
         might_be_dangerous = true;
         crawl_state.level_annotation_shown = true;
@@ -70,12 +70,12 @@ bool check_annotation_exclusion_warning()
              && feat_is_travelable_stair(grd(you.pos()))
              && !strstr(get_exclusion_desc(you.pos()).c_str(), "cloud"))
     {
-        mprf(MSGCH_WARN, "This staircase is marked as excluded!");
+        mprf(MSGCH_WARN, "이 계단은 탐험 제외 지역에 속해 있다!");
         might_be_dangerous = true;
     }
 
     if (might_be_dangerous
-        && !yesno("Enter next level anyway?", true, 'n', true, false))
+        && !yesno("그래도 다음 층으로 이동할 것인가?", true, 'n', true, false))
     {
         canned_msg(MSG_OK);
         interrupt_activity(AI_FORCE_INTERRUPT);
@@ -143,7 +143,7 @@ static bool _stair_moves_pre(dungeon_feature_type stair)
 
     string verb = stair_climb_verb(stair);
 
-    mprf("%s moves away as you attempt to %s it!", stair_str.c_str(),
+    mprf("당신이 %s%s 시도하자, 그것은 도망가버렸다!", stair_str.c_str(),
          verb.c_str());
 
     you.turn_is_over = true;
@@ -165,20 +165,20 @@ static void _climb_message(dungeon_feature_type stair, bool going_up,
             mpr("알 수 없는 힘이 당신을 위로 밀어냈다.");
         else
         {
-            mprf("You %s downwards.",
+            mprf("당신은 계단을 내려갔다.%s<darkgrey>stairs.cc.mprf:4</darkgrey>",
                  you.airborne() ? "fly" : "slide");
         }
         mpr("당신의 뒤에서 출입구가 거칠게 닫혔다.");
     }
     else if (feat_is_gate(stair))
     {
-        mprf("You %s %s through the gate.",
+        mprf("당신은 관문을 통과해 나왔다.%s %s<darkgrey>stairs.cc.mprf:5</darkgrey>",
              you.airborne() ? "fly" : "go",
              going_up ? "up" : "down");
     }
     else
     {
-        mprf("You %s %swards.",
+        mprf("당신은 %s했다. %s방향(계단)으로.<darkgrey>stairs.cc.mprf:6</darkgrey>",
              you.airborne() ? "fly" : "climb",
              going_up ? "up" : "down");
     }
@@ -317,7 +317,7 @@ static bool _check_fall_down_stairs(const dungeon_feature_type ftype, bool going
         if (!feat_is_staircase(ftype))
             fall_where = "through the gate";
 
-        mprf("In your confused state, you trip and fall %s%s.",
+        mprf("혼란한 나머지, %s에서 굴러 떨어졌다.%s",
              going_up ? "back " : "", fall_where);
         if (!feat_is_staircase(ftype))
             ouch(1, KILLED_BY_FALLING_THROUGH_GATE);
@@ -354,7 +354,7 @@ static void _rune_effect(dungeon_feature_type ftype)
         {
             ASSERT(runes.size() >= 3);
 
-            mprf("You insert the %s rune into the lock.", rune_type_name(runes[2]));
+            mprf("당신은 잠긴 문 안에, %s의 룬을 넣었다.", rune_type_name(runes[2]));
 #ifdef USE_TILE_LOCAL
             tiles.add_overlay(you.pos(), tileidx_zap(rune_colour(runes[2])));
             update_screen();
@@ -364,14 +364,14 @@ static void _rune_effect(dungeon_feature_type ftype)
             mpr("바위가 불가사의하게 빛났다!");
             // included in default force_more_message
 
-            mprf("You insert the %s rune into the lock.", rune_type_name(runes[1]));
+            mprf("당신은 잠긴 문 안에, %s의 룬을 넣었다.", rune_type_name(runes[1]));
             big_cloud(CLOUD_BLUE_SMOKE, &you, you.pos(), 20, 7 + random2(7));
             viewwindow();
             mpr("짙은 연기가 바위로부터 흘러나왔다!");
             // included in default force_more_message
         }
 
-        mprf("You insert the %s rune into the lock.", rune_type_name(runes[0]));
+        mprf("당신은 잠긴 문 안에, %s의 룬을 넣었다.", rune_type_name(runes[0]));
 
         if (silenced(you.pos()))
             mpr("문이 활짝 열렸다!");
@@ -492,7 +492,7 @@ static level_id _travel_destination(const dungeon_feature_type how,
         if (shaft_depth > 1)
             howfar = make_stringf(" for %d floors", shaft_depth);
 
-        mprf("You %s a shaft%s!", you.airborne() ? "are sucked into"
+        mprf("당신은 구덩이에 빠졌다! %s_%s<darkgrey>stairs.cc.mprf:11</darkgrey>", you.airborne() ? "are sucked into"
                                                  : "fall through",
                                   howfar.c_str());
 
@@ -651,7 +651,7 @@ void floor_transition(dungeon_feature_type how,
         // when going down.
         if (old_level.branch == BRANCH_ABYSS)
         {
-            mprf(MSGCH_BANISHMENT, "You plunge deeper into the Abyss.");
+            mprf(MSGCH_BANISHMENT, "당신은 어비스의 더욱 깊은 곳으로 내려갔다.");
             if (!you.runes[RUNE_ABYSSAL] && you.depth >= ABYSSAL_RUNE_MIN_LEVEL)
                 mpr("이 계층에서는 심연의 룬을 찾을 수 있다.");
             break;
@@ -693,13 +693,13 @@ void floor_transition(dungeon_feature_type how,
     {
         const branch_type branch = you.where_are_you;
         if (branch_entered(branch))
-            mprf("Welcome back to %s!", branches[branch].longname);
+            mprf("%s에 돌아오신걸 환영합니다!", branches[branch].longname);
         else if (how == branches[branch].entry_stairs)
         {
             if (branches[branch].entry_message)
                 mpr(branches[branch].entry_message);
             else if (branch != BRANCH_ABYSS) // too many messages...
-                mprf("Welcome to %s!", branches[branch].longname);
+                mprf("%s에 오신것을 환영합니다!", branches[branch].longname);
         }
 
         // Did we leave a notable branch for the first time?

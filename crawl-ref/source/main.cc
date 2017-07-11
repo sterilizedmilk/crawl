@@ -707,9 +707,9 @@ static void _start_running(int dir, int mode)
         && count_adjacent_slime_walls(next_pos))
     {
         if (dir == RDIR_REST)
-            mprf(MSGCH_WARN, "You're standing next to a slime covered wall!");
+            mprf(MSGCH_WARN, "당신은 점액질로 뒤덮힌 벽 옆에 서있다!");
         else
-            mprf(MSGCH_WARN, "You're about to run into the slime covered wall!");
+            mprf(MSGCH_WARN, "당신은 점액질로 뒤덮힌 벽 속으로 뛰어들었다!");
         return;
     }
 
@@ -1085,11 +1085,11 @@ static void _input()
         if (!has_pending_input() && !kbhit())
         {
             if (++crawl_state.lua_calls_no_turn > 1000)
-                mprf(MSGCH_ERROR, "Infinite lua loop detected, aborting.");
+                mprf(MSGCH_ERROR, "무한루아루프 발견, 무시.");
             else
             {
                 if (!clua.callfn("ready", 0, 0) && !clua.error.empty())
-                    mprf(MSGCH_ERROR, "Lua error: %s", clua.error.c_str());
+                    mprf(MSGCH_ERROR, "Lua 스크립트 에러 : %s", clua.error.c_str());
             }
         }
 
@@ -1213,7 +1213,7 @@ static bool _can_take_stairs(dungeon_feature_type ftype, bool down,
     // Held
     if (you.attribute[ATTR_HELD])
     {
-        mprf("You can't do that while %s.", held_status());
+        mprf("%s 동안에는 할 수 없다.", held_status());
         return false;
     }
 
@@ -1226,8 +1226,8 @@ static bool _can_take_stairs(dungeon_feature_type ftype, bool down,
     if (you.beheld() && !you.confused())
     {
         const monster* beholder = you.get_any_beholder();
-        mprf("You cannot move away from %s!",
-             beholder->name(DESC_THE, true).c_str());
+        mprf("%s(으)로부터 도망칠 수 없다!",
+             beholder->name(DESC_PLAIN, true).c_str());
         return false;
     }
 
@@ -1273,7 +1273,7 @@ static bool _can_take_stairs(dungeon_feature_type ftype, bool down,
                 if (min_runes == 1)
                     mpr("이곳에 들어가기 위해서는 룬이 필요하다.");
                 else
-                    mprf("You need at least %d runes to enter this place.",
+                    mprf("이곳에 들어가기 위해선 %d개의 룬이 필요하다.",
                          min_runes);
                 return false;
             }
@@ -1498,7 +1498,7 @@ static void _take_stairs(bool down)
 
 static void _experience_check()
 {
-    mprf("You are a level %d %s %s.",
+    mprf("당신은 %d레벨 %s 종족의 %s이다.",
          you.experience_level,
          species_name(you.species).c_str(),
          get_job_name(you.char_class));
@@ -1506,12 +1506,12 @@ static void _experience_check()
 
     if (you.experience_level < you.get_max_xl())
     {
-        mprf("You are %d%% of the way to level %d.", perc,
+        mprf("당신은 %d레벨까지 %d%%만큼 도달했다.", perc,
               you.experience_level + 1);
     }
     else
     {
-        mprf("I'm sorry, level %d is as high as you can go.", you.get_max_xl());
+        mprf("유감이지만 %d레벨이 당신의 한계이다.", you.get_max_xl());
         mpr("당신이 여기까지 올 수 있었다는 사실이 놀랍다.");
     }
 
@@ -1530,8 +1530,8 @@ static void _experience_check()
              / (exp_needed(xl + 1) - exp_needed(xl));
         perc = (nl - xl) * 100 - perc;
         mprf(you.lives < 2 ?
-             "You'll get an extra life in %d.%02d levels' worth of XP." :
-             "If you died right now, you'd get an extra life in %d.%02d levels' worth of XP.",
+             "당신은 %d.%02d레벨만큼의 경험치를 얻으면 추가 생명을 얻는다." :
+             "지금 죽는다면, %d.%02d레벨만큼의 경험치를 얻어야 추가 생명을 얻게 된다.",
              perc / 100, perc % 100);
     }
 
@@ -1546,7 +1546,7 @@ static void _experience_check()
              you.duration[DUR_GOURMAND]);
     }
 
-    mprf(MSGCH_DIAGNOSTICS, "Turns spent on this level: %d",
+    mprf(MSGCH_DIAGNOSTICS, "이 층계에서 소모한 턴: %d",
          env.turns_on_level);
 #endif
 }
@@ -1659,7 +1659,7 @@ static void _do_cycle_quiver(int dir)
 static void _do_list_gold()
 {
     if (shopping_list.empty())
-        mprf("You have %d gold piece%s.", you.gold, you.gold != 1 ? "s" : "");
+        mprf("당신이 가진 금화는 총 %d골드이다%s.", you.gold, you.gold != 1 ? "" : "");
     else
         shopping_list.display();
 }
@@ -1736,10 +1736,10 @@ void process_command(command_type cmd)
             && (crawl_state.prev_cmd == CMD_AUTOFIGHT
                 || crawl_state.prev_cmd == CMD_AUTOFIGHT_NOMOVE))
         {
-            mprf(MSGCH_DANGER, "You should not fight recklessly!");
+            mprf(MSGCH_DANGER, "당신은 무모하게 싸워서는 안 된다!");
         }
         else if (!clua.callfn(fnname, 0, 0))
-            mprf(MSGCH_ERROR, "Lua error: %s", clua.error.c_str());
+            mprf(MSGCH_ERROR, "Lua 스크립트 에러 : %s", clua.error.c_str());
         break;
     }
 #endif
@@ -1766,13 +1766,13 @@ void process_command(command_type cmd)
             Options.autopickup_on = 1;
         else
             Options.autopickup_on = 0;
-        mprf("Autopickup is now %s.", Options.autopickup_on > 0 ? "on" : "off");
+        mprf("자동습득 %s.", Options.autopickup_on > 0 ? "활성화" : "비활성화");
         break;
 
 #ifdef USE_SOUND
     case CMD_TOGGLE_SOUND:
         Options.sounds_on = !Options.sounds_on;
-        mprf("Sound effects are now %s.", Options.sounds_on ? "on" : "off");
+        mprf("음향효과 %s.", Options.sounds_on ? "활성화" : "비활성화");
         break;
 #endif
 
@@ -2035,7 +2035,7 @@ void process_command(command_type cmd)
         if (crawl_state.game_is_hints())
             mpr("알 수 없는 명령이다. (명령어 목록을 보기 위해서는  <w>?\?</w>를 누르시오.)");
         else // well, not examine, but...
-            mprf(MSGCH_EXAMINE_FILTER, "Unknown command.");
+            mprf(MSGCH_EXAMINE_FILTER, "잘못된 입력이다.");
 
         if (feat_is_altar(grd(you.pos())))
         {
@@ -2069,9 +2069,9 @@ static void _prep_input()
     {
         ASSERT(have_passive(passive_t::detect_portals));
         if (you.seen_portals == 1)
-            mprf(MSGCH_GOD, "You have a vision of a gate.");
+            mprf(MSGCH_GOD, "당신은 관문의 환상을 보았다.");
         else
-            mprf(MSGCH_GOD, "You have a vision of multiple gates.");
+            mprf(MSGCH_GOD, "당신은 여러 관문의 환상을 보았다.");
 
         you.seen_portals = 0;
     }
@@ -2084,11 +2084,11 @@ static void _check_banished()
         you.banished = false;
         ASSERT(brdepth[BRANCH_ABYSS] != -1);
         if (!player_in_branch(BRANCH_ABYSS))
-            mprf(MSGCH_BANISHMENT, "You are cast into the Abyss!");
+            mprf(MSGCH_BANISHMENT, "당신은 심연속으로 던져졌다!");
         else if (you.depth < brdepth[BRANCH_ABYSS])
-            mprf(MSGCH_BANISHMENT, "You are cast deeper into the Abyss!");
+            mprf(MSGCH_BANISHMENT, "당신은 심연 깊숙이 던져졌다!");
         else
-            mprf(MSGCH_BANISHMENT, "The Abyss bends around you!");
+            mprf(MSGCH_BANISHMENT, "당신 주위의 심연이 뒤틀린다!");
         // these are included in default force_more_message
         banished(you.banished_by, you.banished_power);
     }
@@ -2162,7 +2162,7 @@ static void _update_golubria_traps()
                 if (you.see_cell(c))
                     mpr("당신이 만든 골루브리아의 통로가 소리를 내며 닫혔다!");
                 else
-                    mprf(MSGCH_SOUND, "You hear a snapping sound.");
+                    mprf(MSGCH_SOUND, "당신은 탁 하는 소리를 들었다.");
                 trap->destroy();
                 noisy(spell_effect_noise(SPELL_GOLUBRIAS_PASSAGE), c);
             }
@@ -2619,7 +2619,7 @@ static void _open_door(coord_def move)
             door_move.delta = move;
         else
         {
-            mprf(MSGCH_PROMPT, "Which direction?");
+            mprf(MSGCH_PROMPT, "어느 방향인가?");
             direction_chooser_args args;
             args.restricts = DIR_DIR;
             direction(door_move, args);
@@ -2686,7 +2686,7 @@ static void _close_door(coord_def move)
 {
     if (you.attribute[ATTR_HELD])
     {
-        mprf("You can't close doors while %s.", held_status());
+        mprf("%s 도중에는 문을 닫을 수 없다.", held_status());
         return;
     }
 
@@ -2712,7 +2712,7 @@ static void _close_door(coord_def move)
             door_move.delta = move;
         else
         {
-            mprf(MSGCH_PROMPT, "Which direction?");
+            mprf(MSGCH_PROMPT, "어느 방향인가?");
             direction_chooser_args args;
             args.restricts = DIR_DIR;
             direction(door_move, args);
@@ -2769,13 +2769,13 @@ static void _do_berserk_no_combat_penalty()
         switch (you.berserk_penalty)
         {
         case 2:
-            mprf(MSGCH_DURATION, "You feel a strong urge to attack something.");
+            mprf(MSGCH_DURATION, "모조리 부셔버리고 싶은 강렬한 충동이 들끓는다.");
             break;
         case 4:
-            mprf(MSGCH_DURATION, "You feel your anger subside.");
+            mprf(MSGCH_DURATION, "분노가 가라앉는다.");
             break;
         case 6:
-            mprf(MSGCH_DURATION, "Your blood rage is quickly leaving you.");
+            mprf(MSGCH_DURATION, "피의 분노가 빠르게 사라진다.");
             break;
         }
 
@@ -2858,8 +2858,8 @@ static void _entered_malign_portal(actor* act)
     ASSERT(act); // XXX: change to actor &act
     if (you.can_see(*act))
     {
-        mprf("%s %s twisted violently and ejected from the portal!",
-             act->name(DESC_THE).c_str(), act->conj_verb("be").c_str());
+        mprf("%s%s가 난폭하게 요동치며 관문에서 튀어나왔다!",
+             act->name(DESC_PLAIN).c_str(), act->conj_verb("").c_str());
     }
 
     act->blink();
@@ -2929,16 +2929,16 @@ static void _move_player(coord_def move)
             you.turn_is_over = true;
             if (you.digging) // no actual damage
             {
-                mprf("Your mandibles retract as you bump into %s",
+                mprf("%s에 충돌하자 당신은 턱을 집어넣었다.",
                      feature_description_at(new_targ, false,
-                                            DESC_THE).c_str());
+                                            DESC_PLAIN).c_str());
                 you.digging = false;
             }
             else
             {
-                mprf("You bump into %s",
+                mprf("당신은 %s에 부딪혔다.",
                      feature_description_at(new_targ, false,
-                                            DESC_THE).c_str());
+                                            DESC_PLAIN).c_str());
             }
             you.apply_berserk_penalty = true;
             crawl_state.cancel_cmd_repeat();
@@ -2981,9 +2981,10 @@ static void _move_player(coord_def move)
         if (!current || !fedhas_passthrough(current))
         {
             // Probably need a better message. -cao
-            mprf("You %s carefully through the %s.", walkverb.c_str(),
+            mprf("당신은 조심스럽게 %s를 지나 %s.",
                  mons_genus(targ_monst->type) == MONS_FUNGUS ? "fungus"
-                                                             : "plants");
+                                                             : "plants",
+                 walkverb.c_str());
         }
         targ_monst = nullptr;
     }
@@ -3100,8 +3101,8 @@ static void _move_player(coord_def move)
     {
         if (you.confused() && is_feat_dangerous(env.grid(targ)))
         {
-            mprf("You nearly stumble into %s!",
-                 feature_description_at(targ, false, DESC_THE, false).c_str());
+            mprf("당신은 %s으로 거의 발을 헛 디뎠다!",
+                 feature_description_at(targ, false, DESC_PLAIN, false).c_str());
             you.apply_berserk_penalty = true;
             you.turn_is_over = true;
             return;
@@ -3140,8 +3141,8 @@ static void _move_player(coord_def move)
 
         if (you.digging)
         {
-            mprf("You dig through %s.", feature_description_at(targ, false,
-                 DESC_THE, false).c_str());
+            mprf("당신은 %s속으로 파고들었다.", feature_description_at(targ, false,
+                 DESC_PLAIN, false).c_str());
             destroy_wall(targ);
             noisy(6, you.pos());
             make_hungry(50, true);
@@ -3199,8 +3200,8 @@ static void _move_player(coord_def move)
 
         if (you.duration[DUR_BARBS])
         {
-            mprf(MSGCH_WARN, "The barbed spikes dig painfully into your body "
-                             "as you move.");
+            mprf(MSGCH_WARN, "움직일 때 마다 날카로운 가시가 당신의 몸 속을 "
+                             "고통스럽게 파고든다.");
             ouch(roll_dice(2, you.attribute[ATTR_BARBS_POW]), KILLED_BY_BARBS);
             bleed_onto_floor(you.pos(), MONS_PLAYER, 2, false);
 
@@ -3279,15 +3280,15 @@ static void _move_player(coord_def move)
     }
     else if (beholder && !attacking && !can_wall_jump)
     {
-        mprf("You cannot move away from %s!",
-            beholder->name(DESC_THE).c_str());
+        mprf("%s에게서 벗어날 수 없다!",
+            beholder->name(DESC_PLAIN).c_str());
         stop_running();
         return;
     }
     else if (fmonger && !attacking && !can_wall_jump)
     {
-        mprf("You cannot move closer to %s!",
-            fmonger->name(DESC_THE).c_str());
+        mprf("%s에게로 가까이 갈 수 없다!",
+            fmonger->name(DESC_PLAIN).c_str());
         stop_running();
         return;
     }
@@ -3401,7 +3402,7 @@ static void _run_input_with_keys(const keyseq& keys)
 
     if (get_macro_buf_size() < old_buf_size)
     {
-        mprf(MSGCH_ERROR, "(Key replay stole keys)");
+        mprf(MSGCH_ERROR, "(키를 재지정하는 스톨 키)");
         crawl_state.cancel_cmd_all();
     }
 }
@@ -3444,7 +3445,7 @@ static void _do_cmd_repeat()
     c_input_reset(true);
     if (ch == ' ' || ch == CK_ENTER)
     {
-        mprf(MSGCH_PROMPT, "Enter command to be repeated: ");
+        mprf(MSGCH_PROMPT, "반복할 명령을 입력하십시오: ");
         // Enable the cursor to read input.
         cursor_control con(true);
 
@@ -3524,7 +3525,7 @@ static void _do_prev_cmd_again()
 
     if (crawl_state.doing_prev_cmd_again)
     {
-        mprf(MSGCH_ERROR, "Trying to re-do re-do command, aborting.");
+        mprf(MSGCH_ERROR, "'이전 명령어 실행'명령을 이전 명령어 실행으로 실행하려고 하여, 중단한다.");
         crawl_state.cancel_cmd_all();
         return;
     }

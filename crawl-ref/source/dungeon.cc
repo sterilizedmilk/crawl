@@ -318,7 +318,7 @@ bool builder(bool enable_random_maps, dungeon_feature_type dest_stairs_type)
         }
         catch (map_load_exception &mload)
         {
-            mprf(MSGCH_ERROR, "Failed to load map, reloading all maps (%s).",
+            mprf(MSGCH_ERROR, "지도 불러오기 실패, 모든 지도를 불러옴 (%s).",
                  mload.what());
             reread_maps();
         }
@@ -414,7 +414,7 @@ static bool _build_level_vetoable(bool enable_random_maps,
     if (!branch_epilogues[you.where_are_you].empty())
         if (!dlua.callfn(branch_epilogues[you.where_are_you].c_str(), 0, 0))
         {
-            mprf(MSGCH_ERROR, "branch epilogue for %s failed: %s",
+            mprf(MSGCH_ERROR, "%s의 마지막 층 생성 실패: %s",
                               level_id::current().describe().c_str(),
                               dlua.error.c_str());
             return false;
@@ -489,8 +489,7 @@ bool dgn_make_transporters_from_markers()
         const string name = dm->property(TRANSPORTER_DEST_NAME_PROP);
         if (dest_map.find(name) != dest_map.end())
         {
-            mprf(MSGCH_ERROR, "Multiple locations with transporter "
-                 "destination name %s.", name.c_str());
+            mprf(MSGCH_ERROR, "%s 공간이동기의 목적지가 하나가 아니다.", name.c_str());
             no_errors = false;
             continue;
         }
@@ -506,8 +505,7 @@ bool dgn_make_transporters_from_markers()
         const string name = tm->property(TRANSPORTER_NAME_PROP);
         if (dest_map.find(name) == dest_map.end())
         {
-            mprf(MSGCH_ERROR, "Transporter with name %s has no corresponding "
-                 "destination marker.", name.c_str());
+            mprf(MSGCH_ERROR, "%s 공간이동기의 목적지가 없다", name.c_str());
             no_errors = false;
             continue;
         }
@@ -524,7 +522,7 @@ bool dgn_make_transporters_from_markers()
             env.markers.remove(dm);
         else
         {
-            mprf(MSGCH_ERROR, "Unused transporter destination with name %s.",
+            mprf(MSGCH_ERROR, "공간이동기 목적지 %s은(는) 사용되고 있지 않다.",
                  name.c_str());
             no_errors = false;
         }
@@ -1413,15 +1411,15 @@ void fixup_misplaced_items()
             if (feat == DNGN_DEEP_WATER && player_in_branch(BRANCH_ABYSS))
                 continue;
 
-            mprf(MSGCH_ERROR, "Item %s buggily placed in feature %s at (%d, %d).",
-                 item.name(DESC_PLAIN).c_str(),
+            mprf(MSGCH_ERROR, "아이템 %s (%d, %d) 위치의 %s에 버그로 인해 놓여져 있다.",
+                 item.name("이").c_str(),
+                 item.pos.x, item.pos.y,
                  feature_description_at(item.pos, false, DESC_PLAIN,
-                                        false).c_str(),
-                 item.pos.x, item.pos.y);
+                                        false).c_str());
         }
         else
         {
-            mprf(MSGCH_ERROR, "Item buggily placed out of bounds at (%d, %d).",
+            mprf(MSGCH_ERROR, "아이템이 (%d, %d)위치의 가장자리 밖에 버그로 인해 놓여져 있다.",
                  item.pos.x, item.pos.y);
         }
 
@@ -1488,7 +1486,7 @@ static void _fixup_branch_stairs()
 #ifdef DEBUG_DIAGNOSTICS
                 if (count++ && !root)
                 {
-                    mprf(MSGCH_ERROR, "Multiple branch exits on %s",
+                    mprf(MSGCH_ERROR, "%s의 서브던전 탈출구가 여러개이다.",
                          level_id::current().describe().c_str());
                 }
 #endif
@@ -2061,7 +2059,7 @@ static void _build_overflow_temples()
             if (vault == nullptr)
             {
                 mprf(MSGCH_ERROR,
-                     "Couldn't find overflow temple map '%s'!",
+                     "'%s'에 해당하는 신의 넘쳐난 제단을 찾을 수 없다!",
                      name.c_str());
             }
         }
@@ -2093,8 +2091,7 @@ static void _build_overflow_temples()
                     // We've already placed a specialized temple for this
                     // god, so do nothing.
 #ifdef DEBUG_TEMPLES
-                    mprf(MSGCH_DIAGNOSTICS, "Already placed specialized "
-                         "single-altar temple for %s", name.c_str());
+                    mprf(MSGCH_DIAGNOSTICS, "이미 %s만을 위한 신전이 세워져 있다.", name.c_str());
 #endif
                     continue;
                 }
@@ -2103,8 +2100,7 @@ static void _build_overflow_temples()
 #ifdef DEBUG_TEMPLES
                 if (vault == nullptr)
                 {
-                    mprf(MSGCH_DIAGNOSTICS, "Couldn't find overflow temple "
-                         "for combination of tags %s", vault_tag.c_str());
+                    mprf(MSGCH_DIAGNOSTICS, "%s 에 해당하는 넘쳐난 제단을 찾을 수 없다.", vault_tag.c_str());
                 }
 #endif
             }
@@ -2118,7 +2114,7 @@ static void _build_overflow_temples()
                 if (vault == nullptr)
                 {
                     mprf(MSGCH_ERROR,
-                         "Couldn't find overflow temple tag '%s'!",
+                         "'%s'에 해당하는 넘쳐난 제단을 찾을 수 없다!",
                          vault_tag.c_str());
                 }
             }
@@ -2136,14 +2132,13 @@ static void _build_overflow_temples()
                     false))
             {
 #ifdef DEBUG_TEMPLES
-                mprf(MSGCH_DIAGNOSTICS, "Couldn't place overflow temple '%s', "
-                     "vetoing level.", vault->name.c_str());
+                mprf(MSGCH_DIAGNOSTICS, "넘쳐난 제단 '%s'을(를) 생성할 수 없다.", vault->name.c_str());
 #endif
                 return;
             }
         }
 #ifdef DEBUG_TEMPLES
-        mprf(MSGCH_DIAGNOSTICS, "Placed overflow temple %s",
+        mprf(MSGCH_DIAGNOSTICS, "넘쳐난 제단 %s 생성.",
              vault->name.c_str());
 #endif
     }
@@ -2701,7 +2696,7 @@ static const map_def *_dgn_random_map_for_place(bool minivault)
             if (vault)
                 return vault;
 
-            mprf(MSGCH_ERROR, "Unable to find Temple vault '%s'",
+            mprf(MSGCH_ERROR, "신전 회랑 '%s'을(를) 찾을 수 없다.",
                  name.c_str());
 
             // Fall through and use a different Temple map instead.
@@ -3899,7 +3894,7 @@ static void _pick_float_exits(vault_placement &place, vector<coord_def> &targets
             if (feat_is_stair(grd(*ri)))
                 return;
 
-        mprf(MSGCH_ERROR, "Unable to find exit from %s",
+        mprf(MSGCH_ERROR, "%s로부터의 탈출구를 찾을 수 없다.",
              place.map.name.c_str());
         return;
     }
@@ -3961,7 +3956,7 @@ const vault_placement *dgn_place_map(const map_def *mdef,
         if (check_collision)
         {
             mprf(MSGCH_DIAGNOSTICS,
-                 "Cannot generate encompass map '%s' with check_collision=true",
+                 "check_collision=true 상태에서는 '%s'을(를) 포함하는 지도를 생성할 수 없다.",
                  mdef->name.c_str());
 
             return nullptr;
@@ -4034,8 +4029,8 @@ const vault_placement *dgn_safe_place_map(const map_def *mdef,
             if (retries-- > 0)
             {
                 mprf(MSGCH_ERROR,
-                     "Failed to load map %s in dgn_safe_place_map, "
-                     "reloading all maps",
+                     "dgn_safe_place_map에서 지도 %s를 불러오는 데 실패했다. "
+                     "모든 지도를 다시 불러온다.",
                      mload.what());
                 reread_maps();
 
@@ -5112,9 +5107,9 @@ static void _vault_grid_glyph_mons(vault_placement &place,
                 && mons_is_unique(mt)
                 && you.unique_creatures[mt])
             {
-                mprf(MSGCH_ERROR, "ERROR: %s already generated somewhere "
-                     "else; please file a bug report.",
-                     mons_type_name(mt, DESC_THE).c_str());
+                mprf(MSGCH_ERROR, "오류: %s가 이미 다른곳에 생성되었다; "
+                     "버그 제보 바람.",
+                     mons_type_name(mt, DESC_PLAIN).c_str());
                 // Force it to be generated anyway.
                 you.unique_creatures.set(mt, false);
             }
@@ -5324,7 +5319,7 @@ static dungeon_feature_type _pick_temple_altar(vault_placement &place)
             if (crawl_state.map_stat_gen || crawl_state.obj_stat_gen)
                 return DNGN_ALTAR_XOM;
 
-            mprf(MSGCH_ERROR, "Ran out of altars for temple!");
+            mprf(MSGCH_ERROR, "신전을 생성할 제단이 다 떨어졌다!");
             return DNGN_FLOOR;
         }
         // Randomized altar list for mini-temples.
@@ -5886,7 +5881,7 @@ static void _place_specific_trap(const coord_def& where, trap_spec* spec,
 
     if (spec_type == TRAP_SHAFT && !is_valid_shaft_level(known))
     {
-        mprf(MSGCH_ERROR, "Vault %s tried to place a shaft at a branch end",
+        mprf(MSGCH_ERROR, "창고 %s이(가) 서브던전 마지막 층의 구덩이에 생성되려 한다.",
                 env.placing_vault.c_str());
     }
 

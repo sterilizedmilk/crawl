@@ -92,7 +92,7 @@ void surge_power(const int enhanced)
                                 (enhanced ==  2) ? "strong" :
                                 (enhanced  >  2) ? "huge"
                                                  : "";
-        mprf("You feel %s %s",
+        mprf("You feel %s %s<darkgrey>spl-cast.cc.mprf:1</darkgrey>",
              !modifier.length() ? "a"
                                 : article_a(modifier).c_str(),
              (enhanced < 0) ? "numb sensation."
@@ -724,13 +724,13 @@ bool cast_a_spell(bool check_range, spell_type spell)
                 if (you.last_cast_spell == SPELL_NO_SPELL
                     || !Options.enable_recast_spell)
                 {
-                    mprf(MSGCH_PROMPT, "Cast which spell? (? or * to list) ");
+                    mprf(MSGCH_PROMPT, "어느 주문을 시전하는가? (? 또는 *로 주문 일람)");
                 }
                 else
                 {
-                    mprf(MSGCH_PROMPT, "Casting: <w>%s</w>",
+                    mprf(MSGCH_PROMPT, "주문: <w>%s</w>",
                          spell_title(you.last_cast_spell));
-                    mprf(MSGCH_PROMPT, "Confirm with . or Enter, or press ? or * to list all spells.");
+                    mprf(MSGCH_PROMPT, ". 또는 Enter 키로 결정. ? 또는 * 키로 주문 목록 일람.");
                 }
 
                 keyin = get_ch();
@@ -1334,7 +1334,7 @@ spret_type your_spells(spell_type spell, int powc, bool allow_fail,
 
         const char *prompt = get_spell_target_prompt(spell);
         if (dir == DIR_DIR)
-            mprf(MSGCH_PROMPT, "%s", prompt ? prompt : "Which direction?");
+            mprf(MSGCH_PROMPT, "%s", prompt ? prompt : "어느 방향으로?");
 
         const bool needs_path = !testbits(flags, SPFLAG_TARGET)
                                 // Apportation must be SPFLAG_TARGET, since a
@@ -1449,8 +1449,8 @@ spret_type your_spells(spell_type spell, int powc, bool allow_fail,
                  && one_chance_in(20))
         {
             // And you thought you'd Necromutate your way out of penance...
-            simple_god_message(" does not allow the disloyal to dabble in "
-                               "death!", GOD_KIKUBAAQUDGHA);
+            simple_god_message("은(는) 감히 죽음의 힘을 다루는 것을 허용하지 않았다!"
+                               "", GOD_KIKUBAAQUDGHA);
 
             // The spell still goes through, but you get a miscast anyway.
             MiscastEffect(&you, nullptr, GOD_MISCAST + GOD_KIKUBAAQUDGHA,
@@ -1464,8 +1464,8 @@ spret_type your_spells(spell_type spell, int powc, bool allow_fail,
                  && one_chance_in(20))
         {
             // And you thought you'd Fire Storm your way out of penance...
-            simple_god_message(" does not allow the disloyal to dabble in "
-                               "destruction!", GOD_VEHUMET);
+            simple_god_message("은(는) 감히 죽음의 힘을 다루는 것을 허용하지 않았다!"
+                               "", GOD_VEHUMET);
 
             // The spell still goes through, but you get a miscast anyway.
             MiscastEffect(&you, nullptr, GOD_MISCAST + GOD_VEHUMET,
@@ -1521,13 +1521,13 @@ spret_type your_spells(spell_type spell, int powc, bool allow_fail,
             return SPRET_FAIL;
 #endif
 
-        mprf("You miscast %s.", spell_title(spell));
+        mprf("당신은 %s을(를) 시전하는데 실패했다.", spell_title(spell));
         flush_input_buffer(FLUSH_ON_FAILURE);
         learned_something_new(HINT_SPELL_MISCAST);
 
         if (decimal_chance(_chance_miscast_prot()))
         {
-            simple_god_message(" protects you from the effects of your miscast!");
+            simple_god_message(" (은)는 당신을 주문시전 실패효과로부터 보호하였다!");
             return SPRET_FAIL;
         }
 
@@ -1565,11 +1565,11 @@ spret_type your_spells(spell_type spell, int powc, bool allow_fail,
 
         if (is_valid_spell(spell))
         {
-            mprf(MSGCH_ERROR, "Spell '%s' is not a player castable spell.",
+            mprf(MSGCH_ERROR, "%s은(는) 사용가능한 주문이 아니다.",
                  spell_title(spell));
         }
         else
-            mprf(MSGCH_ERROR, "Invalid spell!");
+            mprf(MSGCH_ERROR, "잘못된 주문이다!");
 
         return SPRET_ABORT;
     }

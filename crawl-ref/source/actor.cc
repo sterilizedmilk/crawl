@@ -437,7 +437,7 @@ bool actor::check_clinging(bool stepped, bool door)
     {
         if (you.can_see(*this))
         {
-            mprf("%s %s off the %s.", name(DESC_THE).c_str(),
+            mprf("%s은(는) 내려왔다(%s off). the %s아래로.<darkgrey>actor.cc.mprf:1</darkgrey>", name(DESC_THE).c_str(),
                  conj_verb("fall").c_str(),
                  door ? "door" : "wall");
         }
@@ -473,7 +473,7 @@ void actor::end_constriction(mid_t whom, bool intentional, bool quiet)
     if (!quiet && alive() && constrictee->alive()
         && (you.see_cell(pos()) || you.see_cell(constrictee->pos())))
     {
-        mprf("%s %s %s grip on %s.",
+        mprf("%s은(는) 풀었다(%s) %s로 잡고있던 %s를.<darkgrey>actor.cc.mprf:2</darkgrey>",
                 name(DESC_THE).c_str(),
                 conj_verb(intentional ? "release" : "lose").c_str(),
                 pronoun(PRONOUN_POSSESSIVE).c_str(),
@@ -660,7 +660,7 @@ void actor::handle_constriction()
         if (damage <= 0 && is_player()
             && you.can_see(*defender))
         {
-            exclamations = ", but do no damage.";
+            exclamations = " 하지만, 아무 손상도 입히지 못했다.";
         }
         else if (damage < HIT_WEAK)
             exclamations = ".";
@@ -681,7 +681,7 @@ void actor::handle_constriction()
 
         if (is_player() || you.can_see(*this))
         {
-            mprf("%s %s %s%s%s",
+            mprf("%s은(는) 감아조였다(%s) %s을(를)%s%s<darkgrey>actor.cc.mprf:3</darkgrey>",
                  (is_player() ? "You"
                               : name(DESC_THE).c_str()),
                  conj_verb("constrict").c_str(),
@@ -695,7 +695,7 @@ void actor::handle_constriction()
         }
         else if (you.can_see(*defender) || defender->is_player())
         {
-            mprf("%s %s constricted%s%s",
+            mprf("%s의 몸이 조여들었다.(%s)%s%s<darkgrey>actor.cc.mprf:4</darkgrey>",
                  defender->name(DESC_THE).c_str(),
                  defender->conj_verb("are").c_str(),
 #ifdef DEBUG_DIAGNOSTICS
@@ -811,12 +811,12 @@ string actor::resist_margin_phrase(int margin) const
 
     static const string resist_messages[][2] =
     {
-      { " barely %s.",                  "resist" },
-      { " %s to resist.",               "struggle" },
-      { " %s with significant effort.", "resist" },
-      { " %s with some effort.",        "resist" },
-      { " easily %s.",                  "resist" },
-      { " %s with almost no effort.",   "resist" },
+      { "은(는) 아슬아슬하게 %s",                  "저항했다" },
+      { "은(는) 저항하기위해 %s",               "발버둥쳤다." },
+      { " %s with significant effort.", "저항했다" },
+      { " %s with some effort.",        "저항했다" },
+      { " easily %s.",                  "저항했다" },
+      { " %s with almost no effort.",   "저항했다" },
     };
 
     const int index = max(0, min((int)ARRAYSZ(resist_messages) - 1,
@@ -850,7 +850,7 @@ void actor::collide(coord_def newpos, const actor *agent, int pow)
             behaviour_event(other->as_monster(), ME_WHACK, agent);
         if (you.can_see(*this) || you.can_see(*other))
         {
-            mprf("%s %s with %s!",
+            mprf("%s은(는) 폭파했다(%s) %s를!<darkgrey>actor.cc.mprf:5</darkgrey>",
                  name(DESC_THE).c_str(),
                  conj_verb("collide").c_str(),
                  other->name(DESC_THE).c_str());
@@ -872,7 +872,7 @@ void actor::collide(coord_def newpos, const actor *agent, int pow)
     {
         if (!can_pass_through_feat(grd(newpos)))
         {
-            mprf("%s %s into %s!",
+            mprf("%s은(는) 닫혔다.(%s)_into_%s!<darkgrey>actor.cc.mprf:6</darkgrey>",
                  name(DESC_THE).c_str(), conj_verb("slam").c_str(),
                  env.map_knowledge(newpos).known()
                  ? feature_description_at(newpos, false, DESC_THE, false)
@@ -881,7 +881,7 @@ void actor::collide(coord_def newpos, const actor *agent, int pow)
         }
         else
         {
-            mprf("%s violently %s moving!",
+            mprf("%s은(는) 격렬하게 이동을 멈췄다!(%s)<darkgrey>actor.cc.mprf:7</darkgrey>",
                  name(DESC_THE).c_str(), conj_verb("stop").c_str());
         }
     }

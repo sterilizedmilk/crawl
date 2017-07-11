@@ -606,8 +606,8 @@ public:
     string name(description_level_type descrip, bool terse = false,
                 bool ident = false, bool with_inscription = true,
                 bool quantity_in_words = false,
-                iflags_t ignore_flags = 0x0) const;
-    string name(string postposition, description_level_type descrip = DESC_PLAIN,
+                iflags_t ignore_flags = 0x0, bool kr = true) const;
+    string name(string postposition = "", description_level_type descrip = DESC_PLAIN,
                 bool terse = false, bool ident = false,
                 bool with_inscription = true, bool quantity_in_words = false,
                 iflags_t ignore_flags = 0x0) const;
@@ -669,7 +669,9 @@ public:
 private:
     string name_aux(description_level_type desc, bool terse, bool ident,
                     bool with_inscription, iflags_t ignore_flags) const;
-
+    string name_aux_kr(description_level_type desc, bool terse, bool ident,
+                       bool with_inscription, iflags_t ignore_flags) const;
+    
     colour_t randart_colour() const;
 
     colour_t ring_colour() const;

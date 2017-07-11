@@ -41,7 +41,7 @@ bool gain_portfolio()
         return false;
     }
 
-    mprf(MSGCH_PROMPT, "Choose your divine portfolio!");
+    mprf(MSGCH_PROMPT, "당신의 신성을 선택해라!");
     string portrait_list_message;
     string portrait_string;
 
@@ -70,7 +70,7 @@ bool gain_portfolio()
         if (index >= 0 && index < (int)valid_portfolio.size())
         {
             you.demigod_portifolio = valid_portfolio[index];            
-            mprf(MSGCH_PLAIN, "You've got %s portfolio", demigod_portfolio_type_name(you.demigod_portifolio));
+            mprf(MSGCH_PLAIN, "당신은 %s 특성을 얻었다.", demigod_portfolio_type_name(you.demigod_portifolio));
             return true;
         }
         else

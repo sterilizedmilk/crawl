@@ -132,7 +132,7 @@ spret_type cast_tornado(int powc, bool fail)
     }
 
     if (friendlies
-        && !yesno("There are friendlies around, are you sure you want to hurt them?",
+        && !yesno("주문 사용시, 주위의 아군들에게 피해가 갈 수 있다. 계속하겠는가?",
                   true, 'n'))
     {
         canned_msg(MSG_OK);
@@ -463,7 +463,7 @@ void tornado_damage(actor *caster, int dur)
             && !need_expiration_warning(old_player_pos)
             && need_expiration_warning(new_player_pos))
         {
-            mprf(MSGCH_DANGER, "Careful! You are now flying above %s",
+            mprf(MSGCH_DANGER, "주의! 당신은 지금 %s위를",
                  feature_description_at(new_player_pos, false, DESC_PLAIN)
                      .c_str());
         }

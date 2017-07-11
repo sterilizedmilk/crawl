@@ -1060,14 +1060,14 @@ static void _mimic_vanish(const coord_def& pos, const string& name)
     if (!you.see_cell(pos))
         return;
 
-    const char* const smoke_str = can_place_smoke ? " in a puff of smoke" : "";
+    const char* const smoke_str = can_place_smoke ? "연기처럼" : "";
 
     const bool can_cackle = !silenced(pos) && !silenced(you.pos());
     const string db_cackle = getSpeakString("_laughs_");
-    const string cackle = db_cackle != "" ? db_cackle : "cackles";
-    const string cackle_str = can_cackle ? cackle + " and " : "";
+    const string cackle = db_cackle != "" ? db_cackle : "낄낄대고는"; //cackle
+    const string cackle_str = can_cackle ? cackle : "";
 
-    mprf("The %s mimic %svanishes%s!",
+    mprf("%s 미믹은 %s %s 사라졌다!",
          name.c_str(), cackle_str.c_str(), smoke_str);
     interrupt_activity(AI_MIMIC);
 }
@@ -1112,10 +1112,9 @@ void discover_mimic(const coord_def& pos)
         return;
     }
 
-    const string name = feature_mimic ? "the " + string(feat_type_name(feat))
-                                      : item->name(DESC_THE, false, false,
+    const string name = feature_mimic ? string(feat_type_name(feat))
+                                      : item->name(DESC_PLAIN, false, false,
                                                              false, true);
-    const bool plural = feature_mimic ? false : item->quantity > 1;
 
 #ifdef USE_TILE
     tileidx_t tile = tileidx_feature(pos);
@@ -1123,7 +1122,7 @@ void discover_mimic(const coord_def& pos)
 #endif
 
     if (you.see_cell(pos))
-        mprf("%s %s a mimic!", name.c_str(), plural ? "are" : "is");
+        mprf("%s 미믹이었다!", josa(name, "은").c_str());
 
     const string shortname = feature_mimic ? feat_type_name(feat)
                                            : item->name(DESC_BASENAME);
@@ -2040,40 +2039,40 @@ string mon_attack_name(attack_type attack)
 {
     static const char *attack_types[] =
     {
-        "hit",         // including weapon attacks
-        "bite",
-        "sting",
+        "때렸다",         // including weapon attacks
+        "물었다",
+        "쏘았다",
 
         // spore
-        "release spores at",
+        "포자로 공격했다",
 
-        "touch",
-        "engulf",
-        "claw",
-        "peck",
-        "headbutt",
-        "punch",
-        "kick",
-        "tentacle-slap",
-        "tail-slap",
-        "gore",
-        "constrict",
-        "trample",
-        "trunk-slap",
+        "건드렸다",
+        "휩쌌다",
+        "햘퀴었다",
+        "쪼았다",
+        "머리로 박았다",
+        "주먹질했다",
+        "걷어찼다",
+        "촉수로 때렸다",
+        "꼬리로 때렸다",
+        "들이받았다",
+        "조였다",
+        "짓밟았다",
+        "큰 코로 때렸다",
 #if TAG_MAJOR_VERSION == 34
         "snap closed at",
         "splash",
 #endif
-        "pounce on",
+        "덮쳤다",
 #if TAG_MAJOR_VERSION == 34
         "sting",
 #endif
-        "hit", // AT_CHERUB
+        "때렸다", // AT_CHERUB
 #if TAG_MAJOR_VERSION == 34
-        "hit", // AT_SHOOT
+        "때렸다", // AT_SHOOT
 #endif
-        "hit", // AT_WEAP_ONLY,
-        "hit", // AT_RANDOM
+        "때렸다", // AT_WEAP_ONLY,
+        "때렸다", // AT_RANDOM
     };
     COMPILE_CHECK(ARRAYSZ(attack_types) == NUM_ATTACK_TYPES - AT_FIRST_ATTACK);
 
@@ -2979,7 +2978,7 @@ void define_monster(monster& mons)
 
 static const char *ugly_colour_names[] =
 {
-    "red", "brown", "green", "cyan", "purple", "white"
+    "붉은색", "갈색", "초록색", "청록색", "보라색", "하얀색"
 };
 
 string ugly_thing_colour_name(colour_t colour)
@@ -3042,7 +3041,7 @@ void ugly_thing_apply_uniform_band_colour(mgen_data &mg,
 
 static const char *drac_colour_names[] =
 {
-    "black", "", "yellow", "green", "purple", "red", "white", "grey", "pale"
+    "검은", "", "노란", "녹색", "보라색", "붉은", "하얀", "회색", "창백한"
 };
 
 string draconian_colour_name(monster_type mon_type)
@@ -3073,7 +3072,7 @@ monster_type draconian_colour_by_name(const string &name)
 // TODO: Remove "putrid" when TAG_MAJOR_VERSION > 34
 static const char *demonspawn_base_names[] =
 {
-    "monstrous", "gelid", "infernal", "putrid", "torturous",
+    "무시무시한", "얼음장 같은", "지옥불", "putrid", "고문의",
 };
 
 string demonspawn_base_name(monster_type mon_type)
@@ -3555,7 +3554,7 @@ void mons_pacify(monster& mon, mon_attitude_type att, bool no_xp)
     if (mon.type == MONS_GERYON)
     {
         simple_monster_message(mon,
-            make_stringf(" discards %s horn.",
+            make_stringf("는 %s 뿔을 떨여트렸다.",
                          mon.pronoun(PRONOUN_POSSESSIVE).c_str()).c_str());
         monster_drop_things(&mon, false, item_is_horn_of_geryon);
     }
@@ -4635,33 +4634,33 @@ string do_mon_str_replacements(const string &in_msg, const monster& mons,
 
     static const char * sound_list[] =
     {
-        "says",         // actually S_SILENT
-        "shouts",
-        "barks",
-        "howls",
-        "shouts",
-        "roars",
-        "screams",
-        "bellows",
-        "bleats",
-        "trumpets",
-        "screeches",
-        "buzzes",
-        "moans",
-        "gurgles",
-        "croaks",
-        "growls",
-        "hisses",
-        "sneers",       // S_DEMON_TAUNT
-        "says",         // S_CHERUB -- they just speak normally.
-        "squeals",
-        "roars",
+        "말했다",         // actually S_SILENT
+        "소리쳤다",
+        "짖었다",
+        "울부짖었다",
+        "소리쳤다",
+        "포효했다",
+        "소리질렀다",
+        "음머거렸다",
+        "매애거렸다",
+        "뿌우거렸다",
+        "날카로운 소리를 냈다",
+        "웅웅거렸다",
+        "투덜거렸다",
+        "꾸륵거렸다",
+        "개굴거렸다",
+        "으르렁거렸다",
+        "쉬익거렸다",
+        "비웃었다",       // S_DEMON_TAUNT
+        "말했다",         // S_CHERUB -- they just speak normally.
+        "꽥꽥거렸다",
+        "포효했다",
         "buggily says", // NUM_SHOUTS
-        "breathes",     // S_VERY_SOFT
-        "whispers",     // S_SOFT
-        "says",         // S_NORMAL
-        "shouts",       // S_LOUD
-        "screams",      // S_VERY_LOUD
+        "나직이 속삭였다",     // S_VERY_SOFT
+        "속삭였다",     // S_SOFT
+        "말했다",         // S_NORMAL
+        "소리쳤다",       // S_LOUD
+        "소리질렀다",      // S_VERY_LOUD
     };
     COMPILE_CHECK(ARRAYSZ(sound_list) == NUM_LOUDNESS);
 
@@ -5388,34 +5387,66 @@ mon_dam_level_type mons_get_damage_level(const monster& mons)
         return MDAM_OKAY;
 }
 
-string get_damage_level_string(mon_holy_type holi, mon_dam_level_type mdam)
+// bool sentence is unnecessary in english
+string get_damage_level_string(mon_holy_type holi, mon_dam_level_type mdam, bool sentence)
 {
     ostringstream ss;
-    switch (mdam)
+    if(sentence)
     {
-    case MDAM_ALMOST_DEAD:
-        ss << "almost";
-        ss << (wounded_damaged(holi) ? " destroyed" : " dead");
+        switch (mdam)
+        {
+        case MDAM_ALMOST_DEAD:
+            ss << "거의";
+            ss << (wounded_damaged(holi) ? " 파괴되었다" : " 죽었다");
+            return ss.str();
+        case MDAM_SEVERELY_DAMAGED:
+            ss << "심각하게";
+            break;
+        case MDAM_HEAVILY_DAMAGED:
+            ss << "크게";
+            break;
+        case MDAM_MODERATELY_DAMAGED:
+            ss << "중간정도로";
+            break;
+        case MDAM_LIGHTLY_DAMAGED:
+            ss << "가볍게";
+            break;
+        case MDAM_OKAY:
+        default:
+            ss << (wounded_damaged(holi) ? "피해입지 않았다" : "부상입지 않았다");
+            return ss.str();
+        }
+        ss << (wounded_damaged(holi) ? " 피해입었다" : " 부상을 입었다");
         return ss.str();
-    case MDAM_SEVERELY_DAMAGED:
-        ss << "severely";
-        break;
-    case MDAM_HEAVILY_DAMAGED:
-        ss << "heavily";
-        break;
-    case MDAM_MODERATELY_DAMAGED:
-        ss << "moderately";
-        break;
-    case MDAM_LIGHTLY_DAMAGED:
-        ss << "lightly";
-        break;
-    case MDAM_OKAY:
-    default:
-        ss << "not";
-        break;
     }
-    ss << (wounded_damaged(holi) ? " damaged" : " wounded");
-    return ss.str();
+    else
+    {
+        switch (mdam)
+        {
+        case MDAM_ALMOST_DEAD:
+            ss << "거의";
+            ss << (wounded_damaged(holi) ? " 파괴됨" : " 죽음");
+            return ss.str();
+        case MDAM_SEVERELY_DAMAGED:
+            ss << "심각하게";
+            break;
+        case MDAM_HEAVILY_DAMAGED:
+            ss << "크게";
+            break;
+        case MDAM_MODERATELY_DAMAGED:
+            ss << "중간정도로";
+            break;
+        case MDAM_LIGHTLY_DAMAGED:
+            ss << "가볍게";
+            break;
+        case MDAM_OKAY:
+        default:
+            ss << (wounded_damaged(holi) ? "피해입지 않음" : "부상입지 않음");
+            return ss.str();
+        }
+        ss << (wounded_damaged(holi) ? " 피해입음" : " 부상을 입음");
+        return ss.str();
+    }
 }
 
 void print_wounds(const monster& mons)
@@ -5424,10 +5455,9 @@ void print_wounds(const monster& mons)
         return;
 
     mon_dam_level_type dam_level = mons_get_damage_level(mons);
-    string desc = get_damage_level_string(mons.holiness(), dam_level);
+    string desc = get_damage_level_string(mons.holiness(), dam_level, true);
 
-    desc.insert(0, " is ");
-    desc += ".";
+    desc.insert(0, "는 ");
     simple_monster_message(mons, desc.c_str(), MSGCH_MONSTER_DAMAGE,
                            dam_level);
 }
@@ -5629,9 +5659,9 @@ void throw_monster_bits(const monster& mon)
 
         int damage = 1 + random2(mon.get_hit_dice());
 
-        mprf("%s is hit by a flying piece of %s!",
-                target->name(DESC_THE, false).c_str(),
-                mon.name(DESC_THE, false).c_str());
+        mprf("%s 날아가던 %s에 맞았다!",
+                target->name("은", DESC_PLAIN, false).c_str(),
+                mon.name(DESC_PLAIN, false).c_str());
 
         // Because someone will get a kick out of this some day.
         if (mons_class_flag(mons_base_type(mon), M_ACID_SPLASH))
@@ -5699,8 +5729,8 @@ void set_ancestor_spells(monster &ancestor, bool notify)
         if (find(old_spells.begin(), old_spells.end(), spellslot.spell)
             == old_spells.end())
         {
-            mprf("%s regains %s memory of %s.",
-                 ancestor.name(DESC_YOUR, true).c_str(),
+            mprf("%s %s %s에 대한 기억을 되찾았다.",
+                 ancestor.name("는", DESC_YOUR, true).c_str(),
                  ancestor.pronoun(PRONOUN_POSSESSIVE, true).c_str(),
                  spell_title(spellslot.spell));
         }

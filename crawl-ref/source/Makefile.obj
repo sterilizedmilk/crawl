@@ -96,6 +96,7 @@ items.o \
 jobs.o \
 json.o \
 kills.o \
+kor-name.o \
 l-colour.o \
 l-crawl.o \
 l-debug.o \

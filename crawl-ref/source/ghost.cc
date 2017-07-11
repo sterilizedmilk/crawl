@@ -738,7 +738,7 @@ void ghost_demon::find_transiting_ghosts(
 void ghost_demon::announce_ghost(const ghost_demon &g)
 {
 #if defined(DEBUG_BONES) || defined(DEBUG_DIAGNOSTICS)
-    mprf(MSGCH_DIAGNOSTICS, "Saving ghost: %s", g.name.c_str());
+    mprf(MSGCH_DIAGNOSTICS, "유령 관련 정보 저장: %s", g.name.c_str());
 #endif
 }
 

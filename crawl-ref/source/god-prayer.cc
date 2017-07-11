@@ -86,7 +86,7 @@ static bool _pray_ecumenical_altar()
             unwind_var<int> fakepoor(you.attribute[ATTR_GOLD_GENERATED], 0);
 
             god_type altar_god = _altar_identify_ecumenical_altar();
-            mprf(MSGCH_GOD, "%s accepts your prayer!",
+            mprf(MSGCH_GOD, "%s은(는) 당신의 기도를 받아들였다!",
                             god_name(altar_god).c_str());
             you.turn_is_over = true;
             if (!you_worship(altar_god))
@@ -142,9 +142,9 @@ void try_god_conversion(god_type god)
     else
     {
         // Already worshipping this god - just print a message.
-        mprf(MSGCH_GOD, "You offer a %sprayer to %s.",
-             you.cannot_speak() ? "silent " : "",
-             god_name(god).c_str());
+        mprf(MSGCH_GOD, "당신은 %s에게 %s기도를 올렸다.",
+             god_name(god).c_str(),             
+             you.cannot_speak() ? "침묵의 " : "");
     }
 }
 
@@ -169,7 +169,7 @@ int zin_tithe(const item_def& item, int quant, bool quiet, bool converting)
         }
         taken = tithe;
         you.attribute[ATTR_DONATIONS] += tithe;
-        mprf("You pay a tithe of %d gold.", tithe);
+        mprf("당신은 %d의 금화를 십일조로 치렀다.", tithe);
 
         if (item.plus == 1) // seen before worshipping Zin
         {
@@ -237,7 +237,7 @@ static slurp_gain _sacrifice_one_item_noncount(const item_def& item)
                       (is_worthless_consumable(item) ? 1 : shop_value));
 
 #if defined(DEBUG_DIAGNOSTICS) || defined(DEBUG_SACRIFICE)
-        mprf(MSGCH_DIAGNOSTICS, "Sacrifice item value: %d", value);
+        mprf(MSGCH_DIAGNOSTICS, "희생된 아이템의 가치: %d", value);
 #endif
 
     slurp_gain gain { jiyva_slurp_result::none, PIETY_NONE };

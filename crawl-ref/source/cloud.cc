@@ -983,10 +983,10 @@ static bool _actor_apply_cloud_side_effects(actor *act,
         {
             if (you.can_see(*act))
             {
-                mprf("%s %s in the rain.",
-                     act->name(DESC_THE).c_str(),
+                mprf("%s은(는) 비 속에서 %s 있다.",
+                     act->name(DESC_PLAIN).c_str(),
                      act->conj_verb(silenced(act->pos())?
-                                    "steam" : "sizzle").c_str());
+                                    "증기를 뿜고" : "지글거리고").c_str());
             }
         }
         break;
@@ -1621,11 +1621,11 @@ void cloud_struct::announce_actor_engulfed(const actor *act,
     // Normal clouds. (Unmodified rain clouds have a different message.)
     if (type != CLOUD_RAIN && type != CLOUD_STORM)
     {
-        mprf("%s %s in %s.",
-             act->name(DESC_THE).c_str(),
-             beneficial ? act->conj_verb("bask").c_str()
-                        : (act->conj_verb("are") + " engulfed").c_str(),
-             cloud_name().c_str());
+        mprf("%s은(는) %s %s 있다.",
+             act->name(DESC_PLAIN).c_str(),
+             cloud_name().c_str(),
+             beneficial ? act->conj_verb("을(를) 만끽하고").c_str()
+                        : (act->conj_verb("에") + " 삼켜져").c_str());
         return;
     }
 
@@ -1633,10 +1633,9 @@ void cloud_struct::announce_actor_engulfed(const actor *act,
     // of spam reduction.
     if (act->is_player())
     {
-        mprf("%s %s standing in %s.",
-             act->name(DESC_THE).c_str(),
-             act->conj_verb("are").c_str(),
-             type == CLOUD_STORM ? "a thunderstorm" : "the rain");
+        mprf("%s은(는) %s 안에 서 있다.",
+             act->name(DESC_PLAIN).c_str(),
+             type == CLOUD_STORM ? "뇌우" : "비구름");
     }
 }
 
@@ -1798,7 +1797,7 @@ void start_still_winds()
 {
     delete_all_clouds();
     env.level_state |= LSTATE_STILL_WINDS;
-    mprf(MSGCH_WARN, "%s", "The air becomes perfectly still.");
+    mprf(MSGCH_WARN, "%s", "대기가 완벽하게 멈춰섰다.");
 }
 
 void end_still_winds()

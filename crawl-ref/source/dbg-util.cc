@@ -75,7 +75,7 @@ void debug_dump_levgen()
             type = props[LAYOUT_TYPE_KEY].get_string();
     }
 
-    mprf("Level build method = %s, level layout type  = %s, absdepth0 = %d",
+    mprf("계층 생성 수단 = %s, 계층 레이아웃 타입 = %s, 던전고유값0 = %d",
          method.c_str(), type.c_str(), env.absdepth0);
 
     if (!env.level_vaults.empty())

@@ -154,6 +154,10 @@ public:
     virtual string name(description_level_type type,
                         bool force_visible = false,
                         bool force_article = false) const = 0;
+    virtual string name(string postposition = "",
+                        description_level_type type = DESC_PLAIN,
+                        bool force_visible = false,
+                        bool force_article = false) const = 0;
     virtual string pronoun(pronoun_type which_pronoun,
                            bool force_visible = false) const = 0;
     virtual string conj_verb(const string &verb) const = 0;
