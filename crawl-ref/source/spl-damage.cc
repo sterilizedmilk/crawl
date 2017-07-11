@@ -2070,7 +2070,7 @@ spret_type cast_discharge(int pow, bool fail)
         else
         {
             const bool plural = coinflip();
-            mprf("%s blue arc%s ground%s harmlessly %s you.<darkgrey>spl-damage.cc.mprf:20</darkgrey>",
+            mprf("%s blue arc%s ground%s harmlessly %s you.",
                  plural ? "Some" : "A",
                  plural ? "s" : "",
                  plural ? " themselves" : "s itself",
@@ -3061,7 +3061,7 @@ spret_type cast_glaciate(actor *caster, int pow, coord_def aim, bool fail)
 
     if (you.can_see(*caster) || caster->is_player())
     {
-        mprf("%s %s a mighty blast of ice!<darkgrey>spl-damage.cc.mprf:24</darkgrey>",
+        mprf("%s %s a mighty blast of ice!",
              caster->name(DESC_THE).c_str(),
              caster->conj_verb("conjure").c_str());
     }

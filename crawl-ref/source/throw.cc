@@ -377,14 +377,14 @@ bool fire_warn_if_impossible(bool silent)
         if (!weapon || !is_range_weapon(*weapon))
         {
             if (!silent)
-                mprf("%s 상태에서는 무언가를 던질 수 없다.<darkgrey>throw.cc.mprf:2</darkgrey>", held_status());
+                mprf("%s 상태에서는 무언가를 던질 수 없다.", held_status());
             return true;
         }
         else if (weapon->sub_type != WPN_BLOWGUN)
         {
             if (!silent)
             {
-                mprf("현재 상태에서는 %s로 발사할 수 없다. ( 상태 %s )<darkgrey>throw.cc.mprf:3</darkgrey>",
+                mprf("현재 상태에서는 %s로 발사할 수 없다. ( 상태 %s )",
                      weapon->name(DESC_BASENAME).c_str(), held_status());
             }
             return true;
@@ -859,7 +859,7 @@ bool throw_it(bolt &pbolt, int throw_2, dist *target)
     you.time_taken = you.attack_delay(&item).roll();
 
     // Create message.
-    mprf("당신은_%s_%s_%s.<darkgrey>throw.cc.mprf:4</darkgrey>",
+    mprf("당신은 %s %s %s.",
           teleport ? "magically " : "",
           (projected == LRET_FUMBLED ? "toss away" :
            projected == LRET_LAUNCHED ? "shoot" : "throw"),

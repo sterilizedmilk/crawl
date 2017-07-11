@@ -366,7 +366,7 @@ void xom_tick()
         }
 
         if (you.gift_timeout == 1)
-            simple_god_message("(은)는 점점 지.루.해.졌.다.");
+            simple_god_message("은 점점 지.루.해.졌.다.");
     }
 
     if (x_chance_in_y(2 + you.faith(), 6))
@@ -669,7 +669,7 @@ static void _xom_make_item(object_class_type base, int subtype, int power)
     move_item_to_grid(&thing_created, you.pos());
 
     if (thing_created == NON_ITEM) // if it fell into lava
-        simple_god_message("은(는) 낄낄대며 웃었다.", GOD_XOM);
+        simple_god_message("은 낄낄대며 웃었다.", GOD_XOM);
 
     stop_running();
 }
@@ -1650,7 +1650,7 @@ static void _xom_change_scenery(int /*sever*/)
     }
     if (!effects.empty())
     {
-        mprf("%s!<darkgrey>xom.cc.mprf:9</darkgrey><darkgrey>xom.cc.mprf:8</darkgrey>",
+        mprf("%s!",
              comma_separated_line(effects.begin(), effects.end(),
                                   ", and ").c_str());
         effects.clear();
@@ -1686,7 +1686,7 @@ static void _xom_change_scenery(int /*sever*/)
         take_note(Note(NOTE_XOM_EFFECT, you.piety, -1, ("scenery: "
             + comma_separated_line(terse.begin(), terse.end(), ", ", ", ")).c_str()),
             true);
-        mprf("%s!<darkgrey>xom.cc.mprf:9</darkgrey><darkgrey>xom.cc.mprf:8</darkgrey>",
+        mprf("%s!",
              comma_separated_line(effects.begin(), effects.end(),
                                   ", and ").c_str());
     }
@@ -2441,7 +2441,7 @@ bool move_stair(coord_def stair_pos, bool away, bool allow_under)
 
     string stair_str = feature_description_at(stair_pos, false, DESC_THE, false);
 
-    mprf("%s slides %s you!<darkgrey>xom.cc.mprf:13</darkgrey>", stair_str.c_str(),
+    mprf("%s slides %s you!", stair_str.c_str(),
          away ? "away from" : "towards");
 
     // Animate stair moving.

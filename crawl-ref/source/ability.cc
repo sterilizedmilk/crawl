@@ -303,25 +303,25 @@ static const ability_def Ability_List[] =
       0, 0, 75, 0, {fail_basis::xl, 20, 1}, abflag::breath },
     { ABIL_TRAN_BAT, "박쥐 변신", 2, 0, 0, 0, {fail_basis::xl, 45, 2}, abflag::none },
 
-    { ABIL_BREATHE_ACID, "Breathe Acid",
+    { ABIL_BREATHE_ACID, "부식 숨결",
       0, 0, 125, 0, {fail_basis::xl, 30, 1}, abflag::breath },
 
     { ABIL_FLY, "비행", 3, 0, 100, 0, {fail_basis::xl, 42, 3}, abflag::none },
     { ABIL_STOP_FLYING, "비행 중지", 0, 0, 0, 0, {}, abflag::none },
-    { ABIL_DAMNATION, "Hurl Damnation",
+    { ABIL_DAMNATION, "업화 투사",
         0, 150, 200, 0, {fail_basis::xl, 50, 1}, abflag::none },
 
 #if TAG_MAJOR_VERSION == 34
     { ABIL_DELAYED_FIREBALL, "축적된 화염구 방출",
       0, 0, 0, 0, {}, abflag::instant },
 #endif
-    { ABIL_CANCEL_PPROJ, "Cancel Portal Projectile",
+    { ABIL_CANCEL_PPROJ, "투사체 전이 취소",
       0, 0, 0, 0, {}, abflag::instant },
 
     { ABIL_DIG, "굴착", 0, 0, 0, 0, {}, abflag::instant },
     { ABIL_SHAFT_SELF, "구덩이 파기", 0, 0, 250, 0, {}, abflag::delay },
 
-    { ABIL_HOP, "Hop", 0, 0, 0, 0, {}, abflag::none },
+    { ABIL_HOP, "도약", 0, 0, 0, 0, {}, abflag::none },
 
     // EVOKE abilities use Evocations and come from items.
     // Teleportation and Blink can also come from mutations
@@ -333,7 +333,7 @@ static const ability_def Ability_List[] =
     // use or train Evocations (the others do).  -- bwr
     { ABIL_EVOKE_BLINK, "순간이동 발동",
       1, 0, 50, 0, {fail_basis::evo, 40, 2}, abflag::none },
-    { ABIL_HEAL_WOUNDS, "Heal Wounds",
+    { ABIL_HEAL_WOUNDS, "상처 치유",
       0, 0, 0, 0, {fail_basis::xl, 45, 2}, abflag::none },
     { ABIL_EVOKE_BERSERK, "광전사의 분노 발동",
       0, 0, 600, 0, {fail_basis::evo, 50, 2}, abflag::none },
@@ -348,7 +348,7 @@ static const ability_def Ability_List[] =
       1, 0, 100, 0, {fail_basis::evo, 40, 2}, abflag::none },
     { ABIL_EVOKE_FOG, "안개 발동",
       2, 0, 250, 0, {fail_basis::evo, 50, 2}, abflag::none },
-    { ABIL_EVOKE_RATSKIN, "Evoke Ratskin",
+    { ABIL_EVOKE_RATSKIN, "쥐가죽 발동",
       3, 0, 200, 0, {fail_basis::evo, 50, 2}, abflag::none },
 
     { ABIL_END_TRANSFORMATION, "변신 해제",
@@ -362,7 +362,7 @@ static const ability_def Ability_List[] =
       2, 0, 0, 1, {fail_basis::invo, 40, 5, 20}, abflag::none },
     { ABIL_ZIN_IMPRISON, "구속",
       5, 0, 0, 4, {fail_basis::invo, 60, 5, 20}, abflag::none },
-    { ABIL_ZIN_SANCTUARY, "성지",
+    { ABIL_ZIN_SANCTUARY, "성역",
       7, 0, 0, 15, {fail_basis::invo, 80, 4, 25}, abflag::none },
     { ABIL_ZIN_CURE_ALL_MUTATIONS, "모든 변이 정화",
       0, 0, 0, 0, {fail_basis::invo}, abflag::none },
@@ -376,7 +376,7 @@ static const ability_def Ability_List[] =
       5, 0, 100, 2, {fail_basis::invo, 70, 4, 25}, abflag::none },
     { ABIL_TSO_SUMMON_DIVINE_WARRIOR, "성전사 소환",
       8, 0, 150, 5, {fail_basis::invo, 80, 4, 25}, abflag::none },
-    { ABIL_TSO_BLESS_WEAPON, "Brand Weapon With Holy Wrath", 0, 0, 0, 0,
+    { ABIL_TSO_BLESS_WEAPON, "무기에 신성한 분노 속성 부여", 0, 0, 0, 0,
       {fail_basis::invo}, abflag::none },
 
     // Kikubaaqudgha
@@ -384,9 +384,9 @@ static const ability_def Ability_List[] =
       3, 0, 200, 2, {fail_basis::invo, 40, 5, 20}, abflag::none },
     { ABIL_KIKU_TORMENT, "고문",
       4, 0, 0, 8, {fail_basis::invo, 60, 5, 20}, abflag::none },
-    { ABIL_KIKU_GIFT_NECRONOMICON, "Receive Necronomicon", 0, 0, 0, 0,
+    { ABIL_KIKU_GIFT_NECRONOMICON, "네크로노미콘 하사", 0, 0, 0, 0,
       {fail_basis::invo}, abflag::none },
-    { ABIL_KIKU_BLESS_WEAPON, "Brand Weapon With Pain", 0, 0, 0, 0,
+    { ABIL_KIKU_BLESS_WEAPON, "무기에 고통 속성 부여", 0, 0, 0, 0,
       {fail_basis::invo}, abflag::pain },
 
     // Yredelemnul
@@ -422,13 +422,13 @@ static const ability_def Ability_List[] =
       {fail_basis::invo, 90, 2, 5}, abflag::hostile },
 
     // Sif Muna
-    { ABIL_SIF_MUNA_DIVINE_ENERGY, "Divine Energy",
+    { ABIL_SIF_MUNA_DIVINE_ENERGY, "신성한 에너지",
       0, 0, 0, 0, {fail_basis::invo}, abflag::instant },
-    { ABIL_SIF_MUNA_STOP_DIVINE_ENERGY, "Stop Divine Energy",
+    { ABIL_SIF_MUNA_STOP_DIVINE_ENERGY, "신성한 에너지 취소",
       0, 0, 0, 0, {fail_basis::invo}, abflag::instant },
     { ABIL_SIF_MUNA_FORGET_SPELL, "마법주문 망각",
       0, 0, 0, 8, {fail_basis::invo}, abflag::none },
-    { ABIL_SIF_MUNA_CHANNEL_ENERGY, "Channel Magic",
+    { ABIL_SIF_MUNA_CHANNEL_ENERGY, "채널 에너지",
       0, 0, 200, 2, {fail_basis::invo, 60, 4, 25}, abflag::none },
 
     // Trog
@@ -467,7 +467,7 @@ static const ability_def Ability_List[] =
       {fail_basis::invo, 70, 4, 25}, abflag::none },
     { ABIL_LUGONU_ABYSS_ENTER, "어비스 입장", 10, 0, 500, 28,
       {fail_basis::invo, 80, 4, 25}, abflag::pain },
-    { ABIL_LUGONU_BLESS_WEAPON, "Brand Weapon With Distortion", 0, 0, 0, 0,
+    { ABIL_LUGONU_BLESS_WEAPON, "무기에 왜곡 속성 부여", 0, 0, 0, 0,
       {fail_basis::invo}, abflag::none },
 
     // Nemelex
@@ -483,7 +483,7 @@ static const ability_def Ability_List[] =
       3, 0, 0, generic_cost::fixed(3), {fail_basis::invo, 40, 5, 20}, abflag::none },
     { ABIL_BEOGH_RECALL_ORCISH_FOLLOWERS, "오크 추종자 소집",
       2, 0, 0, 0, {fail_basis::invo, 30, 6, 20}, abflag::none },
-    { ABIL_BEOGH_GIFT_ITEM, "Give Item to Named Follower",
+    { ABIL_BEOGH_GIFT_ITEM, "이름있는 추종자에게 아이템 주기",
       0, 0, 0, 0, {fail_basis::invo}, abflag::none },
     { ABIL_BEOGH_RESURRECTION, "뒤틀린 소생",
       0, 0, 0, 28, {fail_basis::invo}, abflag::none },
@@ -497,7 +497,7 @@ static const ability_def Ability_List[] =
       0, 0, 0, 15, {fail_basis::invo}, abflag::none },
 
     // Fedhas
-    { ABIL_FEDHAS_FUNGAL_BLOOM, "Fungal Bloom",
+    { ABIL_FEDHAS_FUNGAL_BLOOM, "곰팡이 피우기",
       0, 0, 0, 0, {fail_basis::invo}, abflag::none },
     { ABIL_FEDHAS_EVOLUTION, "진화",
       2, 0, 0, 0, {fail_basis::invo, 30, 6, 20}, abflag::variable_fruit },
@@ -521,7 +521,7 @@ static const ability_def Ability_List[] =
       10, 0, 200, 10, {fail_basis::invo, 80, 4, 25}, abflag::none },
 
     // Ashenzari
-    { ABIL_ASHENZARI_CURSE, "Curse Item",
+    { ABIL_ASHENZARI_CURSE, "아이템 저주",
       0, 0, 0, 0, {fail_basis::invo}, abflag::remove_curse_scroll },
     { ABIL_ASHENZARI_SCRYING, "투시",
       4, 0, 0, 2, {fail_basis::invo}, abflag::instant },
@@ -531,117 +531,117 @@ static const ability_def Ability_List[] =
       0, 0, 0, 0, {fail_basis::invo}, abflag::none },
 
     // Dithmenos
-    { ABIL_DITHMENOS_SHADOW_STEP, "Shadow Step",
+    { ABIL_DITHMENOS_SHADOW_STEP, "그림자 도약",
       4, 0, 0, 5, {fail_basis::invo, 30, 6, 20}, abflag::none },
-    { ABIL_DITHMENOS_SHADOW_FORM, "Shadow Form",
+    { ABIL_DITHMENOS_SHADOW_FORM, "그림자의 형상",
       9, 0, 0, 12, {fail_basis::invo, 80, 4, 25}, abflag::skill_drain },
 
     // Ru
-    { ABIL_RU_DRAW_OUT_POWER, "Draw Out Power", 0, 0, 0, 0,
+    { ABIL_RU_DRAW_OUT_POWER, "힘의 분출", 0, 0, 0, 0,
       {fail_basis::invo}, abflag::exhaustion|abflag::skill_drain|abflag::conf_ok },
-    { ABIL_RU_POWER_LEAP, "Power Leap",
+    { ABIL_RU_POWER_LEAP, "강력한 도약",
       5, 0, 0, 0, {fail_basis::invo}, abflag::exhaustion },
-    { ABIL_RU_APOCALYPSE, "Apocalypse",
+    { ABIL_RU_APOCALYPSE, "아포칼립스",
       8, 0, 0, 0, {fail_basis::invo}, abflag::exhaustion|abflag::skill_drain },
 
-    { ABIL_RU_SACRIFICE_PURITY, "Sacrifice Purity",
+    { ABIL_RU_SACRIFICE_PURITY, "순수성 희생",
       0, 0, 0, 0, {fail_basis::invo}, abflag::sacrifice },
-    { ABIL_RU_SACRIFICE_WORDS, "Sacrifice Words",
+    { ABIL_RU_SACRIFICE_WORDS, "언어 희생",
       0, 0, 0, 0, {fail_basis::invo}, abflag::sacrifice },
-    { ABIL_RU_SACRIFICE_DRINK, "Sacrifice Drink",
+    { ABIL_RU_SACRIFICE_DRINK, "마시기 희생",
       0, 0, 0, 0, {fail_basis::invo}, abflag::sacrifice },
-    { ABIL_RU_SACRIFICE_ESSENCE, "Sacrifice Essence",
+    { ABIL_RU_SACRIFICE_ESSENCE, "정수 희생",
       0, 0, 0, 0, {fail_basis::invo}, abflag::sacrifice },
-    { ABIL_RU_SACRIFICE_HEALTH, "Sacrifice Health",
+    { ABIL_RU_SACRIFICE_HEALTH, "생명력 희생",
       0, 0, 0, 0, {fail_basis::invo}, abflag::sacrifice },
-    { ABIL_RU_SACRIFICE_STEALTH, "Sacrifice Stealth",
+    { ABIL_RU_SACRIFICE_STEALTH, "은밀성 희생",
       0, 0, 0, 0, {fail_basis::invo}, abflag::sacrifice },
-    { ABIL_RU_SACRIFICE_ARTIFICE, "Sacrifice Artifice",
+    { ABIL_RU_SACRIFICE_ARTIFICE, "발동술 희생",
       0, 0, 0, 0, {fail_basis::invo}, abflag::sacrifice },
-    { ABIL_RU_SACRIFICE_LOVE, "Sacrifice Love",
+    { ABIL_RU_SACRIFICE_LOVE, "사랑 희생",
       0, 0, 0, 0, {fail_basis::invo}, abflag::sacrifice },
-    { ABIL_RU_SACRIFICE_COURAGE, "Sacrifice Courage",
+    { ABIL_RU_SACRIFICE_COURAGE, "용기 희생",
       0, 0, 0, 0, {fail_basis::invo}, abflag::sacrifice },
-    { ABIL_RU_SACRIFICE_ARCANA, "Sacrifice Arcana",
+    { ABIL_RU_SACRIFICE_ARCANA, "아르카나 희생",
       0, 0, 0, 0, {fail_basis::invo}, abflag::sacrifice },
-    { ABIL_RU_SACRIFICE_NIMBLENESS, "Sacrifice Nimbleness",
+    { ABIL_RU_SACRIFICE_NIMBLENESS, "민첩성 희생",
       0, 0, 0, 0, {fail_basis::invo}, abflag::sacrifice },
-    { ABIL_RU_SACRIFICE_DURABILITY, "Sacrifice Durability",
+    { ABIL_RU_SACRIFICE_DURABILITY, "내구력 희생",
       0, 0, 0, 0, {fail_basis::invo}, abflag::sacrifice },
-    { ABIL_RU_SACRIFICE_HAND, "Sacrifice a Hand",
+    { ABIL_RU_SACRIFICE_HAND, "한 손 희생",
       0, 0, 0, 0, {fail_basis::invo}, abflag::sacrifice },
-    { ABIL_RU_SACRIFICE_EXPERIENCE, "Sacrifice Experience",
+    { ABIL_RU_SACRIFICE_EXPERIENCE, "경험 희생",
       0, 0, 0, 0, {fail_basis::invo}, abflag::sacrifice },
-    { ABIL_RU_SACRIFICE_SKILL, "Sacrifice Skill",
+    { ABIL_RU_SACRIFICE_SKILL, "기술 희생",
       0, 0, 0, 0, {fail_basis::invo}, abflag::sacrifice },
-    { ABIL_RU_SACRIFICE_EYE, "Sacrifice an Eye",
+    { ABIL_RU_SACRIFICE_EYE, "한 눈 희생",
       0, 0, 0, 0, {fail_basis::invo}, abflag::sacrifice },
-    { ABIL_RU_SACRIFICE_RESISTANCE, "Sacrifice Resistance",
+    { ABIL_RU_SACRIFICE_RESISTANCE, "저항 희생",
       0, 0, 0, 0, {fail_basis::invo}, abflag::sacrifice },
-    { ABIL_RU_REJECT_SACRIFICES, "Reject Sacrifices",
+    { ABIL_RU_REJECT_SACRIFICES, "희생 거부",
       0, 0, 0, 0, {fail_basis::invo}, abflag::none },
 
     // Gozag
-    { ABIL_GOZAG_POTION_PETITION, "Potion Petition",
+    { ABIL_GOZAG_POTION_PETITION, "물약 청원",
       0, 0, 0, 0, {fail_basis::invo}, abflag::gold },
-    { ABIL_GOZAG_CALL_MERCHANT, "Call Merchant",
+    { ABIL_GOZAG_CALL_MERCHANT, "상인 호출",
       0, 0, 0, 0, {fail_basis::invo}, abflag::gold },
-    { ABIL_GOZAG_BRIBE_BRANCH, "Bribe Branch",
+    { ABIL_GOZAG_BRIBE_BRANCH, "뇌물 매수",
       0, 0, 0, 0, {fail_basis::invo}, abflag::gold },
 
     // Qazlal
-    { ABIL_QAZLAL_UPHEAVAL, "Upheaval",
+    { ABIL_QAZLAL_UPHEAVAL, "격변",
       4, 0, 0, 3, {fail_basis::invo, 40, 5, 20}, abflag::none },
-    { ABIL_QAZLAL_ELEMENTAL_FORCE, "Elemental Force",
+    { ABIL_QAZLAL_ELEMENTAL_FORCE, "속성의 군세",
       6, 0, 0, 6, {fail_basis::invo, 60, 5, 20}, abflag::none },
-    { ABIL_QAZLAL_DISASTER_AREA, "Disaster Area",
+    { ABIL_QAZLAL_DISASTER_AREA, "재앙 영역",
       7, 0, 0, 10, {fail_basis::invo, 70, 4, 25}, abflag::none },
 
     // Pakellas
-    { ABIL_PAKELLAS_DEVICE_SURGE, "Device Surge",
+    { ABIL_PAKELLAS_DEVICE_SURGE, "도구 폭주",
       0, 0, 0, generic_cost::fixed(1),
       {fail_basis::invo, 40, 5, 20}, abflag::variable_mp | abflag::instant },
-    { ABIL_PAKELLAS_QUICK_CHARGE, "Quick Charge",
+    { ABIL_PAKELLAS_QUICK_CHARGE, "신속 충전",
       0, 0, 0, 2, {fail_basis::invo, 40, 5, 25}, abflag::none },
-    { ABIL_PAKELLAS_SUPERCHARGE, "Supercharge",
+    { ABIL_PAKELLAS_SUPERCHARGE, "슈퍼 차지",
       0, 0, 0, 0, {fail_basis::invo}, abflag::none },
 
     // Uskayaw
-    { ABIL_USKAYAW_STOMP, "Stomp",
+    { ABIL_USKAYAW_STOMP, "발구르기",
         3, 0, 100, generic_cost::fixed(20), {fail_basis::invo}, abflag::none },
-    { ABIL_USKAYAW_LINE_PASS, "Line Pass",
+    { ABIL_USKAYAW_LINE_PASS, "라인 패스",
         4, 0, 200, generic_cost::fixed(20), {fail_basis::invo}, abflag::none},
-    { ABIL_USKAYAW_GRAND_FINALE, "Grand Finale",
+    { ABIL_USKAYAW_GRAND_FINALE, "그랜드 피날레",
         8, 0, 500, generic_cost::fixed(0),
         {fail_basis::invo, 120 + piety_breakpoint(4), 5, 1}, abflag::none},
 
     // Hepliaklqana
-    { ABIL_HEPLIAKLQANA_RECALL, "Recall Ancestor",
+    { ABIL_HEPLIAKLQANA_RECALL, "선조 소집",
         2, 0, 0, 0, {fail_basis::invo}, abflag::none },
-    { ABIL_HEPLIAKLQANA_TRANSFERENCE, "Transference",
+    { ABIL_HEPLIAKLQANA_TRANSFERENCE, "이전",
         2, 0, 0, 3, {fail_basis::invo, 40, 5, 20},
         abflag::none },
-    { ABIL_HEPLIAKLQANA_IDEALISE, "Idealise",
+    { ABIL_HEPLIAKLQANA_IDEALISE, "이상화",
         4, 0, 0, 4, {fail_basis::invo, 60, 4, 25},
         abflag::none },
 
-    { ABIL_HEPLIAKLQANA_TYPE_KNIGHT,       "Ancestor Life: Knight",
+    { ABIL_HEPLIAKLQANA_TYPE_KNIGHT,       "선조의 삶: 기사",
         0, 0, 0, 0, {fail_basis::invo},abflag::none },
-    { ABIL_HEPLIAKLQANA_TYPE_BATTLEMAGE,   "Ancestor Life: Battlemage",
+    { ABIL_HEPLIAKLQANA_TYPE_BATTLEMAGE,   "선조의 삶: 전투마법사",
         0, 0, 0, 0, {fail_basis::invo},abflag::none },
-    { ABIL_HEPLIAKLQANA_TYPE_HEXER,        "Ancestor Life: Hexer",
+    { ABIL_HEPLIAKLQANA_TYPE_HEXER,        "선조의 삶: 주술사",
         0, 0, 0, 0, {fail_basis::invo},abflag::none },
 
-    { ABIL_HEPLIAKLQANA_IDENTITY,  "Ancestor Identity",
+    { ABIL_HEPLIAKLQANA_IDENTITY,  "선조 기억",
         0, 0, 0, 0, {fail_basis::invo}, abflag::instant },
 
     // Wu Jian
-    { ABIL_WU_JIAN_SERPENTS_LASH, "Serpent's Lash",
+    { ABIL_WU_JIAN_SERPENTS_LASH, "독사의 채찍",
         0, 0, 0, 4, {fail_basis::invo}, abflag::exhaustion | abflag::instant },
-    { ABIL_WU_JIAN_HEAVENLY_STORM, "Heavenly Storm",
+    { ABIL_WU_JIAN_HEAVENLY_STORM, "지상낙원",
         0, 0, 0, 20, {fail_basis::invo, piety_breakpoint(5), 0, 1}, abflag::none },
 
-    { ABIL_STOP_RECALL, "Stop Recall", 0, 0, 0, 0, {fail_basis::invo}, abflag::none },
+    { ABIL_STOP_RECALL, "소집 취소", 0, 0, 0, 0, {fail_basis::invo}, abflag::none },
     { ABIL_RENOUNCE_RELIGION, "신앙 포기하기",
       0, 0, 0, 0, {fail_basis::invo}, abflag::none },
     { ABIL_CONVERT_TO_BEOGH, "베오그에로 개종함",
@@ -2246,7 +2246,7 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
 
     case ABIL_TSO_BLESS_WEAPON:
         fail_check();
-        simple_god_message("(은)는 당신의 무기 중 하나에, 축복을 내릴 것이다.");
+        simple_god_message("은 당신의 무기 중 하나에, 축복을 내릴 것이다.");
         // included in default force_more_message
         if (!bless_weapon(GOD_SHINING_ONE, SPWPN_HOLY_WRATH, YELLOW))
             return SPRET_ABORT;
@@ -2264,13 +2264,13 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
             mpr("희생할 시체가 없다!");
             return SPRET_ABORT;
         }
-        simple_god_message("은(는) 살아있는 존재들에게 고통을 선사했다!");
+        simple_god_message("은 살아있는 존재들에게 고통을 선사했다!");
         torment(&you, TORMENT_KIKUBAAQUDGHA, you.pos());
         break;
 
     case ABIL_KIKU_BLESS_WEAPON:
         fail_check();
-        simple_god_message("(은)는 당신의 무기 중 하나를, 고통으로 물들일 것이다.");
+        simple_god_message("은 당신의 무기 중 하나를, 고통으로 물들일 것이다.");
         // included in default force_more_message
         if (!bless_weapon(GOD_KIKUBAAQUDGHA, SPWPN_PAIN, RED))
             return SPRET_ABORT;
@@ -2505,15 +2505,16 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
         break;
 
     case ABIL_SIF_MUNA_DIVINE_ENERGY:
-        simple_god_message(" will now grant you divine energy when your "
-                           "reserves of magic are depleted.");
+        simple_god_message("은 당신의 마력이 고갈될 때, 당신에게 "
+                           "신성한 에너지를 부여할 것이다.");
         mpr("이런 방식으로 주문을 시전 한 후에는 잠깐동안 "
             "마법에 닿지 못한다.");
         you.attribute[ATTR_DIVINE_ENERGY] = 1;
         break;
 
     case ABIL_SIF_MUNA_STOP_DIVINE_ENERGY:
-        simple_god_message(" stops granting you divine energy.");
+        simple_god_message("은 당신에게 신성한 에너지를 부여하는 것을 "
+                           "중단하였다.");
         you.attribute[ATTR_DIVINE_ENERGY] = 0;
         break;
 
@@ -2634,7 +2635,7 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
 
     case ABIL_LUGONU_BLESS_WEAPON:
         fail_check();
-        simple_god_message("(은)는 당신의 무기 중 하나에 심연의 오염된 "
+        simple_god_message("은 당신의 무기 중 하나에 심연의 오염된 "
                            "속성을 부여할 것이다.");
         // included in default force_more_message
         if (!bless_weapon(GOD_LUGONU, SPWPN_DISTORTION, MAGENTA))
@@ -2750,7 +2751,7 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
         fail_check();
         const item_def* const weapon = you.weapon();
         const string msg = weapon ? weapon->name(DESC_YOUR)
-                                  : ("your " + you.hand_name(true));
+                                  : ("당신의 " + you.hand_name(true));
         mprf(MSGCH_DURATION, "%s 위에 두꺼운 점액층이 생겨났다.", msg.c_str());
         you.increase_duration(DUR_SLIMIFY,
                               random2avg(you.piety / 4, 2) + 3, 100);
@@ -3005,10 +3006,10 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
     case ABIL_PAKELLAS_SUPERCHARGE:
     {
         fail_check();
-        simple_god_message(" will supercharge a wand.");
+        simple_god_message("가 한 완드를 슈퍼차지해 줄 것이다.");
         // included in default force_more_message
 
-        int item_slot = prompt_invent_item("Supercharge what?", MT_INVLIST,
+        int item_slot = prompt_invent_item("무엇을 슈퍼차지 하겠는가?", MT_INVLIST,
                                            OSEL_SUPERCHARGE, OPER_ANY,
                                            invprompt_flag::escape_only);
 
@@ -3048,7 +3049,7 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
 
         flash_view(UA_PLAYER, LIGHTGREEN);
 
-        simple_god_message("은(는) 외쳤다: 이것을 현명하게 사용하게!");
+        simple_god_message("은 외쳤다: 이것을 현명하게 사용하게!");
 
 #ifndef USE_TILE_LOCAL
         // Allow extra time for the flash to linger.
