@@ -32,6 +32,7 @@
 #include <vector>
 
 #include "cio.h"
+#include "english.h"
 #include "files.h"
 #include "initfile.h"
 #include "libutil.h"
@@ -976,7 +977,7 @@ void macro_add_query()
         }
         else if (input == 'c')
         {
-            mprf("%s을(를), '%s' => '%s' 로 지우기를 실행하였다.",
+            mprf("",
                  macro_type.c_str(),
                  vtostr(key).c_str(),
                  vtostr(mapref[key]).c_str());
@@ -997,9 +998,10 @@ void macro_add_query()
         const bool deleted_macro = macro_del(mapref, key);
         if (deleted_macro)
         {
-            mprf("%s을(를), '%s' => '%s' 로 삭제하였다.",
-                 macro_type.c_str(),
-                 vtostr(key).c_str());
+            mprf("'%s'에 대한 %s 삭제하였다.",
+                 vtostr(key).c_str(),
+                 josa(macro_type, "을").c_str());
+
         }
         else
             canned_msg(MSG_OK);

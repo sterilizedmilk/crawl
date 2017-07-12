@@ -316,12 +316,12 @@ string attack::anon_name(description_level_type desc)
         return "";
     case DESC_YOUR:
     case DESC_ITS:
-        return "something's";
+        return "무언가의";
     case DESC_THE:
     case DESC_A:
     case DESC_PLAIN:
     default:
-        return "something";
+        return "무언가";
     }
 }
 
@@ -710,7 +710,7 @@ void attack::chaos_affects_defender()
         if (defender->is_player() && have_passive(passive_t::no_haste)
             && beam.flavour == BEAM_HASTE)
         {
-            simple_god_message("은(는) 당신을 예기치 못한 가속으로부터 지켰다.");
+            simple_god_message("은 당신을 예기치 못한 가속으로부터 지켰다.");
             obvious_effect = true;
             return;
         }
@@ -937,9 +937,8 @@ void attack::drain_defender_speed()
 {
     if (needs_message)
     {
-        mprf("%s_%s_%s_vigour!<darkgrey>attack.cc.mprf:1</darkgrey>",
-             atk_name(DESC_THE).c_str(),
-             attacker->conj_verb("drain").c_str(),
+        mprf("%s %s 활력을 빨아들였다!",
+             atk_name("가").c_str(),
              def_name(DESC_ITS).c_str());
     }
     defender->slow_down(attacker, 5 + random2(7));
@@ -1019,39 +1018,39 @@ void attack::stab_message()
     case 6:     // big melee, monster surrounded/not paying attention
         if (coinflip())
         {
-            mprf("You_%s_%s_from_a_blind_spot!<darkgrey>attack.cc.mprf:2</darkgrey>",
-                  (you.species == SP_FELID) ? "pounce on" : "strike",
-                  defender->name(DESC_THE).c_str());
+            mprf("당신은 %s 사각지대에서 %s!",
+                  (you.species == SP_FELID) ? "덮쳤다" : "후려쳤다",
+                  defender->name("을").c_str());
         }
         else
         {
-            mprf("당신은 %s의 헛점을 정확하게 찾아내었다.",
-                  defender->name(DESC_THE).c_str());
+            mprf("당신은 %s의 찰나의 방심을 포착했다!",
+                  defender->name().c_str());
         }
         break;
     case 4:     // confused/fleeing
         if (!one_chance_in(3))
         {
-            mprf("당신은 %s이(가) 완전히 무방비한 순간을 노렸다!",
-                  defender->name(DESC_THE).c_str());
+            mprf("당신은 %s 완전히 무방비한 순간을 노렸다!",
+                  defender->name("이").c_str());
         }
         else
         {
-            mprf("You_%s_%s_from_behind!<darkgrey>attack.cc.mprf:5</darkgrey>",
-                  (you.species == SP_FELID) ? "pounce on" : "strike",
-                  defender->name(DESC_THE).c_str());
+            mprf("당신은 %s 뒤에서 %s!",
+                  (you.species == SP_FELID) ? "덮쳤다" : "후려쳤다",
+                  defender->name("을").c_str());
         }
         break;
     case 2:
     case 1:
         if (you.species == SP_FELID && coinflip())
         {
-            mprf("당신은 %s이(가) 눈치채지 못하게 기습을 날렸다!",
-                 defender->name(DESC_PLAIN).c_str());
+            mprf("당신은 눈치 못챈 %s 덮쳤다!",
+                 defender->name("을").c_str());
             break;
         }
-        mprf("%s은(는) %s을(를) 방어하는데 실패했다.",
-              defender->name(DESC_THE).c_str(),
+        mprf("%s %s 방어하는데 실패했다.",
+              defender->name("은").c_str(),
               defender->pronoun(PRONOUN_REFLEXIVE).c_str());
         break;
     }
@@ -1419,10 +1418,9 @@ bool attack::attack_shield_blocked(bool verbose)
 
         if (needs_message && verbose)
         {
-            mprf("%s_%s_%s_attack.<darkgrey>attack.cc.mprf:8</darkgrey>",
-                 defender_name(false).c_str(),
-                 defender->conj_verb("block").c_str(),
-                 attacker == defender ? "its own"
+            mprf("%s %s 공격을 막았다.",
+                 defender_name("는", false).c_str(),
+                 attacker == defender ? "자신의"
                                       : atk_name(DESC_ITS).c_str());
         }
 

@@ -240,8 +240,7 @@ NORETURN void end_game(scorefile_entry &se, int hiscore_index)
         switch (you.religion)
         {
         case GOD_FEDHAS:
-            simple_god_message(" (은)는 당신의 공헌에 감사했다. "
-                               "ecosystem.");
+            simple_god_message("은 당신의 생태계에 대한 공헌을 칭찬했다.");
             break;
 
         case GOD_NEMELEX_XOBEH:
@@ -267,7 +266,7 @@ NORETURN void end_game(scorefile_entry &se, int hiscore_index)
 
         case GOD_YREDELEMNUL:
             if (you.undead_state() != US_ALIVE)
-                simple_god_message("은(는) 고개를 가로저었다... 그리고 당신은 이제 이레데렘눌이 부리는 언데드 수하중 한 존재가 되었다...");
+                simple_god_message("은 당신을 언데드 노예로서 요구했다.");
             else if (se.get_death_type() != KILLED_BY_DISINT
                      && se.get_death_type() != KILLED_BY_LAVA)
             {

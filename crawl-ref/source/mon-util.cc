@@ -2039,40 +2039,40 @@ string mon_attack_name(attack_type attack)
 {
     static const char *attack_types[] =
     {
-        "때렸다",         // including weapon attacks
-        "물었다",
-        "쏘았다",
+        "hit",         // including weapon attacks
+        "bite",
+        "sting",
 
         // spore
-        "포자로 공격했다",
+        "release spores at",
 
-        "건드렸다",
-        "휩쌌다",
-        "햘퀴었다",
-        "쪼았다",
-        "머리로 박았다",
-        "주먹질했다",
-        "걷어찼다",
-        "촉수로 때렸다",
-        "꼬리로 때렸다",
-        "들이받았다",
-        "조였다",
-        "짓밟았다",
-        "큰 코로 때렸다",
+        "touch",
+        "engulf",
+        "claw",
+        "peck",
+        "headbutt",
+        "punch",
+        "kick",
+        "tentacle-slap",
+        "tail-slap",
+        "gore",
+        "constrict",
+        "trample",
+        "trunk-slap",
 #if TAG_MAJOR_VERSION == 34
         "snap closed at",
         "splash",
 #endif
-        "덮쳤다",
+        "pounce on",
 #if TAG_MAJOR_VERSION == 34
         "sting",
 #endif
-        "때렸다", // AT_CHERUB
+        "hit", // AT_CHERUB
 #if TAG_MAJOR_VERSION == 34
-        "때렸다", // AT_SHOOT
+        "hit", // AT_SHOOT
 #endif
-        "때렸다", // AT_WEAP_ONLY,
-        "때렸다", // AT_RANDOM
+        "hit", // AT_WEAP_ONLY,
+        "hit", // AT_RANDOM
     };
     COMPILE_CHECK(ARRAYSZ(attack_types) == NUM_ATTACK_TYPES - AT_FIRST_ATTACK);
 

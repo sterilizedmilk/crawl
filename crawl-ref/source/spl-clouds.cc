@@ -418,9 +418,8 @@ spret_type cast_cloud_cone(const actor *caster, int pow, const coord_def &pos,
                     5 + random2avg(12 + div_rand_round(pow * 3, 4), 3),
                     caster);
     }
-    mprf("%1$s(은)는 %3$s 폭풍을 %2$s했다.",
-         caster->name(DESC_THE).c_str(),
-         caster->conj_verb("create").c_str(),
+    mprf("%s %s의 돌풍을 생성했다!",
+         caster->name("는").c_str(),
          cloud_type_name(cloud).c_str());
 
     if (cloud == CLOUD_FIRE && caster->is_player())

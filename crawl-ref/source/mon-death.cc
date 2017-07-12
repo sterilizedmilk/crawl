@@ -3091,33 +3091,33 @@ string summoned_poof_msg(const monster* mons, bool plural)
         valid_mon = true;
     }
 
-    string msg      = "연기%s 속으로 사라졌다";
+    string msg      = "연기 속으로 사라졌다";
     bool   no_chaos = false;
 
     switch (summon_type)
     {
     case SPELL_SHADOW_CREATURES:
     case MON_SUMM_SCROLL:
-        msg      = "그림자%s로 용해되었다";
+        msg      = "그림자로 용해되었다";
         no_chaos = true;
         break;
 
     case MON_SUMM_CHAOS:
-        msg = "원시 혼돈의 구름%s으로 퇴보했다";
+        msg = "원시 혼돈의 구름으로 퇴보했다";
         break;
 
     case MON_SUMM_WRATH:
     case MON_SUMM_AID:
         if (valid_mon && is_good_god(mons->god))
         {
-            msg      = "반짝이는 빛%s으로 용해되었다";
+            msg      = "반짝이는 빛으로 용해되었다";
             no_chaos = true;
         }
         break;
 
     case SPELL_SPECTRAL_CLOUD:
     case SPELL_CALL_LOST_SOUL:
-        msg = "스르륵%s 사라졌다";
+        msg = "스르륵 사라졌다";
         break;
     }
 
@@ -3126,31 +3126,28 @@ string summoned_poof_msg(const monster* mons, bool plural)
         if (mons->god == GOD_XOM && !no_chaos && one_chance_in(10)
             || mons->type == MONS_CHAOS_SPAWN)
         {
-            msg = "원시 혼돈의 구름%s으로 퇴보했다";
+            msg = "원시 혼돈의 구름으로 퇴보했다";
         }
 
         if (mons->is_holy()
             && summon_type != SPELL_SHADOW_CREATURES
             && summon_type != MON_SUMM_CHAOS)
         {
-            msg = "반짝이는 빛%s으로 용해되었다";
+            msg = "반짝이는 빛으로 용해되었다";
         }
 
         if (mons_is_slime(*mons)
             && mons->god == GOD_JIYVA)
         {
-            msg = "점액질 웅덩이%s로 용해되었다";
+            msg = "점액질 웅덩이로 용해되었다";
         }
 
         if (mons->type == MONS_DROWNED_SOUL)
-            msg = "깊은 곳%s으로 되돌아갔다";
+            msg = "깊은 곳으로 되돌아갔다";
 
         if (mons->has_ench(ENCH_PHANTOM_MIRROR))
-            msg = "어른거리더니%s 사라졌다" + string(plural ? "" : ""); // Ugh
+            msg = "어른거리더니 사라졌다"; // Ugh
     }
-
-    // Conjugate.
-    msg = make_stringf(msg.c_str(), plural ? "" : "s");
 
     return msg;
 }

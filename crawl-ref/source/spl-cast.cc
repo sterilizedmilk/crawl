@@ -92,7 +92,7 @@ void surge_power(const int enhanced)
                                 (enhanced ==  2) ? "strong" :
                                 (enhanced  >  2) ? "huge"
                                                  : "";
-        mprf("You feel %s %s<darkgrey>spl-cast.cc.mprf:1</darkgrey>",
+        mprf("You feel %s %s",
              !modifier.length() ? "a"
                                 : article_a(modifier).c_str(),
              (enhanced < 0) ? "numb sensation."
@@ -1449,7 +1449,7 @@ spret_type your_spells(spell_type spell, int powc, bool allow_fail,
                  && one_chance_in(20))
         {
             // And you thought you'd Necromutate your way out of penance...
-            simple_god_message("은(는) 감히 죽음의 힘을 다루는 것을 허용하지 않았다!"
+            simple_god_message("은 감히 죽음의 힘을 다루는 것을 허용하지 않았다!"
                                "", GOD_KIKUBAAQUDGHA);
 
             // The spell still goes through, but you get a miscast anyway.
@@ -1464,7 +1464,7 @@ spret_type your_spells(spell_type spell, int powc, bool allow_fail,
                  && one_chance_in(20))
         {
             // And you thought you'd Fire Storm your way out of penance...
-            simple_god_message("은(는) 감히 죽음의 힘을 다루는 것을 허용하지 않았다!"
+            simple_god_message("은 감히 죽음의 힘을 다루는 것을 허용하지 않았다!"
                                "", GOD_VEHUMET);
 
             // The spell still goes through, but you get a miscast anyway.
@@ -1527,7 +1527,7 @@ spret_type your_spells(spell_type spell, int powc, bool allow_fail,
 
         if (decimal_chance(_chance_miscast_prot()))
         {
-            simple_god_message(" (은)는 당신을 주문시전 실패효과로부터 보호하였다!");
+            simple_god_message("는 당신을 주문시전 실패효과로부터 보호하였다!");
             return SPRET_FAIL;
         }
 
@@ -1565,8 +1565,8 @@ spret_type your_spells(spell_type spell, int powc, bool allow_fail,
 
         if (is_valid_spell(spell))
         {
-            mprf(MSGCH_ERROR, "%s은(는) 사용가능한 주문이 아니다.",
-                 spell_title(spell));
+            mprf(MSGCH_ERROR, "%s 사용가능한 주문이 아니다.",
+                 josa(spell_title(spell), "은").c_str());
         }
         else
             mprf(MSGCH_ERROR, "잘못된 주문이다!");

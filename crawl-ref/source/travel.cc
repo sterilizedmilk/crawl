@@ -3802,7 +3802,7 @@ void TravelCache::add_waypoint(int x, int y)
         list_waypoints();
     }
 
-    mprf(MSGCH_PROMPT, " ",
+    mprf(MSGCH_PROMPT, "목적지에 어떤 숫자를 배정하겠는가? (0-9%s) ",
          waypoints_exist? ", D - 기억한 지점 삭제" : "");
 
     int keyin = toalower(get_ch());

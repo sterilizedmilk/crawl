@@ -165,22 +165,22 @@ static void _climb_message(dungeon_feature_type stair, bool going_up,
             mpr("알 수 없는 힘이 당신을 위로 밀어냈다.");
         else
         {
-            mprf("당신은 계단을 내려갔다.%s<darkgrey>stairs.cc.mprf:4</darkgrey>",
-                 you.airborne() ? "fly" : "slide");
+            mprf("당신은 %s 내려갔다.",
+                 you.airborne() ? "날아서" : "미끄러져");
         }
         mpr("당신의 뒤에서 출입구가 거칠게 닫혔다.");
     }
     else if (feat_is_gate(stair))
     {
-        mprf("당신은 관문을 통과해 나왔다.%s %s<darkgrey>stairs.cc.mprf:5</darkgrey>",
+        mprf("You %s %s through the gate.",
              you.airborne() ? "fly" : "go",
              going_up ? "up" : "down");
     }
     else
     {
-        mprf("당신은 %s했다. %s방향(계단)으로.<darkgrey>stairs.cc.mprf:6</darkgrey>",
-             you.airborne() ? "fly" : "climb",
-             going_up ? "up" : "down");
+        mprf("당신은 %s쪽으로 %s갔다",
+             you.airborne() ? "날아" : "걸어",
+             going_up ? "윗" : "아랫");
     }
 }
 
@@ -492,7 +492,7 @@ static level_id _travel_destination(const dungeon_feature_type how,
         if (shaft_depth > 1)
             howfar = make_stringf(" for %d floors", shaft_depth);
 
-        mprf("당신은 구덩이에 빠졌다! %s_%s<darkgrey>stairs.cc.mprf:11</darkgrey>", you.airborne() ? "are sucked into"
+        mprf("You %s a shaft%s!", you.airborne() ? "are sucked into"
                                                  : "fall through",
                                   howfar.c_str());
 

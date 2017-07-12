@@ -638,8 +638,8 @@ void bolt::initialise_fire()
             && !crawl_state.is_god_acting()
             && (!mon || !mon->observable()))
         {
-            mprf("옅은 대기에서 %s이(가) 나타났다!",
-                 article_a(name, false).c_str());
+            mprf("옅은 대기에서 %s 나타났다!",
+                 josa(article_a(name, false), "이").c_str());
         }
     }
 
@@ -2560,8 +2560,8 @@ void bolt::drop_object()
     {
         if (you.see_cell(pos()))
         {
-            mprf("%s_%s!<darkgrey>beam.cc.mprf:8</darkgrey>",
-                 item->name(DESC_THE).c_str(),
+            mprf("%s %s!",
+                 item->name("는").c_str(),
                  summoned_poof_msg(agent() ? agent()->as_monster() : nullptr,
                                    *item).c_str());
         }
