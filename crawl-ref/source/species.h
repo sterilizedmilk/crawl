@@ -34,9 +34,10 @@ enum species_name_type
 {
     SPNAME_PLAIN,
     SPNAME_GENUS,
-    SPNAME_ADJ
+    SPNAME_ADJ,
+    SPNAME_KOREAN
 };
-string species_name(species_type speci, species_name_type spname = SPNAME_PLAIN);
+string species_name(species_type speci, species_name_type spname = SPNAME_KOREAN);
 species_type str_to_species(const string &species);
 string species_walking_verb(species_type sp);
 const vector<string>& fake_mutations(species_type species, bool terse);

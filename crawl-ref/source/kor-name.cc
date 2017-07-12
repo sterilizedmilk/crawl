@@ -16,6 +16,8 @@
 #include "job-type.h"
 #include "libutil.h"
 #include "potion-type.h"
+#include "species-type.h"
+#include "spell-type.h"
 #include "object-class-type.h"
 
 map<int, string> Weapon_name = 
@@ -644,4 +646,51 @@ string branch_korean_name(int type, bool long_name)
         return lookup(Branch_long_name, type, "");
     else
         return lookup(Branch_short_name, type, "");
+}
+
+map<int, string> Species_name =
+{
+    {SP_HUMAN,                  "인간"},
+    {SP_DEEP_ELF,               "딥 엘프"},
+    {SP_HALFLING,               "하플링"},
+    {SP_HILL_ORC,               "언덕 오크"},
+    {SP_KOBOLD,                 "코볼트"},
+    {SP_MUMMY,                  "머미"},
+    {SP_NAGA,                   "나가"},
+    {SP_OGRE,                   "오거"},
+    {SP_TROLL,                  "트롤"},
+
+    {SP_RED_DRACONIAN,          "붉은 드라코니언"},
+    {SP_WHITE_DRACONIAN,        "흰 드라코니언"},
+    {SP_GREEN_DRACONIAN,        "녹색 드라코니언"},
+    {SP_YELLOW_DRACONIAN,       "노란 드라코니언"},
+    {SP_GREY_DRACONIAN,         "회색 드라코니언"},
+    {SP_BLACK_DRACONIAN,        "검은 드라코니언"},
+    {SP_PURPLE_DRACONIAN,       "보라색 드라코니언"},
+    {SP_PALE_DRACONIAN,         "창백한 드라코니언"},
+    {SP_BASE_DRACONIAN,         "드라코니언"},
+
+    {SP_CENTAUR,                "센타우르"},
+    {SP_DEMIGOD,                "반신"},
+    {SP_SPRIGGAN,               "스프리건"},
+    {SP_MINOTAUR,               "미노타우르스"},
+    {SP_DEMONSPAWN,             "데몬스폰"},
+    {SP_GHOUL,                  "구울"},
+    {SP_TENGU,                  "텐구"},
+    {SP_MERFOLK,                "머포크"},
+    {SP_VAMPIRE,                "뱀파이어"},
+    {SP_DEEP_DWARF,             "딥 드워프"},
+    {SP_FELID,                  "펠리드"},
+    {SP_OCTOPODE,               "옥토포드"},
+    {SP_GARGOYLE,               "가고일"},
+    {SP_FORMICID,               "포미시드"},
+    {SP_VINE_STALKER,           "바인 스토커"},
+    {SP_BARACHI,                "바라치"},
+    {SP_GNOLL,                  "놀"},
+};
+
+
+string species_korean_name(int type)
+{
+    return lookup(Species_name, type, "");
 }
