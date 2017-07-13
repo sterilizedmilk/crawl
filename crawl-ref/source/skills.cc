@@ -286,9 +286,9 @@ static void _change_skill_level(skill_type exsk, int n)
         mprf(MSGCH_INTRINSIC_GAIN, "당신은 %s을(를) 마스터했다!", skill_name(exsk));
     else if (abs(n) == 1 && you.num_turns)
     {
-        mprf(MSGCH_INTRINSIC_GAIN, "당신의 %s_%s 스킬이 %s했다. 현재레벨 : %d!<darkgrey>skills.cc.mprf:3</darkgrey>",
-             specify_base ? "base " : "",
-             skill_name(exsk), (n > 0) ? "increases" : "decreases",
+        mprf(MSGCH_INTRINSIC_GAIN, "당신의 %s %s 스킬이 %s했다. 현재레벨 : %d!",
+             specify_base ? "기본 " : "",
+             skill_name(exsk), (n > 0) ? "상승" : "감소",
              you.skills[exsk]);
 
         // Send a status message about 'aptitude' increases/decreases if Gnoll
@@ -296,21 +296,21 @@ static void _change_skill_level(skill_type exsk, int n)
         {
             if (n > 0 && you.skills[exsk] < 13 && you.skills[exsk] > 5)
             {
-                mprf(MSGCH_MUTATION, "You become less interested in %s.",
+                mprf(MSGCH_MUTATION, "당신은 이제 %s에 대한 관심이 줄어들었다.",
                      skill_name(exsk));
             }
             else if (n < 0 && you.skills[exsk] < 12 && you.skills[exsk] > 4)
-                mprf(MSGCH_MUTATION, "You become more interested in %s.",
+                mprf(MSGCH_MUTATION, "당신은 이제 %s에 대한 관심이 증가하였다.",
                      skill_name(exsk));
         }
     }
     else if (you.num_turns)
     {
-        mprf(MSGCH_INTRINSIC_GAIN, "Your %s%s skill %s %d levels and is now <darkgrey>skills.cc.mprf:5</darkgrey>"
-             "at level %d!<darkgrey>skills.cc.mprf:7</darkgrey>",
-             specify_base ? "base " : "",
+        mprf(MSGCH_INTRINSIC_GAIN, "당신의 %s%s 스킬이 %d 레벨을 %s으며 이제 "
+             "%d 레벨에 도달하였다!",
+             specify_base ? "기본 " : "",
              skill_name(exsk),
-             (n > 0) ? "gained" : "lost",
+             (n > 0) ? "얻었" : "잃었",
              abs(n), you.skills[exsk]);
 
         // Send a status message about 'aptitude' increases/decreases if Gnoll
@@ -318,11 +318,11 @@ static void _change_skill_level(skill_type exsk, int n)
         {
             if (n > 0 && (you.skills[exsk] - n) < 13 && you.skills[exsk] > 5)
             {
-                mprf(MSGCH_MUTATION, "You become less interested in %s.",
+                mprf(MSGCH_MUTATION, "당신은 이제 %s에 대한 관심이 줄어들었다.",
                      skill_name(exsk));
             }
             else if (n < 0 && you.skills[exsk] < 12 && (you.skills[exsk] - n) > 4)
-                mprf(MSGCH_MUTATION, "You become more interested in %s.",
+                mprf(MSGCH_MUTATION, "당신은 이제 %s에 대한 관심이 증가하였다.",
                      skill_name(exsk));
         }
     }
