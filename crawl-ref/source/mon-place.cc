@@ -3181,10 +3181,10 @@ bool player_angers_monster(monster* mon)
                 mprf("%s은(는) 마법을 싫어하는 당신의 신에 대한 분노를 드러냈다!", mname.c_str());
                 break;
             case DID_FIRE:
-                mprf("%s is enraged by your darkness!", mname.c_str());
+                mprf("%s은(는) 당신의 어두움에 격분했다!", mname.c_str());
                 break;
             case DID_SACRIFICE_LOVE:
-                mprf("%s can only feel hate for you!", mname.c_str());
+                mprf("%s은(는) 오직 당신에 대한 증오만을 느낄 수 있다!", mname.c_str());
                 break;
             default:
                 mprf("%s은(는) 아무 이유 없이 화를 냈다! 완전 또라이다. 사실 버그다. 제보해주세요.", mname.c_str());
