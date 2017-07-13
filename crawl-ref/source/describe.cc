@@ -2615,7 +2615,7 @@ static bool _get_spell_description(const spell_type spell,
 
     description  = spell_title(spell);
     description += "\n\n";
-    const string long_descrip = getLongDescription(string(spell_title(spell))
+    const string long_descrip = getLongDescription(string(_spell_title(spell))
                                                    + " spell");
 
     if (!long_descrip.empty())
