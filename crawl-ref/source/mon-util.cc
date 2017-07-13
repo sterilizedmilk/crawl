@@ -2978,7 +2978,7 @@ void define_monster(monster& mons)
 
 static const char *ugly_colour_names[] =
 {
-    "붉은색", "갈색", "초록색", "청록색", "보라색", "하얀색"
+    "red", "brown", "green", "cyan", "purple", "white"
 };
 
 string ugly_thing_colour_name(colour_t colour)
@@ -3041,7 +3041,7 @@ void ugly_thing_apply_uniform_band_colour(mgen_data &mg,
 
 static const char *drac_colour_names[] =
 {
-    "검은", "", "노란", "녹색", "보라색", "붉은", "하얀", "회색", "창백한"
+    "black", "", "yellow", "green", "purple", "red", "white", "grey", "pale"
 };
 
 string draconian_colour_name(monster_type mon_type)
@@ -3072,7 +3072,7 @@ monster_type draconian_colour_by_name(const string &name)
 // TODO: Remove "putrid" when TAG_MAJOR_VERSION > 34
 static const char *demonspawn_base_names[] =
 {
-    "무시무시한", "얼음장 같은", "지옥불", "putrid", "고문의",
+    "monstrous", "gelid", "infernal", "putrid", "torturous",
 };
 
 string demonspawn_base_name(monster_type mon_type)
