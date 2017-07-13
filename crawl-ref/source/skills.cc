@@ -306,11 +306,11 @@ static void _change_skill_level(skill_type exsk, int n)
     }
     else if (you.num_turns)
     {
-        mprf(MSGCH_INTRINSIC_GAIN, "당신의 %s%s 스킬이 %d 레벨을 %s으며 이제 "
+        mprf(MSGCH_INTRINSIC_GAIN, "당신의 %s%s 스킬이 %s %d 레벨. 그래서 이제 "
              "%d 레벨에 도달하였다!",
              specify_base ? "기본 " : "",
              skill_name(exsk),
-             (n > 0) ? "얻었" : "잃었",
+             (n > 0) ? "얻음 :" : "잃음 :",
              abs(n), you.skills[exsk]);
 
         // Send a status message about 'aptitude' increases/decreases if Gnoll
