@@ -4,6 +4,7 @@
 #include "species.h"
 
 #include "item-prop.h"
+#include "kor-name.h"
 #include "mon-enum.h"
 #include "mutation.h"
 #include "output.h"
@@ -50,7 +51,7 @@ species_type str_to_species(const string &species)
     for (int i = 0; i < NUM_SPECIES; ++i)
     {
         sp = static_cast<species_type>(i);
-        if (species == species_name(sp))
+        if (species == species_name(sp, SPNAME_PLAIN))
             return sp;
     }
 
@@ -71,7 +72,9 @@ string species_name(species_type speci, species_name_type spname_type)
         return def.genus_name;
     else if (spname_type == SPNAME_ADJ && def.adj_name)
         return def.adj_name;
-    return def.name;
+    else if (spname_type == SPNAME_PLAIN)
+        return def.name;
+    return species_korean_name(speci);
 }
 
 /** What walking-like thing does this species do?

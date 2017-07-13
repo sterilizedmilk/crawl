@@ -22,6 +22,7 @@
 #include "god-passive.h"
 #include "god-abil.h"
 #include "item-prop.h"
+#include "kor-name.h"
 #include "level-state-type.h"
 #include "libutil.h"
 #include "message.h"
@@ -150,7 +151,7 @@ spell_type spell_by_name(string name, bool partial_match)
         return lookup(spell_name_cache, name, SPELL_NO_SPELL);
 
     const spell_type sp = find_earliest_match(name, SPELL_NO_SPELL, NUM_SPELLS,
-                                              is_valid_spell, spell_title);
+                                              is_valid_spell, _spell_title);
     return sp == NUM_SPELLS ? SPELL_NO_SPELL : sp;
 }
 
@@ -549,6 +550,11 @@ int count_bits(uint64_t bits)
 }
 
 const char *spell_title(spell_type spell)
+{
+    return spell_korean_name(spell);
+}
+
+const char *_spell_title(spell_type spell)
 {
     return _seekspell(spell)->title;
 }

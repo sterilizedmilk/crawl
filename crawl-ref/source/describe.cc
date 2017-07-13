@@ -1740,7 +1740,7 @@ string get_item_description(const item_def &item, bool verbose,
         }
         else if (is_unrandom_artefact(item) && item_type_known(item))
         {
-            const string desc = getLongDescription(get_artefact_name(item));
+            const string desc = getLongDescription(get_artefact_name(item, false, false));
             if (!desc.empty())
             {
                 description << desc;
@@ -2341,9 +2341,9 @@ bool describe_item(item_def &item, function<void (string&)> fixup_desc)
 
     string quote;
     if (is_unrandom_artefact(item) && item_type_known(item))
-        quote = getQuoteString(get_artefact_name(item));
+        quote = getQuoteString(get_artefact_name(item, false, false));
     else
-        quote = getQuoteString(item.name(DESC_DBNAME, true, false, false));
+        quote = getQuoteString(item.name(DESC_DBNAME, true, false, false, false, 0x0, false));
 
     if (!(crawl_state.game_is_hints_tutorial()
           || quote.empty()))
@@ -2615,7 +2615,7 @@ static bool _get_spell_description(const spell_type spell,
 
     description  = spell_title(spell);
     description += "\n\n";
-    const string long_descrip = getLongDescription(string(spell_title(spell))
+    const string long_descrip = getLongDescription(string(_spell_title(spell))
                                                    + " spell");
 
     if (!long_descrip.empty())
@@ -2665,7 +2665,7 @@ static bool _get_spell_description(const spell_type spell,
     if (crawl_state.player_is_dead())
         return false;
 
-    const string quote = getQuoteString(string(spell_title(spell)) + " spell");
+    const string quote = getQuoteString(string(_spell_title(spell)) + " spell");
     if (!quote.empty())
         description += "\n" + quote;
 

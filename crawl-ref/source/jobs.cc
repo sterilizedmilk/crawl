@@ -5,6 +5,7 @@
 #include "enum.h"
 #include "errors.h"
 #include "item-prop.h"
+#include "kor-name.h"
 #include "libutil.h"
 #include "mapdef.h"
 #include "ng-setup.h"
@@ -40,7 +41,7 @@ const char *get_job_name(job_type which_job)
     if (which_job == JOB_UNKNOWN)
         return "Unemployed";
 
-    return _job_def(which_job).name;
+    return job_korean_name(which_job);
 }
 
 job_type get_job_by_name(const char *name)

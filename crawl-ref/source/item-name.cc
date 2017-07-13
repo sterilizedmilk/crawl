@@ -290,7 +290,7 @@ string item_def::name(description_level_type descrip, bool terse, bool ident,
                     break;
                 case EQ_AMULET:
                     if (you.species == SP_OCTOPODE && form_keeps_mutations())
-                        buff << " (around mantle)";
+                        buff << " (몸통)";
                     else
                         buff << " (목)";
                     break;
@@ -311,7 +311,7 @@ string item_def::name(description_level_type descrip, bool terse, bool ident,
             }
         }
         else if (item_is_quivered(*this))
-            buff << " (quivered)";
+            buff << " (장전)";
     }
 
     if (descrip != DESC_BASENAME && descrip != DESC_DBNAME && with_inscription)
@@ -482,14 +482,14 @@ static const char* _vorpal_brand_name(const item_def &item, bool terse)
         return "보팔";
 
     if (is_range_weapon(item))
-        return "속도";
+        return "velocity";
 
     // Would be nice to implement this as an array (like other brands), but
     // mapping the DVORP flags to array entries seems very fragile.
     switch (get_vorpal_type(item))
     {
-        case DVORP_CRUSHING: return terse ? "분쇄" :"분쇄의";
-        case DVORP_SLICING:  return terse ? "절단" : "절단의";
+        case DVORP_CRUSHING: return terse ? "crush" :"crushing";
+        case DVORP_SLICING:  return terse ? "slice" : "slicing";
         case DVORP_PIERCING: return terse ? "pierce" : "piercing";
         case DVORP_CHOPPING: return terse ? "chop" : "chopping";
         case DVORP_SLASHING: return terse ? "slash" :"slashing";
@@ -2148,8 +2148,7 @@ string item_def::name_aux_kr(description_level_type desc, bool terse, bool ident
 
         if (is_artefact(*this) && !dbname)
         {
-            string long_name = buff.str();
-            long_name += get_artefact_name(*this, ident);
+            string long_name = get_artefact_name(*this, ident);
 
             // crop long artefact names when not controlled by webtiles -
             // webtiles displays weapon names across multiple lines
@@ -3271,12 +3270,13 @@ static MenuEntry* _fixup_runeorb_entry(MenuEntry* me)
         string text = "<";
         text += colour_to_str(colour);
         text += ">";
-        text += rune_type_name(rune);
-        text += " rune of Zot";
+        text += "조트의 ";
+        text += item_korean_name(OBJ_RUNES, rune);
+        text += " 룬";
         if (!you.runes[rune])
         {
             text += " (";
-            text += branches[rune_location(rune)].longname;
+            text += branch_korean_name(rune_location(rune));
             text += ")";
         }
         text += "</";
@@ -3291,10 +3291,10 @@ static MenuEntry* _fixup_runeorb_entry(MenuEntry* me)
     else if (entry->item->is_type(OBJ_ORBS, ORB_ZOT))
     {
         if (player_has_orb())
-            entry->text = "<magenta>The Orb of Zot</magenta>";
+            entry->text = "<magenta>조트의 오브</magenta>";
         else
         {
-            entry->text = "<darkgrey>The Orb of Zot"
+            entry->text = "<darkgrey>조트의 오브"
                           " (the Realm of Zot)</darkgrey>";
         }
     }
@@ -3308,8 +3308,8 @@ void display_runes()
                runes_in_pack() < you.obtainable_runes ? "green" :
                                                    "lightgreen";
 
-    auto title = make_stringf("<white>Runes of Zot (</white>"
-                              "<%s>%d</%s><white> collected) & Orbs of Power</white>",
+    auto title = make_stringf("<white>조트의 룬 (</white>"
+                              "<%s>%d</%s><white>개 얻음) & 힘의 오브</white>",
                               col, runes_in_pack(), col);
     title = string(max(0, 39 - printed_width(title) / 2), ' ') + title;
 

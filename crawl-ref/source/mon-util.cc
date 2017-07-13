@@ -3107,16 +3107,6 @@ string mons_type_name(monster_type mc, description_level_type desc)
 {
     string result;
 
-    if (!mons_is_unique(mc))
-    {
-        switch (desc)
-        {
-        case DESC_THE:       result = "the "; break;
-        case DESC_A:         result = "a ";   break;
-        case DESC_PLAIN: default:             break;
-        }
-    }
-
     switch (mc)
     {
     case RANDOM_MONSTER:
@@ -3153,18 +3143,7 @@ string mons_type_name(monster_type mc, description_level_type desc)
         return result;
     }
 
-    result += me->name;
-
-    // Vowel fix: Change 'a orc' to 'an orc'..
-    if (result.length() >= 3
-        && (result[0] == 'a' || result[0] == 'A')
-        && result[1] == ' '
-        && is_vowel(result[2])
-        // XXX: Hack
-        && !starts_with(&result[2], "one-"))
-    {
-        result.insert(1, "n");
-    }
+    result += me->name_kor;
 
     return result;
 }
@@ -3179,7 +3158,7 @@ static string _get_proper_monster_name(const monster& mon)
     if (!name.empty())
         return name;
 
-    return getRandNameString(get_monster_data(mons_genus(mon.type))->name,
+    return getRandNameString(get_monster_data(mons_genus(mon.type))->name_kor,
                              " name");
 }
 
@@ -4892,7 +4871,7 @@ const char* mons_class_name(monster_type mc)
     if (invalid_monster_type(mc) && mc != MONS_PROGRAM_BUG)
         return "INVALID";
 
-    return get_monster_data(mc)->name;
+    return get_monster_data(mc)->name_kor;
 }
 
 mon_threat_level_type mons_threat_level(const monster &mon, bool real)
