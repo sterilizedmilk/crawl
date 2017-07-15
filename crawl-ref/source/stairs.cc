@@ -179,8 +179,8 @@ static void _climb_message(dungeon_feature_type stair, bool going_up,
     else
     {
         mprf("당신은 %s쪽으로 %s갔다",
-             you.airborne() ? "날아" : "걸어",
-             going_up ? "윗" : "아랫");
+             going_up ? "윗" : "아랫",
+             you.airborne() ? "날아" : "걸어");
     }
 }
 
