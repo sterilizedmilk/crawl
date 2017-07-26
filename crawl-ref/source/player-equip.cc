@@ -1093,7 +1093,7 @@ static void _remove_amulet_of_faith(item_def &item)
              && !you_worship(GOD_XOM)
              && !you_worship(GOD_GOZAG))
     {
-        simple_god_message("은(는) 당신에 대해 무관심해진 것 같다.");
+        simple_god_message("은 당신에 대해 무관심해진 것 같다.");
 
         const int piety_loss = div_rand_round(you.piety, 3);
         // Piety penalty for removing the Amulet of Faith.
@@ -1219,7 +1219,7 @@ static void _equip_jewellery_effect(item_def &item, bool unmeld,
                                " has no use for such trinkets.");
         }
         else if (you_worship(GOD_GOZAG))
-            simple_god_message("(은)는 오직 금화만을 원한다!");
+            simple_god_message("은 오직 금화만을 원한다!");
         else
         {
             mprf(MSGCH_GOD, "You feel a %ssurge of divine interest.",

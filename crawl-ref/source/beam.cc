@@ -2560,7 +2560,7 @@ void bolt::drop_object()
     {
         if (you.see_cell(pos()))
         {
-            mprf("%s_%s!<darkgrey>beam.cc.mprf:8</darkgrey>",
+            mprf("%s %s!",
                  item->name(DESC_THE).c_str(),
                  summoned_poof_msg(agent() ? agent()->as_monster() : nullptr,
                                    *item).c_str());

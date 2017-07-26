@@ -286,7 +286,7 @@ static void _change_skill_level(skill_type exsk, int n)
         mprf(MSGCH_INTRINSIC_GAIN, "당신은 %s을(를) 마스터했다!", skill_name(exsk));
     else if (abs(n) == 1 && you.num_turns)
     {
-        mprf(MSGCH_INTRINSIC_GAIN, "당신의 %s_%s 스킬이 %s했다. 현재레벨 : %d!<darkgrey>skills.cc.mprf:3</darkgrey>",
+        mprf(MSGCH_INTRINSIC_GAIN, "Your %s%s skill %s to level %d!",
              specify_base ? "base " : "",
              skill_name(exsk), (n > 0) ? "increases" : "decreases",
              you.skills[exsk]);
@@ -306,8 +306,8 @@ static void _change_skill_level(skill_type exsk, int n)
     }
     else if (you.num_turns)
     {
-        mprf(MSGCH_INTRINSIC_GAIN, "Your %s%s skill %s %d levels and is now <darkgrey>skills.cc.mprf:5</darkgrey>"
-             "at level %d!<darkgrey>skills.cc.mprf:7</darkgrey>",
+        mprf(MSGCH_INTRINSIC_GAIN, "Your %s%s skill %s %d levels and is now "
+             "at level %d!",
              specify_base ? "base " : "",
              skill_name(exsk),
              (n > 0) ? "gained" : "lost",
