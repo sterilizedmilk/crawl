@@ -710,7 +710,7 @@ void attack::chaos_affects_defender()
         if (defender->is_player() && have_passive(passive_t::no_haste)
             && beam.flavour == BEAM_HASTE)
         {
-            simple_god_message("은 당신을 예기치 못한 가속으로부터 지켰다.");
+            simple_god_message("은(는) 당신을 예기치 못한 가속으로부터 지켰다.");
             obvious_effect = true;
             return;
         }
@@ -937,7 +937,7 @@ void attack::drain_defender_speed()
 {
     if (needs_message)
     {
-        mprf("%s %s %s vigour!",
+        mprf("%s_%s_%s_vigour!<darkgrey>attack.cc.mprf:1</darkgrey>",
              atk_name(DESC_THE).c_str(),
              attacker->conj_verb("drain").c_str(),
              def_name(DESC_ITS).c_str());
@@ -1019,7 +1019,7 @@ void attack::stab_message()
     case 6:     // big melee, monster surrounded/not paying attention
         if (coinflip())
         {
-            mprf("You %s %s from a blind spot!",
+            mprf("You_%s_%s_from_a_blind_spot!<darkgrey>attack.cc.mprf:2</darkgrey>",
                   (you.species == SP_FELID) ? "pounce on" : "strike",
                   defender->name(DESC_THE).c_str());
         }
@@ -1037,7 +1037,7 @@ void attack::stab_message()
         }
         else
         {
-            mprf("You %s %s from behind!",
+            mprf("You_%s_%s_from_behind!<darkgrey>attack.cc.mprf:5</darkgrey>",
                   (you.species == SP_FELID) ? "pounce on" : "strike",
                   defender->name(DESC_THE).c_str());
         }
@@ -1419,7 +1419,7 @@ bool attack::attack_shield_blocked(bool verbose)
 
         if (needs_message && verbose)
         {
-            mprf("%s %s %s attack.",
+            mprf("%s_%s_%s_attack.<darkgrey>attack.cc.mprf:8</darkgrey>",
                  defender_name(false).c_str(),
                  defender->conj_verb("block").c_str(),
                  attacker == defender ? "its own"

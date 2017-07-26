@@ -592,7 +592,7 @@ bool MiscastEffect::avoid_lethal(int dam)
     {
         // Any possible miscast would kill you, now that's interesting.
         if (you_worship(GOD_XOM))
-            simple_god_message("은 당신을 흥미롭게 지켜보았다.");
+            simple_god_message("은(는) 당신을 흥미롭게 지켜보았다.");
         return true;
     }
 
@@ -1564,7 +1564,7 @@ void MiscastEffect::_necromancy(int severity)
             // An actual necromancy miscast.
             if (x_chance_in_y(you.piety, piety_breakpoint(5)))
             {
-                simple_god_message("은 당신을 강령술 주문시전 실패로부터 "
+                simple_god_message(" (은)는 당신을 강령술 주문시전 실패로부터 "
                                    "보호하였다!");
                 return;
             }
@@ -1573,12 +1573,12 @@ void MiscastEffect::_necromancy(int severity)
         {
             if (coinflip())
             {
-                simple_god_message("은 저주를 막아주었다.");
+                simple_god_message("은(는) 저주를 막아주었다.");
                 return;
             }
             else
             {
-                simple_god_message("은 저주를 부분적으로 막아주었다.");
+                simple_god_message(" partially은(는) 저주를 막아주었다.");
                 severity = max(severity - 1, 0);
             }
         }

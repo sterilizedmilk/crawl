@@ -1411,7 +1411,7 @@ bool mutate(mutation_type which_mutation, const string &reason, bool failMsg,
             && (x_chance_in_y(you.piety, MAX_PIETY)
                 || x_chance_in_y(you.piety, MAX_PIETY + 22)))
         {
-            simple_god_message("은 당신을 돌연변이로부터 보호하였다!");
+            simple_god_message("(은)는 당신을 돌연변이로부터 보호하였다!");
             return false;
         }
     }

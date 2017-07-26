@@ -705,7 +705,7 @@ static bool _god_prevents_berserk_haste(bool intentional)
     // a part of your penance.
     if (!intentional)
     {
-        simple_god_message("은 당신을 예기치 못한 가속으로부터 지켰다.");
+        simple_god_message("은(는) 당신을 예기치 못한 가속으로부터 지켰다.");
         return true;
     }
 
@@ -714,7 +714,7 @@ static bool _god_prevents_berserk_haste(bool intentional)
     if (!you_worship(old_religion))
         return false;
 
-    simple_god_message("은 당신의 가속을 막았다.");
+    simple_god_message("은(는) 당신의 가속을 막았다.");
     return true;
 }
 
