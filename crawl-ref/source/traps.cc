@@ -602,7 +602,7 @@ void trap_def::trigger(actor& triggerer)
         {
             if (you_know && in_sight)
             {
-                mprf("%s vibrates slightly, failing to make a sound.<darkgrey>traps.cc.mprf:6</darkgrey>",
+                mprf("%s vibrates slightly, failing to make a sound.",
                      name(DESC_THE).c_str());
             }
         }
@@ -1361,7 +1361,7 @@ void trap_def::shoot_ammo(actor& act, bool was_known)
     {
         if (one_chance_in(5) || was_known && !one_chance_in(4))
         {
-            mprf("You avoid triggering %s.<darkgrey>traps.cc.mprf:14</darkgrey>", name(DESC_A).c_str());
+            mprf("You avoid triggering %s.", name(DESC_A).c_str());
             return;
         }
     }
@@ -1369,7 +1369,7 @@ void trap_def::shoot_ammo(actor& act, bool was_known)
     {
         if (was_known && you.see_cell(pos) && you.can_see(act))
         {
-            mprf("%s avoids triggering %s.<darkgrey>traps.cc.mprf:15</darkgrey>", act.name(DESC_THE).c_str(),
+            mprf("%s avoids triggering %s.", act.name(DESC_THE).c_str(),
                  name(DESC_A).c_str());
         }
         return;

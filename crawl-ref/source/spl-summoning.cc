@@ -213,7 +213,7 @@ spret_type cast_sticks_to_snakes(int pow, god_type god, bool fail)
 
         if (sticks_left)
         {
-            mprf("You now have %d arrow%s.<darkgrey>spl-summoning.cc.mprf:2</darkgrey>", sticks_left,
+            mprf("You now have %d arrow%s.", sticks_left,
                                              sticks_left > 1 ? "s" : "");
         }
         else
@@ -318,7 +318,7 @@ spret_type cast_monstrous_menagerie(actor* caster, int pow, god_type god, bool f
 
     if (seen)
     {
-        mprf("%s %s.<darkgrey>spl-summoning.cc.mprf:27</darkgrey>%s.<darkgrey>spl-summoning.cc.mprf:9</darkgrey>%s!<darkgrey>spl-summoning.cc.mprf:3</darkgrey>", caster->name(DESC_THE).c_str(),
+        mprf("%s %s %s %s!", caster->name(DESC_THE).c_str(),
                              caster->conj_verb("summon").c_str(),
                              plural ? "some" : "a",
                              plural ? pluralise_monster(mons_type_name(type, DESC_PLAIN)).c_str()
@@ -757,7 +757,7 @@ static bool _check_tukima_validity(const actor *target)
             bool plural = true;
             const string hand = target->hand_name(true, &plural);
 
-            mprf("%s %s.<darkgrey>spl-summoning.cc.mprf:27</darkgrey>%s.<darkgrey>spl-summoning.cc.mprf:9</darkgrey>",
+            mprf("%s %s %s.",
                  apostrophise(target->name(DESC_THE)).c_str(),
                  hand.c_str(), conjugate_verb("twitch", plural).c_str());
         }
@@ -2208,7 +2208,7 @@ bool twisted_resurrection(actor *caster, int pow, beh_type beha,
 
     if (seen_lost)
     {
-        mprf("%s %s.<darkgrey>spl-summoning.cc.mprf:27</darkgrey>into %s!<darkgrey>spl-summoning.cc.mprf:22</darkgrey>",
+        mprf("%s %s into %s!",
              _count_article(seen_lost, seen_crawlies + seen_masses == 0),
              seen_lost == 1 ? "corpse collapses" : "corpses collapse",
              seen_lost_piles == 1 ? "a pulpy mess" : "pulpy messes");
@@ -2216,7 +2216,7 @@ bool twisted_resurrection(actor *caster, int pow, beh_type beha,
 
     if (seen_crawlies > 0)
     {
-        mprf("%s %s.<darkgrey>spl-summoning.cc.mprf:27</darkgrey>to drag %s along the ground!",
+        mprf("%s %s to drag %s along the ground!",
              _count_article(seen_crawlies, seen_lost + seen_masses == 0),
              seen_crawlies == 1 ? "corpse begins" : "corpses begin",
              seen_crawlies == 1 ? "itself" : "themselves");
@@ -2402,7 +2402,7 @@ void init_servitor(monster* servitor, actor* caster)
 
     if (you.can_see(*caster))
     {
-        mprf("%s %s.<darkgrey>spl-summoning.cc.mprf:27</darkgrey>a servant imbued with %s destructive magic!<darkgrey>spl-summoning.cc.mprf:25</darkgrey>",
+        mprf("%s %s a servant imbued with %s destructive magic!",
              caster->name(DESC_THE).c_str(),
              caster->conj_verb("summon").c_str(),
              caster->pronoun(PRONOUN_POSSESSIVE).c_str());
@@ -2981,7 +2981,7 @@ spret_type cast_fulminating_prism(actor* caster, int pow,
         {
             if (you.can_see(*victim))
             {
-                mprf("%s %s.<darkgrey>spl-summoning.cc.mprf:27</darkgrey>", victim->name(DESC_THE).c_str(),
+                mprf("%s %s.", victim->name(DESC_THE).c_str(),
                                victim->conj_verb("twitch").c_str());
             }
             else
@@ -3007,7 +3007,7 @@ spret_type cast_fulminating_prism(actor* caster, int pow,
     {
         if (caster->observable())
         {
-            mprf("%s %s.<darkgrey>spl-summoning.cc.mprf:27</darkgrey>a prism of explosive energy!",
+            mprf("%s %s a prism of explosive energy!",
                  caster->name(DESC_THE).c_str(),
                  caster->conj_verb("conjure").c_str());
         }

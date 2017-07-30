@@ -1099,9 +1099,9 @@ void holy_word(int pow, holy_word_source_type source, const coord_def& where,
 {
     if (!silent && attacker)
     {
-        mprf("%s는 신성한 힘의 단어를 읊었다!",
+        mprf("%s는 신성한 힘의 단어를 %s!",
              attacker->name(DESC_THE).c_str(),
-             attacker->conj_verb("speak").c_str());
+             attacker->conj_verb("읊었다").c_str());
     }
 
     for (radius_iterator ri(where, LOS_SOLID); ri; ++ri)
@@ -1133,12 +1133,12 @@ void torment_player(actor *attacker, torment_source_type taux)
             if (random2(600) < you.piety) // 13.33% to 33.33% chance
             {
                 hploss = 0;
-                simple_god_message("은(는) 당신을 고통으로부터 보호했다!");
+                simple_god_message("은 당신을 고통으로부터 보호했다!");
             }
             else if (random2(250) < you.piety) // 24% to 80% chance
             {
                 hploss -= random2(hploss - 1);
-                simple_god_message(" partially은(는) 당신을 고통으로부터 보호했다!");
+                simple_god_message("은 당신을 고통으로부터 부분적으로 보호했다!");
             }
         }
     }
