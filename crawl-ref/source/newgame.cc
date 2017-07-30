@@ -918,7 +918,7 @@ void species_group::attach(const newgame_def& ng, const newgame_def& defaults,
             letter,
             this_species,
             item_status,
-            species_name(this_species, SPNAME_PLAIN),
+            species_name(this_species),
             is_active_item,
             min_coord,
             max_coord
@@ -1032,7 +1032,7 @@ void job_group::attach(const newgame_def& ng, const newgame_def& defaults,
         else
             item_status = ITEM_STATUS_ALLOWED;
 
-        string job_name = _get_job_name(job);
+        string job_name = get_job_name(job);
         const bool is_active_item = defaults.job == job;
 
         ++min_coord.y;
