@@ -304,7 +304,7 @@ bool remove_sanctuary(bool did_attack)
     if (did_attack)
     {
         if (seen_change)
-            simple_god_message("은 성지의 선물을 해지하였다.", GOD_ZIN);
+            simple_god_message("은(는) 성지의 선물을 해지하였다.", GOD_ZIN);
         did_god_conduct(DID_ATTACK_IN_SANCTUARY, 3);
     }
 
@@ -466,7 +466,7 @@ void create_sanctuary(const coord_def& center, int time)
         mprf(MSGCH_GOD, "진의 권능에 의해, 성역 내의 모든 핏자국이 씻겨나갔다.");
 
     if (scare_count == 1 && seen_mon != nullptr)
-        simple_monster_message(*seen_mon, "은 빛을 피해 달아났다!");
+        simple_monster_message(*seen_mon, " 은(는) 빛을 피해 달아났다!");
     else if (scare_count > 0)
         mpr("몬스터들이 사방으로 비산했다!");
 }

@@ -747,14 +747,14 @@ void yell(const actor* mon)
 
     if (mon)
     {
-        mprf("You %s%s at %s!",
+        mprf("You %s%s at %s!<darkgrey>shout.cc.mprf:5</darkgrey>",
              shout_verb.c_str(),
              you.duration[DUR_RECITE] ? " your recitation" : "",
              mon->name(DESC_THE).c_str());
     }
     else
     {
-        mprf(MSGCH_SOUND, "You %s%s!",
+        mprf(MSGCH_SOUND, "You %s%s!<darkgrey>shout.cc.mprf:8</darkgrey>",
              shout_verb.c_str(),
              you.berserk() ? " wildly" : " for attention");
     }

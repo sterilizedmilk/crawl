@@ -627,7 +627,7 @@ static void _place_displaced_monsters()
             maybe_bloodify_square(mon->pos());
             if (you.can_see(*mon))
             {
-                simple_monster_message(*mon, "은 어비스로 끌려 들어갔다.",
+                simple_monster_message(*mon, "은(는) 어비스로 끌려 들어갔다.",
                         MSGCH_BANISHMENT);
             }
             _abyss_lose_monster(*mon);

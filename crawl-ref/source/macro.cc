@@ -997,9 +997,9 @@ void macro_add_query()
         const bool deleted_macro = macro_del(mapref, key);
         if (deleted_macro)
         {
-            mprf("'%s'에 대한 %s을(를) 삭제하였다.",
-                 vtostr(key).c_str(),
-                 macro_type.c_str());
+            mprf("%s을(를), '%s' => '%s' 로 삭제하였다.",
+                 macro_type.c_str(),
+                 vtostr(key).c_str());
         }
         else
             canned_msg(MSG_OK);

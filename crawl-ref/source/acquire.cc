@@ -1455,7 +1455,7 @@ int acquirement_create_item(object_class_type class_wanted,
         && agent < NUM_GODS)
     {
         if (agent == GOD_XOM)
-            simple_god_message("은 낄낄대며 웃었다.", GOD_XOM);
+            simple_god_message("은(는) 낄낄대며 웃었다.", GOD_XOM);
         else
             return _failed_acquirement(quiet);
     }
@@ -1494,8 +1494,8 @@ bool acquirement(object_class_type class_wanted, int agent,
         { OBJ_ARMOUR,     "갑옷" },
         { OBJ_JEWELLERY,  "장신구" },
         { OBJ_BOOKS,      "책" },
-        { OBJ_STAVES,     "지팡이 " },
-        { OBJ_MISCELLANY, "발동 아이템" },
+        { OBJ_STAVES,     "Staff " },
+        { OBJ_MISCELLANY, "Evocables" },
         { OBJ_FOOD,       0 }, // amended below
         { OBJ_GOLD,       "금화" },
     };

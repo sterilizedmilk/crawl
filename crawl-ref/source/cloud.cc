@@ -1225,7 +1225,7 @@ static int _actor_cloud_damage(const actor *act,
         else if (you.can_see(*act))
         {
             simple_monster_message(*act->as_monster(),
-                                   "은 번개에 맞았다.");
+                                   " is struck by lightning.");
         }
         else if (you.see_cell(act->pos()))
         {
@@ -1236,7 +1236,7 @@ static int _actor_cloud_damage(const actor *act,
               act->is_player() || you.see_cell(act->pos())
               || you_worship(GOD_QAZLAL)
                 ? nullptr
-                : "당신은 천둥소리를 들었다!");
+                : "You hear a clap of thunder!");
 
         return lightning_dam;
 
