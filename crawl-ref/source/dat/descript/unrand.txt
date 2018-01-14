@@ -674,3 +674,7 @@ Baseball bat
 
 [NEED_TXT] needed to weilded with both hands.
 %%%%
+Ruyi bang
+
+[NEED_TEXT]
+%%%%

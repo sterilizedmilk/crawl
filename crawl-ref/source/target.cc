@@ -598,7 +598,8 @@ aff_type targeter_reach::is_affected(coord_def loc)
     if (loc == aim)
         return AFF_YES;
 
-    if (((loc - origin) * 2 - (aim - origin)).abs() <= 1
+    if ((aim - origin).rdist() <= REACH_TWO
+        && ((loc - origin) * 2 - (aim - origin)).abs() <= 1
         && feat_is_reachable_past(grd(loc)))
     {
         return AFF_TRACER;

@@ -182,7 +182,7 @@ static bool _reaching_weapon_attack(const item_def& wpn)
                 if (mons->wont_attack())
                 {
                     // Let's assume friendlies cooperate.
-                    mpr("You could not reach far enough!");
+                    mprf("You could not reach far enough because of %s.", mons->name(DESC_PLAIN).c_str());
                     you.time_taken = attack_delay;
                     make_hungry(3, true);
                     return true;
@@ -203,7 +203,7 @@ static bool _reaching_weapon_attack(const item_def& wpn)
     {
         // Must return true, otherwise you get a free discovery
         // of invisible monsters.
-        mpr("You attack empty space.");
+        mpr("You swing at nothing.");
         you.time_taken = attack_delay;
         make_hungry(3, true);
         return true;

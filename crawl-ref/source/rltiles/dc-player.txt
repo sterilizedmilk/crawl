@@ -542,6 +542,7 @@ dispater DISPATER
 olgreb OLGREB
 order ORDER
 majin MAJIN
+ruyi_bang RUYI_BANG
 ## axes
 axe_trog AXE_TROG
 arga ARGA

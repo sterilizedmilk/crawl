@@ -22,7 +22,9 @@
 
 #include "beam.h"          // For Lajatang of Order's silver damage
 #include "cloud.h"         // For storm bow's and robe of clouds' rain
+#include "directn.h"
 #include "english.h"       // For apostrophise
+#include "env.h"
 #include "exercise.h"      // For practise_evoking
 #include "delay.h"         // For stop_delay
 #include "fight.h"
@@ -30,7 +32,9 @@
 #include "ghost.h"         // For is_dragonkind ghost_demon datas
 #include "god-conduct.h"   // did_god_conduct
 #include "god-passive.h"   // passive_t::want_curses
+#include "los.h"
 #include "mgen-data.h"     // For Sceptre of Asmodeus evoke
+#include "message.h"
 #include "mon-death.h"     // For demon axe's SAME_ATTITUDE
 #include "mon-place.h"     // For Sceptre of Asmodeus evoke
 #include "player.h"
@@ -41,6 +45,7 @@
 #include "spl-miscast.h"   // For Staff of Wucad Mu and Scythe of Curses miscasts
 #include "spl-summoning.h" // For Zonguldrok animating dead
 #include "terrain.h"       // For storm bow
+#include "traps.h"
 #include "view.h"          // For arc blade's discharge effect
 
 // prop recording whether the singing sword has said hello yet
@@ -1453,4 +1458,113 @@ static void _BASEBALL_BAT_unequip(item_def *item, bool *show_msgs)
 {
     if (you.attribute[ATTR_CHANNELING] == CHANN_CALLED_SHOT)
         you.attribute[ATTR_CHANNELING] = 0;
+}
+
+///////////////////////////////////////////////////
+
+static bool _RUYI_BANG_evoke(item_def *item, bool* did_work, bool* unevokable)
+{
+    if (you.confused())
+    {
+        canned_msg(MSG_TOO_CONFUSED);
+        *unevokable = true;
+        return true;
+    }
+
+    if (you.caught())
+    {
+        mprf("You cannot attack while %s.", held_status());
+        *unevokable = true;
+        return true;
+    }
+
+    dist beam;
+
+    direction_chooser_args args;
+    args.restricts = DIR_TARGET;
+    args.mode = TARG_HOSTILE;
+    args.range = 7;
+    args.top_prompt = "Attack whom?";
+    args.self = CONFIRM_CANCEL;
+    targeter_beam hitfunc(&you, 7, ZAP_THROW_FLAME, 0, 0, 0); // just for targeting
+    args.hitfunc = &hitfunc;
+
+    direction(beam, args);
+
+    if (!beam.isValid)
+    {
+        if (beam.isCancel)
+            canned_msg(MSG_OK);
+        return true;
+    }
+
+    if (beam.isMe())
+    {
+        canned_msg(MSG_UNTHINKING_ACT);
+        return true;
+    }
+
+    const coord_def delta = beam.target - you.pos();
+    const int distance = max(abs(delta.x), abs(delta.y));
+    monster* mons = monster_at(beam.target);
+
+    const int attack_delay = you.attack_delay().roll();
+
+    // If we're attacking more than a space away...
+    if (distance > 1)
+    {
+        ray_def ray;
+
+        if (!find_ray(you.pos(), beam.target, ray, opc_solid_see))
+            fallback_ray(you.pos(), beam.target, ray);
+        bool success = true;
+        monster *midmons;
+        for (int i = 1; i < distance; ++i)
+        {
+            ray.advance();
+            if (cell_is_solid(ray.pos()))
+            {
+                mons = nullptr;
+                break;
+            }
+            if ((midmons = monster_at(ray.pos()))
+                && !midmons->submerged())
+            {
+                if (x_chance_in_y(you.skill(SK_STAVES, 100) + 3600, 7200)) // 1/2 ~ 7/8
+                {
+                    success = false;
+                    mons = midmons;
+                    if (mons->wont_attack())
+                    {
+                        mprf("You could not stretch far enough because of %s.", mons->name(DESC_PLAIN).c_str());
+                        you.time_taken = attack_delay;
+                        make_hungry(3, true);
+                        *did_work = true;
+                        return true;
+                    }
+                    break;
+                }
+            }
+        }
+
+        mpr("You stretch your weapon!");
+        if (!success)
+        {
+            mprf("%s is in the way.",
+                 mons->observable() ? mons->name(DESC_THE).c_str()
+                                    : "Something you can't see");
+        }
+    }
+
+    if (mons == nullptr)
+        mpr("You swing at noting.");
+    else
+        fight_melee(&you, mons);
+
+    you.time_taken = attack_delay;
+    make_hungry(3, true);
+    you.turn_is_over = true;
+
+    *did_work = true;
+    return true;
 }

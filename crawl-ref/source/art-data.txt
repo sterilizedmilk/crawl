@@ -1315,6 +1315,15 @@ COLOUR:   ETC_SILVER
 TILE:     urand_baseball_bat
 TILE_EQ:  baseball_bat
 
+ENUM:     RUYI_BANG
+NAME:     Ruyi Bang
+OBJ:      OBJ_WEAPONS/WPN_QUARTERSTAFF
+INSCRIP:  stretch
+PLUS:     +4
+COLOUR:   ETC_GOLD
+TILE:     urand_ruyi_bang
+TILE_EQ:  ruyi_bang
+
 # This entry must always be last.
 ENUM:   DUMMY2
 NAME:   DUMMY UNRANDART 2

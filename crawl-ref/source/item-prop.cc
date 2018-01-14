@@ -2197,6 +2197,8 @@ reach_type weapon_reach(const item_def &item)
 {
     if (item_attack_skill(item) == SK_POLEARMS)
         return REACH_TWO;
+    else if (is_unrandom_artefact(item, UNRAND_RUYI_BANG))
+        return REACH_SEVEN;
     return REACH_NONE;
 }
 
