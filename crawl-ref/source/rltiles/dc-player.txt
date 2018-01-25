@@ -148,6 +148,8 @@ gargoyle_red_m
 gargoyle_red_f
 gargoyle_brown_m
 gargoyle_brown_f
+angelspawn_m ANGEL
+angelspawn_f
 %sdir player/felids
 %rim 0
 cat1 FELID
@@ -1138,18 +1140,20 @@ hood_green HOOD_GREEN
 ninja_black MASK_NINJA_BLACK
 %end_ctg
 
-# draconian wings and heads, need same order as draconians
-%parts_ctg DRCWING
-%sdir player/drcwing
-drcwing_brown BROWN
-drcwing_black BLACK
-drcwing_yellow YELLOW
-drcwing_grey GREY
-drcwing_green GREEN
-drcwing_pale PALE
-drcwing_purple PURPLE
-drcwing_red RED
-drcwing_white WHITE
+# draconian wings and heads, need same order as draconians 
+%parts_ctg WING
+%sdir player/wing
+wing_drc_brown DRC_BROWN
+wing_drc_black DRC_BLACK
+wing_drc_yellow DRC_YELLOW
+wing_drc_grey DRC_GREY
+wing_drc_green DRC_GREEN
+wing_drc_pale DRC_PALE
+wing_drc_purple DRC_PURPLE
+wing_drc_red DRC_RED
+wing_drc_white DRC_WHITE
+wing_ang_m ANGEL_M
+wing_ang_f ANGEL_F
 %end_ctg
 
 %parts_ctg DRCHEAD

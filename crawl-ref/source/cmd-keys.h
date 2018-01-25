@@ -44,6 +44,7 @@
 {'g', CMD_PICKUP},
 {'i', CMD_DISPLAY_INVENTORY},
 {'m', CMD_DISPLAY_SKILLS},
+{'p', CMD_DISPLAY_TALENTS},
 {'o', CMD_EXPLORE},
 {'q', CMD_QUAFF},
 {'r', CMD_READ},

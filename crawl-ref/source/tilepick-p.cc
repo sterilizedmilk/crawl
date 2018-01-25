@@ -628,6 +628,8 @@ tileidx_t tilep_species_to_base_tile(int sp, int level)
         return TILEP_BASE_VINE_STALKER;
     case SP_BARACHI:
         return TILEP_BASE_BARACHI;
+    case SP_ANGEL:
+        return TILEP_BASE_ANGEL;
     default:
         return TILEP_BASE_HUMAN;
     }
@@ -640,7 +642,7 @@ void tilep_draconian_init(int sp, int level, tileidx_t *base,
     *head = tile_player_part_start[TILEP_PART_DRCHEAD] + colour_offset;
 
     if (you.has_mutation(MUT_BIG_WINGS))
-        *wing = tile_player_part_start[TILEP_PART_DRCWING] + colour_offset;
+        *wing = tile_player_part_start[TILEP_PART_WING] + colour_offset;
 }
 
 // Set default parts of each race: body + optional beard, hair, etc.
@@ -728,6 +730,10 @@ void tilep_race_default(int sp, int level, dolls_data *doll)
         case SP_FORMICID:
             hair = 0;
             break;
+        case SP_ANGEL:
+            if (you.has_mutation(MUT_BIG_WINGS))
+                wing = TILEP_WING_ANGEL_M;
+            break;
         default:
             // nothing to do
             break;
@@ -744,8 +750,8 @@ void tilep_race_default(int sp, int level, dolls_data *doll)
         parts[TILEP_PART_SHADOW] = TILEP_SHADOW_SHADOW;
     if (parts[TILEP_PART_DRCHEAD] == TILEP_SHOW_EQUIP)
         parts[TILEP_PART_DRCHEAD] = head;
-    if (parts[TILEP_PART_DRCWING] == TILEP_SHOW_EQUIP)
-        parts[TILEP_PART_DRCWING] = wing;
+    if (parts[TILEP_PART_WING] == TILEP_SHOW_EQUIP)
+        parts[TILEP_PART_WING] = wing;
 }
 
 // This function needs to be entirely deterministic.
@@ -1014,7 +1020,7 @@ void tilep_calc_flags(const dolls_data &doll, int flag[])
         flag[TILEP_PART_HAIR]  = TILEP_FLAG_HIDE;
         flag[TILEP_PART_BEARD] = TILEP_FLAG_HIDE;
         flag[TILEP_PART_SHADOW]= TILEP_FLAG_HIDE;
-        flag[TILEP_PART_DRCWING]=TILEP_FLAG_HIDE;
+        flag[TILEP_PART_WING]  = TILEP_FLAG_HIDE;
         flag[TILEP_PART_DRCHEAD]=TILEP_FLAG_HIDE;
     }
     else if (is_player_tile(doll.parts[TILEP_PART_BASE], TILEP_BASE_OCTOPODE))
@@ -1028,7 +1034,7 @@ void tilep_calc_flags(const dolls_data &doll, int flag[])
         flag[TILEP_PART_HAIR]  = TILEP_FLAG_HIDE;
         flag[TILEP_PART_BEARD] = TILEP_FLAG_HIDE;
         flag[TILEP_PART_SHADOW]= TILEP_FLAG_HIDE;
-        flag[TILEP_PART_DRCWING]=TILEP_FLAG_HIDE;
+        flag[TILEP_PART_WING]  = TILEP_FLAG_HIDE;
         flag[TILEP_PART_DRCHEAD]=TILEP_FLAG_HIDE;
     }
 
@@ -1095,7 +1101,7 @@ const int parts_saved[TILEP_PART_MAX + 1] =
     TILEP_PART_HELM,
     TILEP_PART_HALO,
     TILEP_PART_ENCH,
-    TILEP_PART_DRCWING,
+    TILEP_PART_WING,
     TILEP_PART_DRCHEAD,
     -1
 };

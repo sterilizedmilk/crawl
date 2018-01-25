@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "actor.h"
+#include "angel.h"
 #include "attribute-type.h"
 #include "beam.h"
 #include "bitary.h"
@@ -312,6 +313,9 @@ public:
     };
 
     vector<demon_trait> demonic_traits;
+
+    int talent_count[NUM_TALENT];
+    int apt_boost[NUM_SKILLS];
 
     int magic_contamination;
 
@@ -1109,8 +1113,8 @@ void dec_max_hp(int hp_loss);
 void deflate_hp(int new_level, bool floor);
 void set_hp(int new_amount);
 
-int get_real_hp(bool trans, bool rotted = false);
-int get_real_mp(bool include_items);
+int get_real_hp(bool trans, bool rotted = false, bool preview = false);
+int get_real_mp(bool include_items, bool preview = false);
 
 int get_contamination_level();
 bool player_severe_contamination();

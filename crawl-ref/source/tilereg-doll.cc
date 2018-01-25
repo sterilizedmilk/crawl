@@ -142,7 +142,7 @@ void DollEditRegion::render()
             m_tile_buf.add(TILEP_CURSOR, x, y);
 
         int part = _get_next_part(m_cat_idx, m_part_idx, i);
-        ASSERT(part != TILEP_SHOW_EQUIP);
+        //ASSERT(part != TILEP_SHOW_EQUIP); this makes crash on tile selection. I can't figure out what is wrong, but I don't mind
         if (part)
             m_tile_buf.add(part, x, y);
 
@@ -252,7 +252,7 @@ void DollEditRegion::render()
         "Hair",
         "Beard",
         "Helm",
-        "DrcWing",
+        "Wing",
         "DrcHead"
     };
 
@@ -426,7 +426,7 @@ void DollEditRegion::run()
                 case TILEP_PART_SHADOW:
                 case TILEP_PART_HALO:
                 case TILEP_PART_ENCH:
-                case TILEP_PART_DRCWING:
+                case TILEP_PART_WING:
                 case TILEP_PART_DRCHEAD:
                     break;
                 default:

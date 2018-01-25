@@ -1506,6 +1506,12 @@ static void tag_construct_you(writer &th)
     for (int j = ABIL_FIRST_SACRIFICE; j <= ABIL_FINAL_SACRIFICE; ++j)
         marshallByte(th, you.sacrifice_piety[j]);
 
+    for (int j = 0; j < NUM_TALENT; ++j)
+        marshallByte(th, you.talent_count[j]);
+
+    for (int j = 0; j < NUM_SKILLS; ++j)
+        marshallByte(th, you.apt_boost[j]);
+
     CANARY;
 
     // how many penances?
@@ -3102,6 +3108,12 @@ static void tag_read_you(reader &th)
                 you.sacrifice_piety[idx] = val;
         }
     }
+
+    for (int i = 0; i < NUM_TALENT; ++i)
+        you.talent_count[i] = unmarshallUByte(th);
+
+    for (int i = 0; i < NUM_SKILLS; ++i)
+        you.apt_boost[i] = unmarshallUByte(th);
 
     EAT_CANARY;
 

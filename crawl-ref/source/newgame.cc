@@ -193,6 +193,7 @@ static const species_type species_order[] =
     SP_VINE_STALKER,
     // celestial species
     SP_DEMIGOD,        SP_DEMONSPAWN,
+    SP_ANGEL,
     // undead species
     SP_MUMMY,          SP_GHOUL,
     SP_VAMPIRE,
@@ -988,6 +989,7 @@ static species_group species_groups[] =
             SP_FELID,
             SP_BARACHI,
             SP_MUMMY,
+            SP_ANGEL,
         }
     },
 };

@@ -2758,9 +2758,17 @@ void level_change(bool skip_attribute_increase)
 
             // Must do this before actually changing experience_level,
             // so we will re-prompt on load if a hup is received.
-            if (manual_stat_level && !skip_attribute_increase)
-                if (!attribute_increase())
-                    return; // abort level gain, the xp is still there
+            if (!skip_attribute_increase)
+            {
+                if (you.species == SP_ANGEL)
+                {
+                    if(!angel_choose_talent())
+                        return;
+                }
+                else if (manual_stat_level)
+                    if (!attribute_increase())
+                        return; // abort level gain, the xp is still there
+            }
 
             // Set this after printing, since a more() might clear it.
             you.redraw_experience = true;
@@ -3856,14 +3864,19 @@ void set_mp(int new_amount)
 // If trans is true, being berserk and/or transformed is taken into account
 // here. Else, the base hp is calculated. If rotted is true, calculate the
 // real max hp you'd have if the rotting was cured.
-int get_real_hp(bool trans, bool rotted)
+int get_real_hp(bool trans, bool rotted, bool preview)
 {
     int hitp;
+    int xl = you.species == SP_ANGEL ? you.talent_count[TAL_HP] * 3 + 1
+                                     : you.experience_level;
 
-    hitp  = you.experience_level * 11 / 2 + 8;
+    if (preview)
+        xl += you.species == SP_ANGEL ? 3 : 1;
+
+    hitp  = xl * 11 / 2 + 8;
     hitp += you.hp_max_adj_perm;
     // Important: we shouldn't add Heroism boosts here.
-    hitp += you.experience_level * you.skill(SK_FIGHTING, 5, true) / 70
+    hitp += xl * you.skill(SK_FIGHTING, 5, true) / 70
           + (you.skill(SK_FIGHTING, 3, true) + 1) / 2;
 
     // Racial modifier.
@@ -3904,11 +3917,15 @@ int get_real_hp(bool trans, bool rotted)
     return max(1, hitp);
 }
 
-int get_real_mp(bool include_items)
+int get_real_mp(bool include_items, bool preview)
 {
     const int scale = 100;
     int spellcasting = you.skill(SK_SPELLCASTING, 1 * scale, true);
-    int scaled_xl = you.experience_level * scale;
+    int scaled_xl = you.species == SP_ANGEL ? you.talent_count[TAL_MP] * 3 * scale
+                                            : you.experience_level * scale;
+
+    if (preview)
+        scaled_xl += you.species == SP_ANGEL ? 3 * scale : scale;
 
     // the first 4 experience levels give an extra .5 mp up to your spellcasting
     // the last 4 give no mp
@@ -5084,6 +5101,11 @@ player::player()
     temp_mutation.init(0);
     demonic_traits.clear();
     sacrifices.init(0);
+    for (int i = 0; i < NUM_TALENT; ++i)
+        talent_count[i] = 0;
+
+    for (int i = 0; i < NUM_SKILLS; ++i)
+        apt_boost[i] = 0;
 
     magic_contamination = 0;
 
@@ -6255,6 +6277,9 @@ int player_res_magic(bool calc_unid, bool temp)
     // Trog's Hand
     if (you.duration[DUR_TROGS_HAND] && temp)
         rm += MR_PIP * 2;
+
+    if (you.species == SP_ANGEL)
+        rm += MR_PIP * you.talent_count[TAL_MR];
 
     // Enchantment effect
     if (you.duration[DUR_LOWERED_MR] && temp)

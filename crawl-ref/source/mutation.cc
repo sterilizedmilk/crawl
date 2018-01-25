@@ -16,6 +16,7 @@
 
 #include "ability.h"
 #include "act-iter.h"
+#include "areas.h"
 #include "butcher.h"
 #include "cio.h"
 #include "coordit.h"
@@ -29,14 +30,17 @@
 #include "item-prop.h"
 #include "items.h"
 #include "libutil.h"
+#include "macro.h"
 #include "menu.h"
 #include "message.h"
 #include "mon-death.h"
 #include "mon-place.h"
 #include "notes.h"
 #include "output.h"
+#include "player.h"
 #include "player-equip.h" // lose_permafly_source
 #include "player-stats.h"
+#include "prompt.h"
 #include "religion.h"
 #include "skills.h"
 #include "state.h"
@@ -1197,9 +1201,9 @@ bool physiology_mutation_conflict(mutation_type mutat)
     if (you.species != SP_NAGA && mutat == MUT_SPIT_POISON)
         return true;
 
-    // Only Draconians (and gargoyles) can get wings.
+    // Only Draconians (and gargoyles and angels) can get wings.
     if (!species_is_draconian(you.species) && you.species != SP_GARGOYLE
-        && mutat == MUT_BIG_WINGS)
+        && you.species != SP_ANGEL && mutat == MUT_BIG_WINGS)
     {
         return true;
     }
@@ -2760,4 +2764,193 @@ void reset_powered_by_death_duration()
 {
     const int pbd_dur = random_range(2, 5);
     you.set_duration(DUR_POWERED_BY_DEATH, pbd_dur);
+}
+
+skill_type buffed_skill()
+{
+    if (!you.talent_count[TAL_APT])
+        return best_skill(SK_FIRST_SKILL, SK_LAST_SKILL);
+
+    skill_type last_sk = SK_FIGHTING;
+    for (skill_type sk = SK_FIRST_SKILL; sk < NUM_SKILLS; ++sk)
+    {
+        if (you.apt_boost[sk] > 0)
+        {
+            last_sk = sk;
+            break;
+        }
+    }
+    return best_skill(SK_FIRST_SKILL, SK_LAST_SKILL, last_sk);
+}
+
+const char* talent_desc(talent_type tal)
+{
+    switch (tal)
+    {
+    case TAL_HP:
+        return make_stringf("HP+%d", get_real_hp(false, false, true)
+                                 - get_real_hp(false)).c_str();
+    case TAL_MP:
+        return make_stringf("MP+%d", get_real_mp(false, true)
+                                 - get_real_mp(false)).c_str();
+    case TAL_APT:
+        return make_stringf("%s +2", skill_name(buffed_skill())).c_str();
+    case TAL_STR:   return "Str+5";
+    case TAL_INT:   return "Int+5";
+    case TAL_DEX:   return "Dex+5";
+    case TAL_MR:    return "MR+";
+    case TAL_WINGS: return "let you fly";
+    case TAL_HALO:  return "lighten your around";
+    case TAL_RN:    return "rN+";
+    case TAL_RMUT:  return "rMut+";
+    case TAL_REGEN: return "Regen+";
+    default:        return "ERROR";
+    }
+}
+
+vector<talent_type> get_possible_talent()
+{
+    vector<talent_type> possible_talents;
+    for (int i = 0; i < NUM_TALENT; ++i)
+    {
+        if (you.talent_count[i] < angel_data[i].cap)
+            possible_talents.push_back((talent_type)i);
+    }
+    return possible_talents;
+}
+
+bool angel_choose_talent(int num_choices)
+{
+    vector<talent_type> possible_talents = get_possible_talent();
+    talent_type chosen_talent[3];
+
+    for (int i = 0; i < num_choices; ++i)
+    {
+        int j = 0;
+        for (talent_type k : possible_talents)
+        {
+            // do frequancy things here if needed
+            ++j;
+            if (one_chance_in(j))
+                chosen_talent[i] = k;
+        }
+
+        possible_talents.erase(remove(possible_talents.begin(),
+                                      possible_talents.end(),
+                                      chosen_talent[i]),
+                                      possible_talents.end());
+    }
+
+    int keyin;
+    while (true)
+    {
+        if (crawl_state.seen_hups)
+            return false;
+
+        clear_messages();
+        for (int i = 0; i < num_choices; ++i)
+        {
+            string line = make_stringf("  %c - %s (%s)", i + 'a',
+                                    angel_data[chosen_talent[i]].name,
+                                    talent_desc(chosen_talent[i]));
+            mpr_nojoin(MSGCH_PLAIN, line);
+        }
+        mprf(MSGCH_PROMPT, "Choose your talent.");
+        keyin = toalower(get_ch()) - 'a';
+
+        if (keyin < 0 || keyin > num_choices - 1)
+        {
+            if(num_choices != 1 && yesno("Reroll?", false, 'n', false))
+                return angel_choose_talent(num_choices - 1);
+            continue;
+        }
+        
+        break;
+    }
+
+    angel_trait final_answer = angel_data[chosen_talent[keyin]];
+    if (final_answer.mut_type != MUT_NO_LEVELUP_BONUS)
+        perma_mutate(final_answer.mut_type, 1, "Regain your strength");
+
+    switch (final_answer.talent)
+    {
+    case TAL_HP:
+        mprf(MSGCH_INTRINSIC_GAIN, "You feel robust.");
+        break;
+    case TAL_MP:
+        mprf(MSGCH_INTRINSIC_GAIN, "You feel more energetic.");
+        break;
+    case TAL_STR:
+        modify_stat(STAT_STR, 5, false);
+        break;
+    case TAL_INT:
+        modify_stat(STAT_INT, 5, false);
+        break;
+    case TAL_DEX:
+        modify_stat(STAT_DEX, 5, false);
+        break;
+    case TAL_MR:
+        mprf(MSGCH_INTRINSIC_GAIN, "You feel resistant to hostile enchantments.");
+        break;
+    case TAL_APT:
+    {
+        skill_type sk = buffed_skill();
+        mprf(MSGCH_INTRINSIC_GAIN, "You somewhat skilled on %s.", skill_name(sk));
+        you.apt_boost[sk] += 2;
+        break;
+    }
+    case TAL_HALO:
+        invalidate_agrid(true);
+        break;
+    default:
+        break;
+    }
+
+    ++you.talent_count[final_answer.talent];
+    redraw_screen();
+    return true;
+}
+
+void display_talents()
+{
+    if (you.species != SP_ANGEL)
+        return;
+
+    
+    string title = make_stringf("<white>Your talents (%d/26)</white>", you.experience_level - 1);
+    
+    int offset = 39 - strwidth(title) / 2;
+    if (offset < 0) offset = 0;
+
+    string talent_s = string(offset, ' ');
+    talent_s += title;
+    talent_s += "\n";
+
+    for (int i = 0; i < NUM_TALENT; ++i)
+    {
+        talent_s += "\n";
+
+        angel_trait ang = angel_data[i];
+        int blank = 20 - strlen(ang.name);
+        int cap = ang.cap;
+
+        talent_s += make_stringf(" <brown>%s:</brown>", ang.name);
+        talent_s += string(blank, ' ');
+
+        for (int k = 0; k < cap; ++k)
+        {
+            if (you.talent_count[i] > k)
+                talent_s += "<white>+</white>";
+            else
+                talent_s += "+";
+        }
+    }
+    
+    formatted_scroller talent_menu;
+    talent_menu.add_text(talent_s);
+
+    mouse_control mc(MOUSE_MODE_MORE);
+
+    talent_menu.show();
+
 }

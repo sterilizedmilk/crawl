@@ -1316,6 +1316,12 @@ string spell_uselessness_reason(spell_type spell, bool temp, bool prevent,
         break;
     }
 
+    if (you.species == SP_ANGEL && get_spell_flags(spell) 
+        & (SPFLAG_UNHOLY | SPFLAG_UNCLEAN | SPFLAG_CORPSE_VIOLATING))
+    {
+        return "you are forbidden to cast this spell.";
+    }
+
     if (get_spell_disciplines(spell) & SPTYP_SUMMONING
         && spell != SPELL_AURA_OF_ABJURATION
         && you.get_mutation_level(MUT_NO_LOVE))

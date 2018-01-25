@@ -1113,7 +1113,7 @@ bool PlayerMenuEntry::get_tiles(vector<tile_def>& tileset) const
         TILEP_PART_SHADOW,  //  0
         TILEP_PART_HALO,
         TILEP_PART_ENCH,
-        TILEP_PART_DRCWING,
+        TILEP_PART_WING,
         TILEP_PART_CLOAK,
         TILEP_PART_BASE,    //  5
         TILEP_PART_BOOTS,
@@ -3065,7 +3065,7 @@ void SaveMenuItem::_pack_doll()
         TILEP_PART_SHADOW,  //  0
         TILEP_PART_HALO,
         TILEP_PART_ENCH,
-        TILEP_PART_DRCWING,
+        TILEP_PART_WING,
         TILEP_PART_CLOAK,
         TILEP_PART_BASE,    //  5
         TILEP_PART_BOOTS,

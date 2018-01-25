@@ -999,6 +999,7 @@ static void _add_formatted_keyhelp(column_composer &cols)
     _add_command(cols, 1, CMD_DISPLAY_MUTATIONS, "show Abilities/mutations", 2);
     _add_command(cols, 1, CMD_DISPLAY_KNOWN_OBJECTS, "show item knowledge", 2);
     _add_command(cols, 1, CMD_DISPLAY_RUNES, "show runes collected", 2);
+    _add_command(cols, 1, CMD_DISPLAY_TALENTS, "list your talents", 2);
     _add_command(cols, 1, CMD_LIST_ARMOUR, "display worn armour", 2);
     _add_command(cols, 1, CMD_LIST_JEWELLERY, "display worn jewellery", 2);
     _add_command(cols, 1, CMD_LIST_GOLD, "display gold in possession", 2);

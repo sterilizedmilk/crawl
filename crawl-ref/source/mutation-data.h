@@ -1922,6 +1922,26 @@ static const mutation_def mut_data[] =
   {"Your sense of smell grows stronger.", "", ""},
   {"Your sense of smell gets weaker.", "", ""},
 },
+
+{ MUT_NO_LEVELUP_BONUS, 0, 1, mutflag::bad, false,
+  "No level up bonus",
+  
+  {"You won't gain any attributes by level up.", "", ""},
+  {"", "", ""},
+  {"", "", ""},
+},
+
+{ MUT_HALO, 0, 2, mutflag::good, false,
+  "Halo",
+
+  {"You radiate divine halo in small area.",
+   "You radiate divine halo in large area.",
+   ""},
+  {"You start to radiate holy aura.",
+   "Your holy aura grow stronger.",
+   ""},
+  {"", "", ""},
+},
 };
 
 static const mutation_category_def category_mut_data[] =

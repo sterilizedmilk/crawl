@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "angel.h"
 #include "equipment-type.h"
 #include "mutation-type.h"
 
@@ -80,3 +81,9 @@ void reset_powered_by_death_duration();
 
 bool delete_all_temp_mutations(const string &reason);
 bool delete_temp_mutation();
+
+skill_type buffed_skill();
+const char* talent_desc(talent_type tal);
+vector<talent_type> get_possible_talent();
+bool angel_choose_talent(int num_choices = 3);
+void display_talents();

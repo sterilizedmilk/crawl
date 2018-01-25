@@ -544,6 +544,9 @@ int player::halo_radius() const
                                                     / piety_breakpoint(5);
     }
 
+    if (you.get_mutation_level(MUT_HALO))
+        size = max(size, 4 * you.get_mutation_level(MUT_HALO) - 1);
+
     if (player_equip_unrand(UNRAND_EOS))
         size = max(size, 3);
     else if (you.attribute[ATTR_HEAVENLY_STORM] > 0)

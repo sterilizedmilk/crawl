@@ -82,7 +82,7 @@ bool save_doll_data(int mode, int num, const dolls_data* dolls)
         fprintf(fp, "#Legend:\n");
         fprintf(fp, "#***:equipment/123:index/000:none\n");
         fprintf(fp, "#Shadow/Base/Cloak/Boots/Legs/Body/Gloves/Weapon/Shield/"
-                    "Hair/Beard/Helmet/Halo/Enchant/DrcHead/DrcWing\n");
+                    "Hair/Beard/Helmet/Halo/Enchant/DrcHead/Wing\n");
         fprintf(fp, "#Sh:Bse:Clk:Bts:Leg:Bdy:Glv:Wpn:Shd:Hai:Brd:Hlm:Hal:Enc:Drc:Wng\n");
         char fbuf[80];
         for (unsigned int i = 0; i < NUM_MAX_DOLLS; ++i)
@@ -276,7 +276,7 @@ void fill_doll_equipment(dolls_data &result)
         result.parts[TILEP_PART_BASE]    = TILEP_TRAN_TREE;
         result.parts[TILEP_PART_HELM]    = 0; // fixme, should show up
         result.parts[TILEP_PART_DRCHEAD] = 0;
-        result.parts[TILEP_PART_DRCWING] = 0;
+        result.parts[TILEP_PART_WING]    = 0;
         result.parts[TILEP_PART_HAIR]    = 0;
         result.parts[TILEP_PART_BEARD]   = 0;
         result.parts[TILEP_PART_LEG]     = 0;
@@ -484,8 +484,8 @@ void fill_doll_equipment(dolls_data &result)
 
         if (result.parts[TILEP_PART_DRCHEAD] == TILEP_SHOW_EQUIP)
             result.parts[TILEP_PART_DRCHEAD] = head;
-        if (result.parts[TILEP_PART_DRCWING] == TILEP_SHOW_EQUIP)
-            result.parts[TILEP_PART_DRCWING] = wing;
+        if (result.parts[TILEP_PART_WING] == TILEP_SHOW_EQUIP)
+            result.parts[TILEP_PART_WING] = wing;
     }
     // Shadow.
     if (result.parts[TILEP_PART_SHADOW] == TILEP_SHOW_EQUIP)
@@ -520,7 +520,7 @@ void pack_doll_buf(SubmergedTileBuffer& buf, const dolls_data &doll,
         TILEP_PART_SHADOW,
         TILEP_PART_HALO,
         TILEP_PART_ENCH,
-        TILEP_PART_DRCWING,
+        TILEP_PART_WING,
         TILEP_PART_CLOAK,
         // player
         TILEP_PART_BASE,

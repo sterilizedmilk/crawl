@@ -941,7 +941,7 @@ static void _send_doll(const dolls_data &doll, bool submerged, bool ghost)
         TILEP_PART_SHADOW,
         TILEP_PART_HALO,
         TILEP_PART_ENCH,
-        TILEP_PART_DRCWING,
+        TILEP_PART_WING,
         TILEP_PART_CLOAK,
         // player
         TILEP_PART_BASE,

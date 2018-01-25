@@ -704,6 +704,24 @@ static const map<species_type, species_def> species_data =
     { SK_MACES_FLAILS, SK_AXES, SK_POLEARMS, SK_LONG_BLADES, SK_STAVES,
       SK_BOWS, SK_CROSSBOWS, SK_SLINGS },
 } },
+
+{ SP_ANGEL, {
+    "An",
+    "Angelspawn", "Angelic", nullptr,
+    SPF_NONE,
+    -2, 2, 4, 0,
+    MONS_ANGEL,
+    HT_LAND, US_ALIVE, SIZE_MEDIUM,
+    4, 4, 4, // 12
+    set<stat_type>(), 28,
+    { {MUT_NO_LEVELUP_BONUS, 1, 1} },
+    {},
+    {},
+    { JOB_FIGHTER, JOB_GLADIATOR, JOB_CONJURER, JOB_SUMMONER, JOB_MONK,
+      JOB_WARPER, JOB_ARTIFICER},
+    { SK_MACES_FLAILS, SK_AXES, SK_POLEARMS, SK_LONG_BLADES, SK_STAVES,
+      SK_BOWS, SK_CROSSBOWS, SK_SLINGS },
+} },
 #if TAG_MAJOR_VERSION == 34
 { SP_SLUDGE_ELF, {
     "SE",
@@ -717,7 +735,6 @@ static const map<species_type, species_def> species_data =
     {},
     {},
     {},
-    {}, // not a starting race
     {}, // not a starting race
 } },
 

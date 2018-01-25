@@ -740,6 +740,7 @@ static bool _cmd_is_repeatable(command_type cmd, bool is_again = false)
     case CMD_DISPLAY_RUNES:
     case CMD_DISPLAY_CHARACTER_STATUS:
     case CMD_DISPLAY_SPELLS:
+    case CMD_DISPLAY_TALENTS:
     case CMD_EXPERIENCE_CHECK:
     case CMD_RESISTS_SCREEN:
     case CMD_READ_MESSAGES:
@@ -1877,8 +1878,9 @@ void process_command(command_type cmd)
     case CMD_DISPLAY_INVENTORY:        display_inventory();            break;
     case CMD_DISPLAY_KNOWN_OBJECTS: check_item_knowledge(); redraw_screen(); break;
     case CMD_DISPLAY_MUTATIONS: display_mutations(); redraw_screen();  break;
-    case CMD_DISPLAY_RUNES: display_runes(); redraw_screen();          break;
+    case CMD_DISPLAY_RUNES:         display_runes(); redraw_screen();  break;
     case CMD_DISPLAY_SKILLS:           skill_menu(); redraw_screen();  break;
+    case CMD_DISPLAY_TALENTS:     display_talents(); redraw_screen();  break;
     case CMD_EXPERIENCE_CHECK:         _experience_check();            break;
     case CMD_FULL_VIEW:                full_describe_view();           break;
     case CMD_INSCRIBE_ITEM:            prompt_inscribe_item();         break;

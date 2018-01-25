@@ -303,55 +303,55 @@ base/octopode1 CORPSE_OCTOPODE
 ## Draconians ('d')
 %back blood_puddle_red blood_puddle_red1 blood_puddle_red2 blood_puddle_red3 blood_puddle_red4
 %start
-%compose drcwing/drcwing_black
+%compose wing/wing_drc_black
 %compose base/draconian_black_m
 %compose drchead/drchead_black
 %finish CORPSE_DRACONIAN_BLACK
 
 %start
-%compose drcwing/drcwing_brown
+%compose wing/wing_drc_brown
 %compose base/draconian_f
 %compose drchead/drchead_brown
 %finish CORPSE_DRACONIAN_BROWN
 
 %start
-%compose drcwing/drcwing_green
+%compose wing/wing_drc_green
 %compose base/draconian_green_m
 %compose drchead/drchead_green
 %finish CORPSE_DRACONIAN_GREEN
 
 %start
-%compose drcwing/drcwing_grey
+%compose wing/wing_drc_grey
 %compose base/draconian_gray_f
 %compose drchead/drchead_grey
 %finish CORPSE_DRACONIAN_GREY
 
 %start
-%compose drcwing/drcwing_pale
+%compose wing/wing_drc_pale
 %compose base/draconian_pale_f
 %compose drchead/drchead_pale
 %finish CORPSE_DRACONIAN_PALE
 
 %start
-%compose drcwing/drcwing_purple
+%compose wing/wing_drc_purple
 %compose base/draconian_purple_m
 %compose drchead/drchead_purple
 %finish CORPSE_DRACONIAN_PURPLE
 
 %start
-%compose drcwing/drcwing_red
+%compose wing/wing_drc_red
 %compose base/draconian_red_f
 %compose drchead/drchead_red
 %finish CORPSE_DRACONIAN_RED
 
 %start
-%compose drcwing/drcwing_white
+%compose wing/wing_drc_white
 %compose base/draconian_white_m
 %compose drchead/drchead_white
 %finish CORPSE_DRACONIAN_WHITE
 
 %start
-%compose drcwing/drcwing_yellow
+%compose wing/wing_drc_yellow
 %compose base/draconian_gold_f
 %compose drchead/drchead_yellow
 %finish CORPSE_DRACONIAN_YELLOW
