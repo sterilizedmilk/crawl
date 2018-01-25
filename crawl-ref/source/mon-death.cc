@@ -1780,6 +1780,9 @@ static void _fire_kill_conducts(monster &mons, killer_type killer,
     if (mons.is_actual_spellcaster())
         did_kill_conduct(DID_KILL_WIZARD, mons);
 
+    if (you.duration[DUR_BERSERK])
+        did_kill_conduct(DID_KILL_WHILE_BERSERK, mons);
+
     // Beogh hates priests of other gods.
     if (mons.is_priest())
         did_kill_conduct(DID_KILL_PRIEST, mons);

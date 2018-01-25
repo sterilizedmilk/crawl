@@ -68,7 +68,7 @@ static const char *conducts[] =
     "Kill Slime", "Kill Plant", "Was Hasty", "Corpse Violation",
     "Carrion Rot", "Souled Friend Died", "Attack In Sanctuary",
     "Kill Artificial", "Exploration", "Desecrate Holy Remains", "Seen Monster",
-    "Fire", "Kill Fiery", "Sacrificed Love", "Channel", "Hurt Foe",
+    "Fire", "Kill Fiery", "Sacrificed Love", "Channel", "Hurt Foe", "Kill while on berserk",
 };
 COMPILE_CHECK(ARRAYSZ(conducts) == NUM_CONDUCTS);
 
@@ -826,6 +826,10 @@ static like_map divine_likes[] =
         { DID_KILL_WIZARD, {
             "you kill wizards and other users of magic", true,
             -6, 10, 0, " appreciates your killing of a magic user."
+        } },
+        { DID_KILL_WHILE_BERSERK, {
+            "you kill creatures while on berserk.", true,
+            -6, 10, 0, nullptr
         } },
     },
     // GOD_NEMELEX_XOBEH,
