@@ -37,6 +37,7 @@
 #include "mon-behv.h"
 #include "mon-poly.h"
 #include "mon-tentacle.h"
+#include "mutation.h"
 #include "religion.h"
 #include "shout.h"
 #include "spl-summoning.h"
@@ -626,6 +627,19 @@ static void _hydra_devour(monster &victim)
         lessen_hunger(CHUNK_BASE_NUTRITION * equiv_chunks, false, max_hunger);
     }
 
+    // bad foods
+    if (determine_chunk_effect(mons_corpse_effect(victim.type)) == CE_NOXIOUS)
+    {
+        mprf("That meat was noxious.");
+        poison_player(victim.get_experience_level(), "noxious meat");
+    }
+
+    if (determine_chunk_effect(mons_corpse_effect(victim.type)) == CE_MUTAGEN)
+    {
+        mprf("That meat was mutagenic.");
+        mutate(RANDOM_MUTATION, "mutagenic meat", false);
+    }
+
     // healing
     if (!you.duration[DUR_DEATHS_DOOR])
     {
@@ -652,8 +666,7 @@ static void _hydra_consider_devouring(monster &defender)
 
     dprf("considering devouring");
 
-    // no unhealthy food
-    if (determine_chunk_effect(mons_corpse_effect(defender.type)) != CE_CLEAN)
+    if (determine_chunk_effect(mons_corpse_effect(defender.type)) == CE_NOCORPSE)
         return;
 
     dprf("chunk ok");
@@ -894,7 +907,7 @@ bool melee_attack::attack()
 
     alert_defender();
 
-    if (!defender->alive())
+    if (!find_defender())
         handle_phase_killed();
 
     handle_phase_aux();
@@ -1078,13 +1091,16 @@ public:
 
     int get_damage() const override
     {
-        const int base_dam = damage + you.skill_rdiv(SK_UNARMED_COMBAT, 1, 2);
-
-        if (you.form == transformation::blade_hands)
-            return base_dam + 6;
+        int base_dam = damage + you.skill_rdiv(SK_UNARMED_COMBAT, 1, 2);
+                
+        if (you.form == transformation::hydra)
+            return 3 + you.skill_rdiv(SK_UNARMED_COMBAT);
 
         if (you.has_usable_claws())
-            return base_dam + roll_dice(you.has_claws(), 3);
+            base_dam += roll_dice(you.has_claws(), 3);
+
+        if (you.form == transformation::blade_hands)
+            base_dam += 6;
 
         return base_dam;
     }
@@ -1093,6 +1109,9 @@ public:
     {
         if (you.form == transformation::blade_hands)
             return "slash";
+
+        if (you.form == transformation::hydra)
+            return "bite";                      // It would be nice if we can use FormAttackVerbs here too
 
         if (you.has_usable_claws())
             return "claw";
@@ -1199,6 +1218,7 @@ void melee_attack::player_aux_setup(unarmed_attack_type atk)
     damage_brand = (brand_type)aux->get_brand();
     aux_attack = aux->get_name();
     aux_verb = aux->get_verb();
+    aux_count = atk == UNAT_PUNCH ? you.has_usable_offhand() : 1; // for now, only punch can be multi-attack.
 
     if (wu_jian_attack != WU_JIAN_ATTACK_NONE)
         wu_jian_attack = WU_JIAN_ATTACK_TRIGGERED_AUX;
@@ -1213,15 +1233,12 @@ void melee_attack::player_aux_setup(unarmed_attack_type atk)
 /**
  * Decide whether the player gets a bonus punch attack.
  *
- * Partially random.
+ * Random
  *
- * @return  Whether the player gets a bonus punch aux attack on this attack.
+ * @return  Whether the player success to gets a bonus punch aux attack on this attack.
  */
 bool melee_attack::player_gets_aux_punch()
 {
-    if (!get_form()->can_offhand_punch())
-        return false;
-
     // roll for punch chance based on uc skill & armour penalty
     if (!attacker->fights_well_unarmed(attacker_armour_tohit_penalty
                                        + attacker_shield_tohit_penalty))
@@ -1229,14 +1246,10 @@ bool melee_attack::player_gets_aux_punch()
         return false;
     }
 
-    // No punching with a shield or 2-handed wpn.
-    // Octopodes aren't affected by this, though!
-    if (you.species != SP_OCTOPODE && !you.has_usable_offhand())
-        return false;
-
     // Octopodes get more tentacle-slaps.
-    return x_chance_in_y(you.species == SP_OCTOPODE ? 3 : 2,
-                         6);
+    return x_chance_in_y(you.species == SP_OCTOPODE
+                         && you.form != transformation::hydra 
+                                        ? 3 : 2, 6);
 }
 
 bool melee_attack::player_aux_test_hit()
@@ -1280,12 +1293,12 @@ bool melee_attack::player_aux_unarmed()
 
     for (int i = UNAT_FIRST_ATTACK; i <= UNAT_LAST_ATTACK; ++i)
     {
-        if (!defender->alive())
+        if (!find_defender())   // is this necessary?
             break;
 
         unarmed_attack_type atk = static_cast<unarmed_attack_type>(i);
 
-        if (!_extra_aux_attack(atk))
+        if (!aux_possible(atk))
             continue;
 
         // Determine and set damage and attack words.
@@ -1294,32 +1307,38 @@ bool melee_attack::player_aux_unarmed()
         if (atk == UNAT_CONSTRICT && !attacker->can_constrict(defender))
             continue;
 
-        to_hit = random2(calc_your_to_hit_unarmed(atk));
-
-        handle_noise(defender->pos());
-        alert_nearby_monsters();
-
-        // [ds] kraken can flee when near death, causing the tentacle
-        // the player was beating up to "die" and no longer be
-        // available to answer questions beyond this point.
-        // handle_noise stirs up all nearby monsters with a stick, so
-        // the player may be beating up a tentacle, but the main body
-        // of the kraken still gets a chance to act and submerge
-        // tentacles before we get here.
-        if (!defender->alive())
-            return true;
-
-        if (player_aux_test_hit())
+        for (int j = 0; j < aux_count; ++j)
         {
-            // Upset the monster.
-            behaviour_event(defender->as_monster(), ME_WHACK, attacker);
-            if (!defender->alive())
+            if (!aux_chance(atk))
+                continue;
+
+            to_hit = random2(calc_your_to_hit_unarmed(atk));
+
+            handle_noise(defender->pos());
+            alert_nearby_monsters();
+
+            // [ds] kraken can flee when near death, causing the tentacle
+            // the player was beating up to "die" and no longer be
+            // available to answer questions beyond this point.
+            // handle_noise stirs up all nearby monsters with a stick, so
+            // the player may be beating up a tentacle, but the main body
+            // of the kraken still gets a chance to act and submerge
+            // tentacles before we get here.
+            if (!find_defender())
                 return true;
 
-            if (attack_shield_blocked(true))
-                continue;
-            if (player_aux_apply(atk))
-                return true;
+            if (player_aux_test_hit())
+            {
+                // Upset the monster.
+                behaviour_event(defender->as_monster(), ME_WHACK, attacker);
+                if (!find_defender())
+                    return true;
+
+                if (attack_shield_blocked(true))
+                    continue;
+                if (player_aux_apply(atk) && !find_defender())
+                    return true;
+            }
         }
     }
 
@@ -3396,14 +3415,57 @@ void melee_attack::chaos_affect_actor(actor *victim)
 }
 
 /**
- * Does the player get to use the given aux attack during this melee attack?
+ * Does the player has opportunity for the given aux attack during this melee attack?
  *
- * Partially random.
+ * random things are in aux_chance().
  *
  * @param atk   The type of aux attack being considered.
  * @return      Whether the player may use the given aux attack.
  */
-bool melee_attack::_extra_aux_attack(unarmed_attack_type atk)
+bool melee_attack::aux_possible(unarmed_attack_type atk)
+{
+    switch (atk)
+    {
+    case UNAT_CONSTRICT:
+        return you.get_mutation_level(MUT_CONSTRICTING_TAIL)
+                || you.species == SP_OCTOPODE && you.has_usable_tentacle();
+
+    case UNAT_KICK:
+        return you.has_usable_hooves()
+               || you.has_usable_talons()
+               || you.get_mutation_level(MUT_TENTACLE_SPIKE);
+
+    case UNAT_PECK:
+        return you.get_mutation_level(MUT_BEAK);
+
+    case UNAT_HEADBUTT:
+        return you.get_mutation_level(MUT_HORNS);
+
+    case UNAT_TAILSLAP:
+        return you.has_usable_tail();
+
+    case UNAT_PSEUDOPODS:
+        return you.has_usable_pseudopods();
+
+    case UNAT_TENTACLES:
+        return you.has_usable_tentacles();
+
+    case UNAT_BITE:
+        return you.get_mutation_level(MUT_ANTIMAGIC_BITE)
+                    || (you.has_usable_fangs()
+                    || you.get_mutation_level(MUT_ACIDIC_BITE));
+
+    case UNAT_PUNCH:
+        return get_form()->can_offhand_punch()
+                   && you.has_usable_offhand();
+
+    default:
+        return false;
+    }
+}
+
+// chances of auxiliary attack to success
+bool melee_attack::aux_chance(unarmed_attack_type atk)
 {
     if (atk != UNAT_CONSTRICT
         && you.strength() + you.dex() <= random2(50))
@@ -3421,41 +3483,15 @@ bool melee_attack::_extra_aux_attack(unarmed_attack_type atk)
 
     switch (atk)
     {
-    case UNAT_CONSTRICT:
-        return you.get_mutation_level(MUT_CONSTRICTING_TAIL)
-                || you.species == SP_OCTOPODE && you.has_usable_tentacle();
+    case UNAT_PECK:             return !one_chance_in(3);
+    case UNAT_HEADBUTT:         return !one_chance_in(3);
+    case UNAT_TAILSLAP:         return coinflip();
+    case UNAT_PSEUDOPODS:       return !one_chance_in(3);
+    case UNAT_TENTACLES:        return !one_chance_in(3);
+    case UNAT_BITE:             return x_chance_in_y(2, 5);
+    case UNAT_PUNCH:            return player_gets_aux_punch();
 
-    case UNAT_KICK:
-        return you.has_usable_hooves()
-               || you.has_usable_talons()
-               || you.get_mutation_level(MUT_TENTACLE_SPIKE);
-
-    case UNAT_PECK:
-        return you.get_mutation_level(MUT_BEAK) && !one_chance_in(3);
-
-    case UNAT_HEADBUTT:
-        return you.get_mutation_level(MUT_HORNS) && !one_chance_in(3);
-
-    case UNAT_TAILSLAP:
-        return you.has_usable_tail() && coinflip();
-
-    case UNAT_PSEUDOPODS:
-        return you.has_usable_pseudopods() && !one_chance_in(3);
-
-    case UNAT_TENTACLES:
-        return you.has_usable_tentacles() && !one_chance_in(3);
-
-    case UNAT_BITE:
-        return you.get_mutation_level(MUT_ANTIMAGIC_BITE)
-               || (you.has_usable_fangs()
-                   || you.get_mutation_level(MUT_ACIDIC_BITE))
-                   && x_chance_in_y(2, 5);
-
-    case UNAT_PUNCH:
-        return player_gets_aux_punch();
-
-    default:
-        return false;
+    default:                    return true;
     }
 }
 
@@ -3614,4 +3650,35 @@ bool melee_attack::_vamp_wants_blood_from_monster(const monster* mon)
            && !mon->is_summoned()
            && mons_has_blood(mon->type)
            && !testbits(mon->flags, MF_SPECTRALISED);
+}
+/**
+ * @return  continue attack or not?
+ * !defender->alive() can be replaced by find_defender() if needed (for player)
+*/
+bool melee_attack::find_defender()
+{
+    // Is monster still there?
+    if (defender->alive() && !defender->is_banished())
+        return true;
+
+    if (attacker == defender
+        || !(attacker->is_player() && you.form == transformation::hydra))
+    {
+        return false;
+    }
+
+    // Hydras can try and pick up a new monster to attack
+    bool target = false;
+    for (adjacent_iterator i(attacker->pos()); i; ++i)
+    {
+        monster* mons = monster_at(*i);
+        if (mons && !mons_aligned(attacker, mons))
+        {
+            defender = mons;
+            target = true;
+            break;
+        }
+    }
+
+    return target;
 }

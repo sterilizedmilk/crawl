@@ -6802,17 +6802,29 @@ int player::has_usable_tail(bool allow_tran) const
     return has_tail(allow_tran);
 }
 
-// Whether the player has a usable offhand for the
+// How many offhands or heads are usable by player for the
 // purpose of punching.
-bool player::has_usable_offhand() const
+int player::has_usable_offhand() const
 {
-    if (get_mutation_level(MUT_MISSING_HAND))
-        return false;
-    if (shield())
-        return false;
+    if (you.form == transformation::hydra)
+        return you.heads() - 1;
+
+    if (you.species == SP_OCTOPODE)
+        return 1;
+
+    int offhand = 1;
+    if (you.species == SP_FORMICID)
+        offhand += 2;
+
+    if (get_mutation_level(MUT_MISSING_HAND) || shield())
+        offhand -= 2;
 
     const item_def* wp = slot_item(EQ_WEAPON);
-    return !wp || hands_reqd(*wp) != HANDS_TWO;
+
+    if (wp && hands_reqd(*wp) == HANDS_TWO)
+        offhand -= 1;
+
+    return max(offhand, 0);
 }
 
 bool player::has_usable_tentacle() const

@@ -238,7 +238,7 @@ static const form_entry formdata[] =
     "",
     EQF_PHYSICAL, MR_RES_POISON,
     FormDuration(10, PS_SINGLE, 100), 0, 0, SIZE_BIG, 13,
-    6, 5, 0, true, 0, 10, -1,
+    6, 5, 0, true, 0, 10, 3,
     SPWPN_NORMAL, GREEN, "", { "nip at", "bite", "gouge", "chomp" },
     FC_DEFAULT, FC_ENABLE, FC_ENABLE, true, false,
     "roar", 4, "foreclaw", "", "bow your heads before", "flesh"

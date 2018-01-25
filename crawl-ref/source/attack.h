@@ -35,6 +35,7 @@ public:
     int     damage_done;
     int     special_damage; // TODO: We'll see if we can remove this
     int     aux_damage;     // TOOD: And this too
+    int     aux_count;
 
     int     min_delay;
     int     final_attack_delay;

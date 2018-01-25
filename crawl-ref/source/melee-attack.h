@@ -144,9 +144,11 @@ private:
     void player_weapon_upsets_god();
     void _defender_die();
     bool defender_wjc_distracted() const;
-
+    bool aux_possible(unarmed_attack_type atk);
+    bool aux_chance(unarmed_attack_type atk);
+    bool find_defender();
+    
     // Added in, were previously static methods of fight.cc
-    bool _extra_aux_attack(unarmed_attack_type atk);
     int calc_your_to_hit_unarmed(int uattack = UNAT_NO_ATTACK);
     bool _player_vampire_draws_blood(const monster* mon, const int damage,
                                      bool needs_bite_msg = false);
