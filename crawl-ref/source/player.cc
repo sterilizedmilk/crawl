@@ -5053,6 +5053,10 @@ player::player()
 
     prev_act = ACT_NONE;
 
+    car_dir = {0, 0};
+    car_speed = 0;
+    car_keep = false;
+
     xray_vision = false;
 
     init_skills();
@@ -5395,7 +5399,6 @@ bool player::cannot_speak() const
 static const string shout_verbs[] = {"shout", "yell", "scream"};
 static const string felid_shout_verbs[] = {"meow", "yowl", "caterwaul"};
 static const string frog_shout_verbs[] = {"ribbit", "croak", "bellow"};
-static const string dog_shout_verbs[] = {"bark", "howl", "screech"};
 
 /**
  * What verb should be used to describe the player's shouting?
@@ -5410,8 +5413,6 @@ string player::shout_verb(bool directed) const
 
     const int screaminess = max(get_mutation_level(MUT_SCREAM) - 1, 0);
 
-    if (species == SP_GNOLL)
-        return dog_shout_verbs[screaminess];
     if (species == SP_BARACHI)
         return frog_shout_verbs[screaminess];
     if (species != SP_FELID)
@@ -5861,11 +5862,6 @@ int player::racial_ac(bool temp) const
     {
         if (species == SP_NAGA)
             return 100 * experience_level / 3;              // max 9
-        else if (species == SP_GARGOYLE)
-        {
-            return 200 + 100 * experience_level * 2 / 5     // max 20
-                       + 100 * (max(0, experience_level - 7) * 2 / 5);
-        }
     }
 
     return 0;
@@ -6003,7 +5999,7 @@ int player::gdr_perc() const
 
     const item_def *body_armour = slot_item(EQ_BODY_ARMOUR, false);
 
-    int body_base_AC = (species == SP_GARGOYLE ? 5 : 0);
+    int body_base_AC = 0;
     if (body_armour)
         body_base_AC += property(*body_armour, PARM_AC);
 
@@ -6056,8 +6052,7 @@ mon_holy_type player::holiness(bool temp) const
 {
     mon_holy_type holi = undead_state(temp) ? MH_UNDEAD : MH_NATURAL;
 
-    if (species == SP_GARGOYLE ||
-        temp && (form == transformation::statue
+    if (temp && (form == transformation::statue
                  || form == transformation::wisp || petrified()))
     {
         holi = MH_NONLIVING;
@@ -8236,4 +8231,69 @@ void end_focusing(bool moved)
         break;
     }
     return;
+}
+
+// Is this best?
+bool car_drive(coord_def new_dir)
+{
+    if (you.car_dir == coord_def(0, 0))
+    {
+        you.car_dir = new_dir;
+        you.car_speed = 33;
+        return true;
+    }
+
+    switch (car_degree(new_dir))
+    {
+    case 0: // car_dir == new_dir
+        you.car_speed = (you.car_speed * 5 + 200) / 6;
+        break;
+    case 1: // 45 degree
+        you.car_speed = (you.car_speed * 7 + 200) / 8;
+        break;
+    case 2: // 90 degree
+        you.car_speed *= 4;
+        you.car_speed /= 5;
+        break;/*
+    case 3:
+        you.car_speed = 0;
+        break;
+    case 4:
+        you.car_speed = -34;
+        break;*/
+    default:
+        return false;
+    }
+
+    /** 
+     * Can do this like below if we need complicated degree. Or Is it just better?
+     * double angle = _angle_between(car_dir, new_dir);
+     * double bonus = 2 * sin(angle);
+     * you.car_speed += bonus * 20;
+     */
+
+    you.car_dir = new_dir;
+    return true;
+}
+
+// degree / 45
+int car_degree(coord_def new_dir)
+{
+    if (you.car_dir == coord_def(0, 0))
+    {
+        return 0;
+    }
+
+    int dir1 = 0;
+    int dir2 = 0;
+    for (int i = 0; i < 8; ++i)
+    {
+        if (you.car_dir == Compass[i])
+            dir1 = i;
+        if (new_dir == Compass[i])
+            dir2 = i;
+    }
+
+    return 4 - abs(abs(dir1 - dir2) - 4);
+
 }

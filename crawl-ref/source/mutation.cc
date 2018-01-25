@@ -631,7 +631,6 @@ string describe_mutations(bool center_title)
         result += _annotate_form_based(
                     make_stringf("Your %s. (AC +%d)",
                        you.species == SP_NAGA ? "serpentine skin is tough" :
-                       you.species == SP_GARGOYLE ? "stone body is resilient" :
                                                     scale_clause.c_str(),
                        you.racial_ac(false) / 100),
                     player_is_shapechanged()
@@ -1201,9 +1200,9 @@ bool physiology_mutation_conflict(mutation_type mutat)
     if (you.species != SP_NAGA && mutat == MUT_SPIT_POISON)
         return true;
 
-    // Only Draconians (and gargoyles and angels) can get wings.
-    if (!species_is_draconian(you.species) && you.species != SP_GARGOYLE
-        && you.species != SP_ANGEL && mutat == MUT_BIG_WINGS)
+    // Only Draconians (and angels) can get wings.
+    if (!species_is_draconian(you.species) && you.species != SP_ANGEL 
+                                           && mutat == MUT_BIG_WINGS)
     {
         return true;
     }
@@ -1245,10 +1244,6 @@ bool physiology_mutation_conflict(mutation_type mutat)
             return true;
         }
     }
-
-    // Already immune.
-    if (you.species == SP_GARGOYLE && mutat == MUT_POISON_RESISTANCE)
-        return true;
 
     // We can't use is_useless_skill() here, since species that can still wear
     // body armour can sacrifice armour skill with Ru.

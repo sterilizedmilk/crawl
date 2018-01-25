@@ -62,6 +62,7 @@ static const map<species_type, species_def> species_data =
       SK_BOWS, SK_CROSSBOWS, SK_SLINGS },
 } },
 
+#if TAG_MAJOR_VERSION == 34
 { SP_GNOLL, {
     "Gn",
     "Gnoll", nullptr, nullptr,
@@ -79,6 +80,7 @@ static const map<species_type, species_def> species_data =
     { SK_SHORT_BLADES, SK_MACES_FLAILS, SK_POLEARMS, SK_LONG_BLADES, SK_STAVES,
       SK_BOWS, SK_CROSSBOWS, SK_SLINGS },
 } },
+#endif
 
 { SP_CENTAUR, {
     "Ce",
@@ -384,6 +386,7 @@ static const map<species_type, species_def> species_data =
       SK_CROSSBOWS, SK_SLINGS },
 } },
 
+#if TAG_MAJOR_VERSION == 34
 { SP_GARGOYLE, {
     "Gr",
     "Gargoyle", nullptr, nullptr,
@@ -403,6 +406,7 @@ static const map<species_type, species_def> species_data =
       JOB_VENOM_MAGE },
     { SK_MACES_FLAILS, SK_STAVES, SK_BOWS, SK_CROSSBOWS },
 } },
+#endif
 
 { SP_GHOUL, {
     "Gh",
@@ -721,6 +725,22 @@ static const map<species_type, species_def> species_data =
       JOB_WARPER, JOB_ARTIFICER},
     { SK_MACES_FLAILS, SK_AXES, SK_POLEARMS, SK_LONG_BLADES, SK_STAVES,
       SK_BOWS, SK_CROSSBOWS, SK_SLINGS },
+} },
+
+{ SP_CAR, {
+  "Ca",
+  "Car", nullptr, nullptr,
+  SPF_NO_HAIR,
+  0, 2, -1, 3,
+  MONS_CAR,
+  HT_LAND, US_ALIVE, SIZE_BIG,
+  10, 8, 6,
+  { STAT_STR, STAT_INT, STAT_DEX }, 4,
+  {},
+  {"You are rather mundane car." },
+  {},
+  {},
+  {},
 } },
 #if TAG_MAJOR_VERSION == 34
 { SP_SLUDGE_ELF, {

@@ -1199,7 +1199,7 @@ static int _shatter_player_dice()
     // flyers get no extra damage.
     else if (you.airborne())
         return 1;
-    else if (you.form == transformation::statue || you.species == SP_GARGOYLE)
+    else if (you.form == transformation::statue)
         return 6;
     else if (you.form == transformation::ice_beast)
         return random_range(4, 5);
@@ -2112,7 +2112,7 @@ bool setup_fragmentation_beam(bolt &beam, int pow, const actor *caster,
     {
         const bool petrified = (you.petrified() || you.petrifying());
 
-        if (you.form == transformation::statue || you.species == SP_GARGOYLE)
+        if (you.form == transformation::statue)
         {
             beam.name       = "blast of rock fragments";
             beam.colour     = BROWN;

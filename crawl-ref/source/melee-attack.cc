@@ -548,6 +548,12 @@ bool melee_attack::handle_phase_damaged()
     if (!attack::handle_phase_damaged())
         return false;
 
+    if (attacker->is_player() && you.species == SP_CAR
+                              && attacker != defender && do_knockback())
+    {
+        you.car_keep = true;
+    }
+    
     if (shroud_broken && needs_message)
     {
         mprf(defender->is_player() ? MSGCH_WARN : MSGCH_PLAIN,
@@ -1535,6 +1541,10 @@ int melee_attack::player_apply_final_multipliers(int damage)
 
     if (you.duration[DUR_CONFUSING_TOUCH] && wpn_skill == SK_UNARMED_COMBAT)
         return 0;
+
+    if (you.species == SP_CAR)
+        damage = div_rand_round(damage * (100 + you.car_speed)
+                                       * (100 + you.car_speed), 10000);
 
     return damage;
 }
@@ -3349,6 +3359,9 @@ bool melee_attack::do_knockback(bool trample)
     }
     else
         defender->move_to_pos(new_pos);
+
+    if (attacker->is_player() && you.species == SP_CAR)
+        car_drive(new_pos - old_pos);
 
     return true;
 }

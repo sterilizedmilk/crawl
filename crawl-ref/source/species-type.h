@@ -47,13 +47,16 @@ enum species_type
 #if TAG_MAJOR_VERSION == 34
     SP_DJINNI,
     SP_LAVA_ORC,
-#endif
     SP_GARGOYLE,
+#endif
     SP_FORMICID,
     SP_VINE_STALKER,
     SP_BARACHI,
+#if TAG_MAJOR_VERSION == 34
     SP_GNOLL,
+#endif
     SP_ANGEL,
+    SP_CAR,
     NUM_SPECIES,
 
     SP_UNKNOWN  = 100,

@@ -558,8 +558,6 @@ public:
     {
         if (you.species == SP_DEEP_DWARF && one_chance_in(10))
             return "You inwardly fear your resemblance to a lawn ornament.";
-        else if (you.species == SP_GARGOYLE)
-            return "Your body stiffens and grows slower.";
         else
             return Form::transform_message(previous_trans);
     }
@@ -578,9 +576,6 @@ public:
      */
     string get_untransform_message() const override
     {
-        // This only handles lava orcs going statue -> stoneskin.
-        if (you.species == SP_GARGOYLE)
-            return "You revert to a slightly less stony form.";
         return "You revert to your normal fleshy form.";
     }
 

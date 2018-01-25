@@ -2262,6 +2262,17 @@ void world_reacts()
     if (!crawl_state.game_is_arena())
         player_reacts_to_monsters();
 
+    if (you.species == SP_CAR && you.prev_act != ACT_MOVE)
+    {
+        if (you.car_keep)
+            you.car_keep = false;
+        else
+        {
+            you.car_speed = 0;
+            you.car_dir = {0, 0};
+        }
+    }
+
     viewwindow();
 
     if (you.cannot_act() && any_messages()
@@ -2514,6 +2525,12 @@ static void _swing_at_target(coord_def move)
         free_self_from_net();
         you.turn_is_over = true;
         you.prev_act = ACT_MELEE;
+        return;
+    }
+
+    if (you.species == SP_CAR && car_degree(move) > 2)
+    {
+        mpr("You can't do that.");
         return;
     }
 
@@ -2934,6 +2951,12 @@ static void _move_player(coord_def move)
 
     const coord_def initial_position = you.pos();
 
+    if (you.species == SP_CAR && car_degree(move) > 2)
+    {
+        mpr("You can't do that.");
+        return;
+    }
+
     // When confused, sometimes make a random move.
     if (you.confused())
     {
@@ -3218,6 +3241,17 @@ static void _move_player(coord_def move)
         // clear constriction data
         you.stop_constricting_all(true);
         you.stop_being_constricted();
+
+        if (you.species == SP_CAR)
+        {
+            you.time_taken = div_rand_round(you.time_taken * 100,
+                                             you.car_speed + 100);
+            if (!car_drive(move))
+            {
+                targ_pass = false;
+                you.turn_is_over = false;
+            }
+        }
 
         // Don't trigger traps when confusion causes no move.
         if (you.pos() != targ && targ_pass)

@@ -255,6 +255,10 @@ random_var player::attack_delay(const item_def *projectile, bool rescale) const
         attk_delay = rv::max(attk_delay,
                 random_var(FASTEST_PLAYER_THROWING_SPEED));
     }
+    else if (you.species == SP_CAR && !projectile)
+    {
+        attk_delay = div_rand_round(random_var(1000), you.car_speed + 100);
+    }
     else if (!weap)
     {
         int sk = form_uses_xl() ? experience_level * 10 :

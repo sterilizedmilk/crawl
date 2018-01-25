@@ -348,26 +348,13 @@ void SkillMenuEntry::set_aptitude()
 
     text += "</white> ";
 
-    if (manual_bonus || you.species == SP_GNOLL)
+    if (manual_bonus)
     {
         if (manual_bonus)
         {
             skm.set_flag(SKMF_MANUAL);
             text += "<lightgreen>";
         }
-
-        int gnoll_bonus = 0;
-
-        // Determine Gnoll aptitude bonus/malus to display if SP_GNOLL
-        if (you.species == SP_GNOLL)
-        {
-            int gnoll_skill = you.skill(m_sk, 1, true);
-
-            // Gnoll aptitude costs start at effective +5 and reduce by -2 for
-            // each level after reaching 6, floor of -9
-            gnoll_bonus = max(5 - max((gnoll_skill - 5) * 2, 0), -9);
-        }
-        manual_bonus = manual_bonus + gnoll_bonus;
 
         // Only room for two characters.
         if (manual_bonus != 0)

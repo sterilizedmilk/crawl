@@ -1571,6 +1571,9 @@ static void tag_construct_you(writer &th)
 
     marshallInt(th, you.prev_act);
 
+    marshallCoord(th, you.car_dir);
+    marshallInt(th, you.car_speed);
+
     CANARY;
 
     marshallInt(th, you.dactions.size());
@@ -2796,11 +2799,6 @@ static void tag_read_you(reader &th)
             you.mutation[MUT_TRAMPLE_RESISTANCE] = 0;
         if (you.mutation[MUT_CLING] == 1)
             you.mutation[MUT_CLING] = 0;
-        if (you.species == SP_GARGOYLE)
-        {
-            you.mutation[MUT_POISON_RESISTANCE] =
-            you.innate_mutation[MUT_POISON_RESISTANCE] = 0;
-        }
         if (you.species == SP_FORMICID)
         {
             you.mutation[MUT_ANTENNAE] = you.innate_mutation[MUT_ANTENNAE] = 3;
@@ -2849,8 +2847,7 @@ static void tag_read_you(reader &th)
             you.innate_mutation[MUT_NO_POTION_HEAL] = 3;
         }
 
-        if (you.species == SP_VINE_STALKER
-            || you.species == SP_GARGOYLE)
+        if (you.species == SP_VINE_STALKER)
         {
             you.mutation[MUT_ROT_IMMUNITY] =
             you.innate_mutation[MUT_ROT_IMMUNITY] = 1;
@@ -3329,6 +3326,9 @@ static void tag_read_you(reader &th)
 
     you.prev_act = static_cast<previous_action>(unmarshallInt(th));
     
+    you.car_dir = unmarshallCoord(th);
+    you.car_speed = unmarshallInt(th);
+
 #if TAG_MAJOR_VERSION == 34
     if (th.getMinorVersion() >= TAG_MINOR_LORC_TEMPERATURE &&
         th.getMinorVersion() < TAG_MINOR_NO_MORE_LORC)

@@ -187,8 +187,8 @@ static const species_type species_order[] =
     SP_NAGA,           SP_CENTAUR,
     SP_MERFOLK,        SP_MINOTAUR,
     SP_TENGU,          SP_BASE_DRACONIAN,
-    SP_GARGOYLE,       SP_FORMICID,
-    SP_BARACHI,        SP_GNOLL,
+    SP_FORMICID,       SP_BARACHI,
+    SP_CAR,
     // mostly human shape but made of a strange substance
     SP_VINE_STALKER,
     // celestial species
@@ -204,10 +204,6 @@ COMPILE_CHECK(ARRAYSZ(species_order) <= NUM_SPECIES);
 
 bool is_starting_species(species_type species)
 {
-    // Trunk-only until we finish the species.
-    if (species == SP_GNOLL && Version::ReleaseType != VER_ALPHA)
-        return false;
-
     return find(species_order, species_order + ARRAYSZ(species_order),
                 species) != species_order + ARRAYSZ(species_order);
 }
@@ -951,7 +947,6 @@ static species_group species_groups[] =
             SP_HILL_ORC,
             SP_MINOTAUR,
             SP_MERFOLK,
-            SP_GARGOYLE,
             SP_BASE_DRACONIAN,
             SP_HALFLING,
             SP_TROLL,
@@ -972,7 +967,7 @@ static species_group species_groups[] =
             SP_DEEP_ELF,
             SP_OGRE,
             SP_DEEP_DWARF,
-            SP_GNOLL,
+            SP_CAR,
         }
     },
     {

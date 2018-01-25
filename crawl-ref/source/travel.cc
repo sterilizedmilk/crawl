@@ -2860,6 +2860,12 @@ void start_travel(const coord_def& p)
     if (!_is_travelsafe_square(p, true))
         return;
 
+    if (you.species == SP_CAR)
+    {
+        mpr("You can't do that.");
+        return;
+    }
+
     you.travel_x = p.x;
     you.travel_y = p.y;
     you.travel_z = level_id::current();
@@ -2905,7 +2911,9 @@ void start_explore(bool grab_items)
 
 void do_explore_cmd()
 {
-    if (you.hunger_state <= HS_STARVING && !you_min_hunger())
+    if (you.species == SP_CAR)
+        mpr("You can't do that.");
+    else if (you.hunger_state <= HS_STARVING && !you_min_hunger())
         mpr("You need to eat something NOW!");
     else if (you.berserk())
         mpr("Calm down first, please.");

@@ -5,6 +5,7 @@
 #include "areas.h"
 #include "branch.h"
 #include "cloud.h"
+#include "directn.h"
 #include "duration-type.h"
 #include "env.h"
 #include "evoke.h"
@@ -742,7 +743,27 @@ bool fill_status_info(int status, status_info* inf)
             inf->light_text = "Chant";
         }
         break;
+    
+    case STATUS_CAR:
+    {
+        if (you.species == SP_CAR)
+        {
+            const string arrow = "↑↗→↘↓↙←↖○";
+            string direction;
+            for (int i = 0; i < 9; ++i)
+            {
+                if (you.car_dir == Compass[i])
+                {
+                    direction = arrow.substr(3 * i , 3);
+                    break;
+                }
+            }
 
+            inf->light_colour = WHITE;
+            inf->light_text = make_stringf("%s(%d%%)", direction.c_str(), 100 + you.car_speed);
+        }
+        break;
+    }
     default:
         if (!found)
         {

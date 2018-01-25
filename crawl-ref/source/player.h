@@ -124,7 +124,7 @@ enum previous_action
     ACT_SCROLL,
     ACT_MEMORISE,
     ACT_ALTAR,
-    ACT_FAILED, // remove if it bothers you.
+    ACT_FAILED, // remove if it bother you.
 };
 
 // numbers for ATTR_CHANNELING 
@@ -240,6 +240,10 @@ public:
     int deaths;
 
     previous_action prev_act;
+
+    coord_def car_dir;
+    int car_speed;
+    bool car_keep;
 
     FixedVector<uint8_t, NUM_SKILLS> skills; ///< skill level
     FixedVector<training_status, NUM_SKILLS> train; ///< see enum def
@@ -1171,6 +1175,8 @@ void player_close_door(coord_def doorpos);
 void dec_disease_player(int delay);
 void player_end_berserk();
 void end_focusing(bool moved = false);
+bool car_drive(coord_def new_dir);
+int car_degree(coord_def new_dir);
 
 void handle_player_drowning(int delay);
 

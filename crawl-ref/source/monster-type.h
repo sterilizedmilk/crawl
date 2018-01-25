@@ -1043,7 +1043,7 @@ enum monster_type                      // menv[].type
     MONS_DREAM_SHEEP,
     MONS_FROG,
     MONS_BARACHI,
-    MONS_BULTUNGIN,             // remove this someday
+    MONS_CAR,
     MONS_GOLDEN_SCARAB,
 #endif
 
