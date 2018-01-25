@@ -3920,6 +3920,17 @@ static const struct spell_desc spelldata[] =
 },
 
 {
+    SPELL_TYPHOON, "Typhoon",
+    SPTYP_AIR,
+    SPFLAG_DIR_OR_TARGET | SPFLAG_AREA | SPFLAG_NOT_SELF,
+    7,
+    200,
+    4, 7,
+    5, 20,
+    TILEG_TYPHOON,
+},
+
+{
     SPELL_NO_SPELL, "nonexistent spell",
     SPTYP_NONE,
     SPFLAG_TESTING,

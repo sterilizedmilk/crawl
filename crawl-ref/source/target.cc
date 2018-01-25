@@ -8,6 +8,7 @@
 #include "cloud.h"
 #include "coord.h"
 #include "coordit.h"
+#include "directn.h" // Compass
 #include "english.h"
 #include "env.h"
 #include "fight.h"
@@ -1454,4 +1455,110 @@ aff_type targeter_monster_sequence::is_affected(coord_def loc)
     }
 
     return on_path ? AFF_TRACER : AFF_NO;
+}
+
+targeter_large_beam::targeter_large_beam(const actor *act, int r)
+{
+    ASSERT(act);
+    agent = act;
+    origin = act->pos();
+    aim = origin;
+    ASSERT_RANGE(r, 1 + 1, you.current_vision + 1);
+    range = r;
+}
+
+bool targeter_large_beam::valid_aim(coord_def a)
+{
+    if (a != origin && !cell_see_cell(origin, a, LOS_NO_TRANS))
+    {
+        // Scrying/glass/tree/grate.
+        if (agent->see_cell(a))
+            return notify_fail("There's something in the way.");
+        return notify_fail("You cannot see that place.");
+    }
+    if ((origin - a).rdist() > range)
+        return notify_fail("Out of range.");
+    return true;
+}
+
+bool targeter_large_beam::set_aim(coord_def a)
+{
+    aim = a;
+    zapped.clear();
+    for (int i = 0; i < LOS_RADIUS + 1; i++)
+        sweep[i].clear();
+
+    if (a == origin)
+        return false;
+
+    ray_def ray;
+    _make_ray(ray, origin, a);
+
+    coord_def p;
+
+    ray.advance();
+    zapped[ray.pos()] = AFF_YES;
+    sweep[1][ray.pos()] = AFF_YES;
+    ray.advance();
+
+    while ((origin - (p = ray.pos())).rdist() <= range
+           && map_bounds(p) && opc_solid_see(p) < OPC_OPAQUE)
+    {
+        coord_def q;
+        for (int i = 0; i < 9; ++i)
+        {
+            (q = p) += Compass[i];
+            if (q != origin && map_bounds(q) 
+                            && opc_solid_see(q) < OPC_OPAQUE)
+            {
+                if (zapped[q])
+                    zapped[q] = AFF_MULTIPLE;
+                else
+                    zapped[q] = AFF_YES;
+                sweep[(origin - p).rdist()][q] = AFF_YES;
+            }
+        }
+        ray.advance();
+    }
+    
+/* secondary option. (using Linear function)
+
+    const coord_def delta = a - origin;
+    int l = delta.y, r = -delta.x;
+    double n = sqrt(l*l + r*r) * 1.2; ( lx + my + n = 0)
+
+    for (int x = -LOS_RADIUS; x <= LOS_RADIUS; ++x)
+        for (int y = -LOS_RADIUS; y <= LOS_RADIUS; ++y)
+        {
+            if (max(abs(x), abs(y)) > range)
+                continue;
+            coord_def q(x, y);
+            if (q.x * l + q.y * r + n > 0 && q.x * l + q.y * r - n < 0
+                                          && q.x * r - q.y * l < 0)
+            {
+                (p = q) += origin;
+                if (zapped[p] <= 0
+                    && map_bounds(p)
+                    && opc_solid_see(p) < OPC_OPAQUE
+                    && cell_see_cell(origin, p, LOS_NO_TRANS))
+                {
+                    for (q : Compass)
+                    {
+                        if (map_bounds(p) && )
+                        zapped[p] = AFF_YES;
+                        sweep[(origin - p).rdist()][p] = AFF_YES;
+                    }
+                }
+            }
+        }
+*/
+    zapped[origin] = AFF_NO;
+    sweep[0].clear();
+
+    return true;
+}
+
+aff_type targeter_large_beam::is_affected(coord_def loc)
+{
+    return zapped[loc];
 }

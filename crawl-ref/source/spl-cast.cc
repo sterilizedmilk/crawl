@@ -1203,6 +1203,8 @@ static unique_ptr<targeter> _spell_targeter(spell_type spell, int pow,
         return make_unique<targeter_smite>(&you, range, 2, 2, false,
                                            [](const coord_def& p) -> bool {
                                               return you.pos() != p; });
+    case SPELL_TYPHOON:
+        return make_unique<targeter_large_beam>(&you, range);                                            
 
     default:
         break;
@@ -1684,6 +1686,9 @@ static spret_type _do_cast(spell_type spell, int powc, const dist& spd,
 
     case SPELL_CLOUD_CONE:
         return cast_cloud_cone(&you, powc, target, fail);
+
+    case SPELL_TYPHOON:
+        return cast_typhoon(&you, powc, target, fail);
 
     case SPELL_IGNITION:
         return cast_ignition(&you, powc, fail);

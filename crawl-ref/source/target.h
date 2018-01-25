@@ -291,3 +291,16 @@ public:
 private:
     explosion_map exp_map;
 };
+
+class targeter_large_beam : public targeter
+{
+public:
+    targeter_large_beam(const actor *act, int r);
+    bool valid_aim(coord_def a) override;
+    bool set_aim(coord_def a) override;
+    aff_type is_affected(coord_def loc) override;
+    map<coord_def, aff_type> zapped;
+    FixedVector< map<coord_def, aff_type>, LOS_RADIUS + 1 > sweep;
+private:
+    int range;
+};

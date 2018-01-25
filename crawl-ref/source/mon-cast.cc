@@ -6838,6 +6838,13 @@ void mons_cast(monster* mons, bolt pbolt, spell_type spell_cast,
         return;
     }
 
+    case SPELL_TYPHOON:
+    {
+        ASSERT(foe);
+        cast_typhoon(mons, splpow, foe->pos());
+        return;
+    }
+
     case SPELL_PHANTOM_MIRROR:
     {
         // Find appropriate ally to clone.

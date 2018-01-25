@@ -753,7 +753,8 @@ void bolt::draw(const coord_def& p)
     // Get curses to update the screen so we can see the beam.
     update_screen();
 #endif
-    scaled_delay(draw_delay);
+    if (origin_spell != SPELL_TYPHOON)
+        scaled_delay(draw_delay);
 }
 
 // Bounce a bolt off a solid feature.
@@ -4427,6 +4428,10 @@ void bolt::knockback_actor(actor *act, int dam)
 
     if (act->is_stationary())
         return;
+
+    if (origin_spell == SPELL_TYPHOON)
+        fallback_ray(oldpos, oldpos + Compass[random2(8)], ray);
+
     // We can't do knockback if the beam starts and ends on the same space
     if (source == oldpos)
         return;
@@ -4466,6 +4471,12 @@ void bolt::knockback_actor(actor *act, int dam)
         if (origin_spell == SPELL_CHILLING_BREATH)
         {
             mprf("%s %s blown backwards by the freezing wind.",
+                 act->name(DESC_THE).c_str(),
+                 act->conj_verb("are").c_str());
+        }
+        else if (origin_spell == SPELL_TYPHOON)
+        {
+            mprf("%s %s blown by the typhoon.",
                  act->name(DESC_THE).c_str(),
                  act->conj_verb("are").c_str());
         }
@@ -6378,7 +6389,8 @@ bool bolt::can_knockback(const actor *act, int dam) const
     return flavour == BEAM_WATER && origin_spell == SPELL_PRIMAL_WAVE
            || origin_spell == SPELL_CHILLING_BREATH
               && (!act || act->airborne())
-           || origin_spell == SPELL_FORCE_LANCE && dam;
+           || origin_spell == SPELL_FORCE_LANCE
+           || origin_spell == SPELL_TYPHOON && dam;
 }
 
 void clear_zap_info_on_exit()

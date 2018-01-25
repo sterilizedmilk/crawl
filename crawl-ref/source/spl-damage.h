@@ -73,3 +73,6 @@ spret_type cast_scattershot(const actor *caster, int pow, const coord_def &pos,
                             bool fail = false);
 
 spret_type cast_ignition(const actor *caster, int pow, bool fail);
+
+spret_type cast_typhoon(const actor *caster, int pow, coord_def aim,
+                        bool fail = false);

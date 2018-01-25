@@ -42,6 +42,7 @@
 #include "stringutil.h"
 #include "target.h"
 #include "terrain.h"
+#include "tilesdl.h"
 #include "transform.h"
 #include "unicode.h"
 #include "viewchar.h"
@@ -3004,7 +3005,7 @@ static bool _player_glaciate_affects(const actor *victim)
     if (!mon) // player
         return true;
 
-    return !mons_is_projectile(*mon)
+    return !mons_is_projectile(*mon)    
             && (!mons_is_avatar(mon->type) || !mons_aligned(&you, mon));
 }
 
@@ -3198,6 +3199,92 @@ spret_type cast_scattershot(const actor *caster, int pow, const coord_def &pos,
 
         print_wounds(*mons);
     }
+
+    return SPRET_SUCCESS;
+}
+
+
+static bool _air_affect(const actor *act)
+{
+    return !act->res_wind();
+}
+
+spret_type cast_typhoon(const actor *caster, int pow, coord_def aim, bool fail)
+{
+    const int range = spell_range(SPELL_TYPHOON, pow);
+    targeter_large_beam hitfunc(caster, range);
+    hitfunc.set_aim(aim);
+
+    if (caster->is_player()
+        && stop_attack_prompt(hitfunc, "hurt", _air_affect))
+    {
+        return SPRET_ABORT;
+    }
+
+    fail_check();
+
+    bolt beam;
+    beam.name              = "typhoon";
+    beam.aux_source        = "typhoon";
+    beam.flavour           = BEAM_AIR;
+    beam.glyph             = dchar_glyph(DCHAR_EXPLOSION);
+    beam.colour            = DARKGRAY;
+    beam.range             = 1;
+    beam.hit               = AUTOMATIC_HIT;
+    beam.source_id         = caster->mid;
+    beam.hit_verb          = "strikes";
+    beam.origin_spell      = SPELL_TYPHOON;
+    beam.set_agent(caster);
+#ifdef USE_TILE
+    beam.tile_beam = -1;
+#endif
+    beam.draw_delay = 0;
+
+    for (int i = 1; i <= range; i++)
+    {
+        for (const auto &entry : hitfunc.sweep[i])
+        {
+            if (entry.second <= 0)
+                continue;
+            beam.draw(entry.first);
+        }
+        scaled_delay(150);
+        tiles.clear_overlays();
+    }
+
+    scaled_delay(100);
+
+    if (you.can_see(*caster) || caster->is_player())
+    {
+        mprf("A massive storm cloud is released from %s hands!",
+             caster->name(DESC_ITS).c_str());
+    }
+
+    beam.glyph = 0;
+
+    for (int i = 1; i <= range; i++)
+    {
+        for (const auto &entry : hitfunc.sweep[i])
+        {
+            if (entry.second <= 0)
+                continue;
+
+            beam.damage = calc_dice(3, 8 + pow / 5);
+
+            if (actor_at(entry.first))
+            {
+                beam.source = beam.target = entry.first;
+                beam.source.x -= sgn(beam.source.x - hitfunc.origin.x);
+                beam.source.y -= sgn(beam.source.y - hitfunc.origin.y);
+                beam.fire();
+            }
+
+            if (x_chance_in_y(pow, 250))
+                place_cloud(CLOUD_STORM, entry.first, 2 + random2(4), caster);
+        }
+    }
+
+    noisy(spell_effect_noise(SPELL_TYPHOON), hitfunc.origin);
 
     return SPRET_SUCCESS;
 }
