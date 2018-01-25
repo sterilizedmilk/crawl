@@ -41,6 +41,7 @@
 #include "libutil.h"
 #include "losglobal.h"
 #include "los.h"
+#include "melee-attack.h"
 #include "message.h"
 #include "misc.h"
 #include "mon-behv.h"
@@ -3148,16 +3149,22 @@ bool bolt::misses_player()
     const int SH = player_shield_class();
     if ((player_omnireflects() && is_omnireflectable()
          || is_blockable())
-        && you.shielded()
-        && !aimed_at_feet
-        && SH > 0)
+        && (you.shielded() && SH > 0
+            || you.attribute[ATTR_CHANNELING] == CHANN_CALLED_SHOT)
+        && !aimed_at_feet)
     {
         // We use the original to-hit here.
         // (so that effects increasing dodge chance don't increase block...?)
         const int testhit = random2(hit * 130 / 100
                                     + you.shield_block_penalty());
 
-        const int block = you.shield_bonus();
+        int block = you.shield_bonus();
+
+        if (you.attribute[ATTR_CHANNELING] == CHANN_CALLED_SHOT)
+        {
+            melee_attack tohit(&you, nullptr);
+            block += tohit.calc_to_hit();
+        }    
 
         // 50% chance of blocking ench-type effects at 20 displayed sh
         const bool omnireflected
@@ -3181,6 +3188,10 @@ bool bolt::misses_player()
                     mprf("Your %s reflects the %s!",
                             shield->name(DESC_PLAIN).c_str(),
                             refl_name.c_str());
+                }
+                else if (you.attribute[ATTR_CHANNELING] == CHANN_CALLED_SHOT) // baseball bat
+                {
+                    mprf("You hit %s!", refl_name.c_str());
                 }
                 else
                 {

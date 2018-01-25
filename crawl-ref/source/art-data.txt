@@ -1306,6 +1306,15 @@ BRAND:    SPWPN_FLAMING
 FIRE:     -1
 COLD:     -1
 
+ENUM:     BASEBALL_BAT
+NAME:     Baseball bat
+OBJ:      OBJ_WEAPONS/WPN_CLUB
+INSCRIP:  bash, +called shot
+PLUS:     +9
+COLOUR:   ETC_SILVER
+TILE:     urand_baseball_bat
+TILE_EQ:  baseball_bat
+
 # This entry must always be last.
 ENUM:   DUMMY2
 NAME:   DUMMY UNRANDART 2

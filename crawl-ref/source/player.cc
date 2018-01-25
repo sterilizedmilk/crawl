@@ -5552,16 +5552,14 @@ bool player::shielded() const
            || qazlal_sh_boost() > 0
            || attribute[ATTR_BONE_ARMOUR] > 0
            || you.wearing(EQ_AMULET_PLUS, AMU_REFLECTION) > 0
-           || you.scan_artefacts(ARTP_SHIELDING);
+           || you.scan_artefacts(ARTP_SHIELDING)
+           || you.attribute[ATTR_CHANNELING] == CHANN_CALLED_SHOT;
 }
 
 int player::shield_bonus() const
 {
     const int shield_class = player_shield_class();
-    if (shield_class <= 0)
-        return -100;
-
-    return random2avg(shield_class * 2, 2) / 3 - 1;
+    return random2avg(shield_class * 2, 2) / 3 - 1; // shield_class == 1 -> return 0?
 }
 
 int player::shield_bypass_ability(int tohit) const
@@ -6652,7 +6650,7 @@ void player::paralyse(actor *who, int str, string source)
     paralysis = min(str, 13) * BASELINE_DELAY;
 
     stop_constricting_all();
-    end_searing_ray();
+    end_focusing();
 }
 
 void player::petrify(actor *who, bool force)
@@ -6694,7 +6692,7 @@ bool player::fully_petrify(actor *foe, bool quiet)
     redraw_evasion = true;
     mpr("You have turned to stone.");
 
-    end_searing_ray();
+    end_focusing();
 
     return true;
 }
@@ -6804,7 +6802,7 @@ int player::has_usable_tail(bool allow_tran) const
 
 // How many offhands or heads are usable by player for the
 // purpose of punching.
-int player::has_usable_offhand() const
+int player::has_usable_offhand(bool actual) const
 {
     if (you.form == transformation::hydra)
         return you.heads() - 1;
@@ -6822,6 +6820,9 @@ int player::has_usable_offhand() const
     const item_def* wp = slot_item(EQ_WEAPON);
 
     if (wp && hands_reqd(*wp) == HANDS_TWO)
+        offhand -= 1;
+
+    if (actual && wp && wp->unrand_idx == UNRAND_BASEBALL_BAT)
         offhand -= 1;
 
     return max(offhand, 0);
@@ -7186,7 +7187,7 @@ void player::put_to_sleep(actor*, int power, bool hibernate)
     mpr("You fall asleep.");
 
     stop_constricting_all();
-    end_searing_ray();
+    end_focusing();
     stop_delay();
     flash_view(UA_MONSTER, DARKGREY);
 
@@ -8181,4 +8182,25 @@ void refresh_weapon_protection()
 
     you.increase_duration(DUR_SPWPN_PROTECTION, 3 + random2(2), 5);
     you.redraw_armour_class = true;
+}
+
+/**
+ * 
+ */ 
+void end_focusing(bool moved)
+{
+    switch (you.attribute[ATTR_CHANNELING])
+    {
+    case CHANN_SEARING_RAY:
+        you.attribute[ATTR_SEARING_RAY] = 0;
+        you.attribute[ATTR_CHANNELING] = 0;
+        you.props.erase("searing_ray_target");
+        you.props.erase("searing_ray_aimed_at_spot");
+        break;
+    
+    default:
+        you.attribute[ATTR_CHANNELING] = 0;
+        break;
+    }
+    return;
 }

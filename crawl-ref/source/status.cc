@@ -727,6 +727,14 @@ bool fill_status_info(int status, status_info* inf)
         }
         break;
 
+    case STATUS_CALLED_SHOT:
+        if (you.attribute[ATTR_CHANNELING] == CHANN_CALLED_SHOT)
+        {
+            inf->light_colour = LIGHTGRAY;
+            inf->light_text = "Called shot";
+        }
+        break;
+    
     default:
         if (!found)
         {

@@ -27,6 +27,7 @@
 #include "god-passive.h" // passive_t::no_haste
 #include "item-name.h"
 #include "item-prop.h"
+#include "melee-attack.h"
 #include "message.h"
 #include "mon-behv.h"
 #include "mon-clone.h"
@@ -1380,6 +1381,13 @@ bool attack::attack_shield_blocked(bool verbose)
                                   + defender->shield_block_penalty());
     int pro_block = defender->shield_bonus();
 
+    if (defender->is_player() && !is_melee()
+                  && you.attribute[ATTR_CHANNELING] == CHANN_CALLED_SHOT)
+    {
+        melee_attack tohit(&you, nullptr);
+        pro_block += tohit.calc_to_hit();
+    }
+
     if (!attacker->visible_to(defender))
         pro_block /= 3;
 
@@ -1398,8 +1406,7 @@ bool attack::attack_shield_blocked(bool verbose)
             mprf("%s %s %s attack.",
                  defender_name(false).c_str(),
                  defender->conj_verb("block").c_str(),
-                 attacker == defender ? "its own"
-                                      : atk_name(DESC_ITS).c_str());
+                 atk_name(DESC_ITS).c_str());
         }
 
         defender->shield_block_succeeded(attacker);

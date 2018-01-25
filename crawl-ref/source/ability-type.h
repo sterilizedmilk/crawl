@@ -73,7 +73,8 @@ enum ability_type
     ABIL_EVOKE_TWISTER,
 #endif
     ABIL_EVOKE_RATSKIN,
-    ABIL_MAX_EVOKE = ABIL_EVOKE_RATSKIN,
+    ABIL_CALLED_SHOT,
+    ABIL_MAX_EVOKE = ABIL_CALLED_SHOT,
 
     // Divine abilities
     // Zin

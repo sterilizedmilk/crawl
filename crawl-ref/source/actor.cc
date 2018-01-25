@@ -281,7 +281,8 @@ bool actor::no_cast(bool calc_unid, bool items) const
 
 bool actor::reflection(bool calc_unid, bool items) const
 {
-    return items && wearing(EQ_AMULET, AMU_REFLECTION, calc_unid);
+    return items && wearing(EQ_AMULET, AMU_REFLECTION, calc_unid)
+           || (is_player() && you.attribute[ATTR_CHANNELING] == CHANN_CALLED_SHOT);
 }
 
 bool actor::extra_harm(bool calc_unid, bool items) const

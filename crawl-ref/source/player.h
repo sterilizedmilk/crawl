@@ -126,6 +126,13 @@ enum previous_action
     ACT_FAILED, // remove if it bothers you.
 };
 
+// numbers for ATTR_CHANNELING 
+enum channelings
+{
+    CHANN_SEARING_RAY = 1,
+    CHANN_CALLED_SHOT,
+};
+
 // needed for assert in is_player()
 #ifdef DEBUG_GLOBALS
 #define you (*real_you)
@@ -633,7 +640,7 @@ public:
     int       has_usable_fangs(bool allow_tran = true) const;
     int       has_tail(bool allow_tran = true) const;
     int       has_usable_tail(bool allow_tran = true) const;
-    int       has_usable_offhand() const;
+    int       has_usable_offhand(bool actual = true) const;
     int       has_pseudopods(bool allow_tran = true) const;
     int       has_usable_pseudopods(bool allow_tran = true) const;
     int       has_tentacles(bool allow_tran = true) const;
@@ -849,7 +856,7 @@ public:
     int shield_tohit_penalty(bool random_factor, int scale = 1) const override;
 
     bool wearing_light_armour(bool with_skill = false) const;
-    int  skill(skill_type skill, int scale =1,
+    int  skill(skill_type skill, int scale = 1,
                bool real = false, bool drained = true) const override;
 
     bool do_shaft() override;
@@ -1158,6 +1165,7 @@ void player_close_door(coord_def doorpos);
 
 void dec_disease_player(int delay);
 void player_end_berserk();
+void end_focusing(bool moved = false);
 
 void handle_player_drowning(int delay);
 

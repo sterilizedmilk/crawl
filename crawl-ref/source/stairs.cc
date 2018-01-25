@@ -550,7 +550,7 @@ void floor_transition(dungeon_feature_type how,
 
     // Magical level changes (which currently only exist "downwards") need this.
     clear_trapping_net();
-    end_searing_ray();
+    end_focusing(true);
 
     // Fire level-leaving trigger.
     leaving_level_now(how);

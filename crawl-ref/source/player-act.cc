@@ -77,7 +77,7 @@ void player::moveto(const coord_def &c, bool clear_net)
     set_position(c);
 
     clear_far_constrictions();
-    end_searing_ray();
+    end_focusing(true);
 }
 
 bool player::move_to_pos(const coord_def &c, bool clear_net, bool /*force*/)

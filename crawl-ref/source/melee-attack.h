@@ -155,4 +155,5 @@ private:
     bool _vamp_wants_blood_from_monster(const monster* mon);
 
     bool can_reach();
+    bool is_melee() override { return true; }
 };

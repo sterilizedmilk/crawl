@@ -526,7 +526,7 @@ shillelagh SHILLELAGH
 dark_maul DARK_MAUL
 spellbinder SPELLBINDER
 firestarter FIRESTARTER
-majin MAJIN
+baseball_bat BASEBALL_BAT
 ## polearms
 trident_octopus_king TRIDENT_OCTOPUS_KING
 glaive_of_prune GLAIVE_OF_PRUNE
@@ -541,6 +541,7 @@ asmodeus ASMODEUS
 dispater DISPATER
 olgreb OLGREB
 order ORDER
+majin MAJIN
 ## axes
 axe_trog AXE_TROG
 arga ARGA

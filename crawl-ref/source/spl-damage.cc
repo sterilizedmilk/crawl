@@ -2924,7 +2924,8 @@ spret_type cast_searing_ray(int pow, bolt &beam, bool fail)
     {
         // Special value, used to avoid terminating ray immediately, since we
         // took a non-wait action on this turn (ie: casting it)
-        you.attribute[ATTR_SEARING_RAY] = -1;
+        end_focusing();
+        you.attribute[ATTR_CHANNELING] = -CHANN_SEARING_RAY;
         you.props["searing_ray_target"].get_coord() = beam.target;
         you.props["searing_ray_aimed_at_spot"].get_bool() = beam.aimed_at_spot;
         string msg = "(Press <w>%</w> to maintain the ray.)";
@@ -2942,14 +2943,14 @@ void handle_searing_ray()
     // All of these effects interrupt a channeled ray
     if (you.confused() || you.berserk())
     {
-        end_searing_ray();
+        end_focusing();
         return;
     }
 
     if (!enough_mp(1, true))
     {
         mpr("Without enough magic to sustain it, your searing ray dissipates.");
-        end_searing_ray();
+        end_focusing();
         return;
     }
 
@@ -2967,7 +2968,7 @@ void handle_searing_ray()
     if (!player_tracer(zap, pow, beam))
     {
         mpr("You stop channeling your searing ray.");
-        end_searing_ray();
+        end_focusing();
         return;
     }
 
@@ -2982,15 +2983,8 @@ void handle_searing_ray()
     if (++you.attribute[ATTR_SEARING_RAY] > 3)
     {
         mpr("You finish channeling your searing ray.");
-        end_searing_ray();
+        end_focusing();
     }
-}
-
-void end_searing_ray()
-{
-    you.attribute[ATTR_SEARING_RAY] = 0;
-    you.props.erase("searing_ray_target");
-    you.props.erase("searing_ray_aimed_at_spot");
 }
 
 /**

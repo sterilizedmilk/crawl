@@ -689,3 +689,7 @@ Hevn status
 Heavenly clouds are boosting your damage and precision. Performing martial
 attacks against multiple enemies prevents the storm from settling.
 %%%%
+Called shot status
+
+[NEED_TEXT]
+%%%%

@@ -351,6 +351,8 @@ static const ability_def Ability_List[] =
       2, 0, 250, 0, {fail_basis::evo, 50, 2}, abflag::none },
     { ABIL_EVOKE_RATSKIN, "Evoke Ratskin",
       3, 0, 200, 0, {fail_basis::evo, 50, 2}, abflag::none },
+    { ABIL_CALLED_SHOT, "Called Shot",
+      0, 0, 0, 0, {}, abflag::none },
 
     { ABIL_END_TRANSFORMATION, "End Transformation",
       0, 0, 0, 0, {}, abflag::none },
@@ -1708,6 +1710,7 @@ bool activate_talent(const talent& tal)
             crawl_state.zero_turns_taken();
             return false;
         case SPRET_NONE:
+            return true;
         default:
             die("Weird ability return type");
             return false;
@@ -2117,6 +2120,18 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
         }
 
         break;
+    
+    case ABIL_CALLED_SHOT: // baseball bat
+    {
+        fail_check();
+        mpr("You take a position for hitting ball.");
+        string msg = "(Press <w>%</w> to maintain the position.)";
+        insert_commands(msg, { CMD_WAIT });
+        mpr(msg);
+        end_focusing();
+        you.attribute[ATTR_CHANNELING] = -CHANN_CALLED_SHOT;
+        break;
+    }
 
     case ABIL_CANCEL_PPROJ:
         fail_check();
@@ -3503,6 +3518,13 @@ vector<talent> your_talents(bool check_confused, bool include_unusable)
         && !you.get_mutation_level(MUT_NO_LOVE))
     {
         _add_talent(talents, ABIL_EVOKE_RATSKIN, check_confused);
+    }
+
+    if (player_equip_unrand(UNRAND_BASEBALL_BAT)
+        && you.has_usable_offhand(false)
+        && you.attribute[ATTR_CHANNELING] != CHANN_CALLED_SHOT)
+    {
+        _add_talent(talents, ABIL_CALLED_SHOT, check_confused);
     }
 
     if (you.evokable_berserk() && !you.get_mutation_level(MUT_NO_ARTIFICE))

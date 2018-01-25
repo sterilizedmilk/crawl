@@ -202,7 +202,7 @@ static void _launch_game_loop();
 NORETURN static void _launch_game();
 
 static void _do_berserk_no_combat_penalty();
-static void _do_searing_ray();
+static void _do_channeling();
 static void _input();
 
 static void _safe_move_player(coord_def move);
@@ -1045,7 +1045,7 @@ static void _input()
     if (you_are_delayed()
         && !dynamic_cast<MacroProcessKeyDelay*>(current_delay().get()))
     {
-        end_searing_ray();
+        end_focusing();
         handle_delay();
 
         // Some delays reset you.time_taken.
@@ -1163,7 +1163,7 @@ static void _input()
         if (you.apply_berserk_penalty)
             _do_berserk_no_combat_penalty();
 
-        _do_searing_ray();
+        _do_channeling();
 
         world_reacts();
     }
@@ -2794,25 +2794,49 @@ static void _do_berserk_no_combat_penalty()
     }
     return;
 }
-
-// Fire the next searing ray stage if we have taken no other action this turn,
-// otherwise cancel
-static void _do_searing_ray()
+/* channeling stuff. 
+ *
+ * ATTR_CHANNELING indicate which channeling is being done.
+ * Minus value means channeling will be continued regradless of which player's action.
+ */
+static void _do_channeling()
 {
-    if (you.attribute[ATTR_SEARING_RAY] == 0)
+    if (you.attribute[ATTR_CHANNELING] == 0)
         return;
 
-    // Convert prepping value into stage one value (so it can fire next turn)
-    if (you.attribute[ATTR_SEARING_RAY] == -1)
+    bool skip = false;
+    bool waiting = you.prev_act == ACT_WAIT;
+
+    if (you.attribute[ATTR_CHANNELING] < 0)
     {
-        you.attribute[ATTR_SEARING_RAY] = 1;
-        return;
+        skip = true;
+        you.attribute[ATTR_CHANNELING] *= -1;
     }
 
-    if (crawl_state.prev_cmd == CMD_WAIT)
-        handle_searing_ray();
-    else
-        end_searing_ray();
+    switch (you.attribute[ATTR_CHANNELING])
+    {
+    case CHANN_SEARING_RAY:
+        if (skip)
+        {
+            you.attribute[ATTR_SEARING_RAY] = 1;
+            handle_searing_ray();
+            break;
+        }
+        
+        if (waiting)
+            handle_searing_ray();
+        else
+            end_focusing();
+        break;
+
+    case CHANN_CALLED_SHOT:
+        if (!waiting && !skip)
+            you.attribute[ATTR_CHANNELING] = 0;
+        break;
+
+    default:
+        break;
+    }
 }
 
 static void _safe_move_player(coord_def move)

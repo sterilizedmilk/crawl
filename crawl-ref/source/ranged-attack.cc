@@ -191,6 +191,11 @@ bool ranged_attack::handle_phase_blocked()
                               + "!";
                 ident_reflector(defender_shield);
             }
+            else if (defender->is_player() && you.attribute[ATTR_CHANNELING] == CHANN_CALLED_SHOT)
+            {
+                verb = "hit";
+                punctuation = "!";
+            }
             else
             {
                 punctuation = " off an invisible shield around "
@@ -399,7 +404,8 @@ bool ranged_attack::ignores_shield(bool verbose)
                  projectile->name(DESC_THE).c_str(),
                  apostrophise(defender_name(false)).c_str(),
                  defender_shield ? defender_shield->name(DESC_PLAIN).c_str()
-                                 : "shielding");
+                                 : you.attribute[ATTR_CHANNELING] == CHANN_CALLED_SHOT
+                                 ? "bat" : "shielding");
         }
         return true;
     }

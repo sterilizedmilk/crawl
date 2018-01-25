@@ -24,11 +24,12 @@
 #include "cloud.h"         // For storm bow's and robe of clouds' rain
 #include "english.h"       // For apostrophise
 #include "exercise.h"      // For practise_evoking
+#include "delay.h"         // For stop_delay
 #include "fight.h"
 #include "food.h"          // For evokes
 #include "ghost.h"         // For is_dragonkind ghost_demon datas
-#include "god-conduct.h"    // did_god_conduct
-#include "god-passive.h"    // passive_t::want_curses
+#include "god-conduct.h"   // did_god_conduct
+#include "god-passive.h"   // passive_t::want_curses
 #include "mgen-data.h"     // For Sceptre of Asmodeus evoke
 #include "mon-death.h"     // For demon axe's SAME_ATTITUDE
 #include "mon-place.h"     // For Sceptre of Asmodeus evoke
@@ -1399,4 +1400,57 @@ static void _THERMIC_ENGINE_world_reacts(item_def *item)
 
         you.wield_change = true;
     }
+}
+
+///////////////////////////////////////////////////
+
+static void _BASEBALL_BAT_melee_effects(item_def* weapon, actor* attacker,
+                                        actor* defender, bool mondied, int dam)
+{
+    if(attacker->is_player() && !you.has_usable_offhand(false))
+        return;         // No equip restriction on monster...
+
+    const coord_def oldpos = defender->pos();
+    const coord_def direction = oldpos - attacker->pos();
+    const int weight = max_corpse_chunks(defender->is_monster() ? defender->type :
+                                         player_species_to_mons_species(you.species));
+    coord_def newpos = oldpos;    
+
+    for (int i = 0; i < 6; ++i)
+    {
+        if(x_chance_in_y(weight, dam)) // 2 * dam maybe? or skill/HD base?
+            continue;
+
+        newpos += direction;
+
+        if (cell_is_solid(newpos)
+            || actor_at(newpos)
+            || !defender->can_pass_through(newpos)
+            || !defender->is_habitable(newpos))
+        {
+            break;
+        }
+
+        defender->move_to_pos(newpos);
+        if (defender->is_player())
+            stop_delay(true);
+
+    }
+
+    if (newpos == oldpos)
+        return;
+
+    if (defender->alive() && defender->pos() != newpos)
+        defender->collide(newpos, attacker, 5 * dam);
+
+    if (defender->is_monster())
+        defender->as_monster()->speed_increment -= random2(6) + 4;
+
+    defender->apply_location_effects(oldpos);
+}
+
+static void _BASEBALL_BAT_unequip(item_def *item, bool *show_msgs)
+{
+    if (you.attribute[ATTR_CHANNELING] == CHANN_CALLED_SHOT)
+        you.attribute[ATTR_CHANNELING] = 0;
 }

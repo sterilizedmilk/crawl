@@ -20,6 +20,7 @@
 #include "item-prop.h"
 #include "message.h"
 #include "mgen-data.h"
+#include "melee-attack.h"
 #include "mon-death.h"
 #include "mon-place.h"
 #include "ouch.h"
@@ -271,7 +272,14 @@ static bool _iood_shielded(monster& mon, actor &victim)
     const int to_hit = 15 + (mons_is_projectile(mon.type) ?
         mon.props[IOOD_POW].get_short()/12 : mon.get_hit_dice()/2);
     const int con_block = random2(to_hit + victim.shield_block_penalty());
-    const int pro_block = victim.shield_bonus();
+    int pro_block = victim.shield_bonus();
+
+    if (victim.is_player() && you.attribute[ATTR_CHANNELING] == CHANN_CALLED_SHOT)
+    {
+        melee_attack tohit(&you, nullptr);
+        pro_block += tohit.calc_to_hit();
+    }
+
     dprf("iood shield: pro %d, con %d", pro_block, con_block);
     return pro_block >= con_block;
 }
@@ -529,6 +537,10 @@ move_again:
                          shield->name(DESC_PLAIN).c_str(),
                          mon.name(DESC_THE, true).c_str());
                     ident_reflector(shield);
+                }
+                else if (you.attribute[ATTR_CHANNELING] == CHANN_CALLED_SHOT) // baseball bat
+                {
+                    mprf("You hit %s!", mon.name(DESC_THE, true).c_str());
                 }
                 else // has reflection property not from shield
                 {

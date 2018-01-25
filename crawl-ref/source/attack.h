@@ -201,4 +201,5 @@ protected:
     virtual int  player_stab_weapon_bonus(int damage);
     virtual int  player_stab(int damage);
     virtual void player_stab_check();
+    virtual bool is_melee() { return false; }
 };

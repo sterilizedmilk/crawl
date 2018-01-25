@@ -1839,6 +1839,11 @@ bool transform(int pow, transformation which_trans, bool involuntary,
             you.stop_being_constricted();
     }
 
+    if (!get_form(which_trans)->can_cast && you.attribute[ATTR_CHANNELING] == CHANN_SEARING_RAY)
+    {
+        mpr("You lose your concentration on channeling.");
+        end_focusing();
+    }
 
     // If we are no longer living, end an effect that afflicts only the living
     if (you.duration[DUR_FLAYED] && !(you.holiness() & MH_NATURAL))
