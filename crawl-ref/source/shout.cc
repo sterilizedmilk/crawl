@@ -692,6 +692,11 @@ void issue_orders()
     const int keyn = _issue_orders_prompt();
     if (keyn == '!' || keyn == 't') // '!' for [very] old keyset
     {
+        if (you.duration[DUR_BREATH_WEAPON])
+        {
+            mpr("You can't shout while out of breath.");
+            return;
+        } // still can shout with scream mutation.
         yell();
         you.turn_is_over = true;
         you.prev_act = ACT_SHOUT;
@@ -710,6 +715,34 @@ void issue_orders()
 
     if (mons_targd != MHITNOT && mons_targd != MHITYOU)
         mpr("Attack!");
+}
+
+void fearsome_roar()
+{
+    const int scary = you.duration[DUR_INVIS] ? 0 : you.experience_level;
+
+    for (monster_iterator mi; mi; ++mi)
+    {
+        if (!you.see_cell_no_trans(mi->pos()))
+            continue;
+
+        if (mons_class_is_stationary(mi->type) && mons_class_flag(mi->type, M_NO_THREAT))
+            continue;
+
+        if (mi->has_ench(ENCH_FEAR))
+            continue;
+
+        if (scary && !x_chance_in_y(mi->get_hit_dice(), scary))
+            continue;
+
+        if (mi->add_ench(mon_enchant(ENCH_FEAR, 0, &you)))
+        {            
+            simple_monster_message(**mi, " looks frightened!");
+            behaviour_event(*mi, ME_SCARE, &you);
+        }
+    }
+
+    you.increase_duration(DUR_BREATH_WEAPON, 3 + 2 * random2(5));
 }
 
 /**
@@ -762,6 +795,8 @@ void yell(const actor* mon)
     }
 
     noisy(noise_level, you.pos());
+    if (you.form == transformation::dragon)
+        fearsome_roar();
 }
 
 void apply_noises()

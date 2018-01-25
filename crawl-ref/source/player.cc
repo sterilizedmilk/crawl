@@ -5358,6 +5358,9 @@ bool player::cannot_speak() const
     if (silenced(pos()))
         return true;
 
+    if (you.duration[DUR_WATER_HOLD])
+        return true;
+
     if (cannot_move()) // we allow talking during sleep ;)
         return true;
 

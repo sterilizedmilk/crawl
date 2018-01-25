@@ -1702,9 +1702,9 @@ static bool _monster_resists_mass_enchantment(monster* mons,
             return true;
         }
     }
-    // Mass enchantments around lots of plants/fungi shouldn't cause a flood
+    // Mass enchantments around lots of plants/fungi/tentacles shouldn't cause a flood
     // of "is unaffected" messages. --Eino
-    else if (mons_is_firewood(*mons))
+    else if (mons_class_is_stationary(mons->type) && mons_class_flag(mons->type, M_NO_THREAT))
         return true;
     else  // trying to enchant an unnatural creature doesn't work
     {
