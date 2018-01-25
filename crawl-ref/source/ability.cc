@@ -1701,6 +1701,7 @@ bool activate_talent(const talent& tal)
         case SPRET_FAIL:
             mpr("You fail to use your ability.");
             you.turn_is_over = true;
+            you.prev_act = ACT_FAILED;
             return false;
         case SPRET_ABORT:
             crawl_state.zero_turns_taken();
@@ -3191,9 +3192,13 @@ static void _pay_ability_costs(const ability_def& abil)
         you.turn_is_over = false;
         you.elapsed_time_at_last_input = you.elapsed_time;
         update_turn_count();
+        // you.prev_act = ACT_ABILITY; can action take no time?
     }
     else
+    {
         you.turn_is_over = true;
+        you.prev_act = ACT_ABILITY;
+    }
 
     const int food_cost  = abil.food_cost + random2avg(abil.food_cost, 2);
     const int piety_cost =

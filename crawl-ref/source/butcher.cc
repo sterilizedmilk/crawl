@@ -61,6 +61,7 @@ static bool _start_butchering(item_def& corpse)
         start_delay<ButcherDelay>(0, corpse);
 
     you.turn_is_over = true;
+    you.prev_act = ACT_BUTCHER;
     return true;
 }
 

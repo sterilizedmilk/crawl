@@ -872,6 +872,7 @@ static void _finish_butcher_delay(item_def& corpse, bool bottling)
         request_autopickup();
     }
     you.turn_is_over = true;
+    you.prev_act = ACT_BUTCHER;
 }
 
 void ButcherDelay::finish()

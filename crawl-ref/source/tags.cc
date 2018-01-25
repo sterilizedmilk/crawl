@@ -1563,6 +1563,8 @@ static void tag_construct_you(writer &th)
     marshallByte(th, you.deaths);
     marshallByte(th, you.lives);
 
+    marshallInt(th, you.prev_act);
+
     CANARY;
 
     marshallInt(th, you.dactions.size());
@@ -3313,6 +3315,8 @@ static void tag_read_you(reader &th)
     you.deaths = unmarshallByte(th);
     you.lives = unmarshallByte(th);
 
+    you.prev_act = static_cast<previous_action>(unmarshallInt(th));
+    
 #if TAG_MAJOR_VERSION == 34
     if (th.getMinorVersion() >= TAG_MINOR_LORC_TEMPERATURE &&
         th.getMinorVersion() < TAG_MINOR_NO_MORE_LORC)

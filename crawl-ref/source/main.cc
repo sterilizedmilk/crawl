@@ -1434,7 +1434,10 @@ static void _take_transporter()
     }
 
     if (you.move_to_pos(dest, true))
+    {
         you.turn_is_over = true;
+        you.prev_act = ACT_MOVE;
+    }
 
     if (you.turn_is_over)
     {
@@ -1809,6 +1812,7 @@ void process_command(command_type cmd)
         // else fall-through
     case CMD_WAIT:
         you.turn_is_over = true;
+        you.prev_act = ACT_WAIT;
         extract_manticore_spikes("You carefully extract the barbed spikes "
                                  "from your body.");
         break;
@@ -2506,6 +2510,7 @@ static void _swing_at_target(coord_def move)
     {
         free_self_from_net();
         you.turn_is_over = true;
+        you.prev_act = ACT_MELEE;
         return;
     }
 
@@ -2528,6 +2533,7 @@ static void _swing_at_target(coord_def move)
             {
                 mpr("You nearly hit yourself!");
                 you.turn_is_over = true;
+                you.prev_act = ACT_MELEE;
                 return;
             }
         }
@@ -2569,6 +2575,7 @@ static void _swing_at_target(coord_def move)
         you.time_taken = you.attack_delay().roll();
     }
     you.turn_is_over = true;
+    you.prev_act = ACT_MELEE;
     return;
 }
 
@@ -2584,6 +2591,7 @@ static void _open_door(coord_def move)
     {
         free_self_from_net();
         you.turn_is_over = true;
+        you.prev_act = ACT_OPEN;
         return;
     }
 
@@ -2638,7 +2646,10 @@ static void _open_door(coord_def move)
         else
             mpr(door_veto_message);
         if (you.confused())
+        {
             you.turn_is_over = true;
+            you.prev_act = ACT_FAILED;
+        }
 
         return;
     }
@@ -2879,6 +2890,7 @@ static void _move_player(coord_def move)
     {
         free_self_from_net();
         you.turn_is_over = true;
+        you.prev_act = ACT_MOVE;
         return;
     }
 
@@ -2912,6 +2924,7 @@ static void _move_player(coord_def move)
                 mpr("You're too confused to move!");
                 you.apply_berserk_penalty = true;
                 you.turn_is_over = true;
+                you.prev_act = ACT_FAILED;
                 return;
             }
         }
@@ -2920,6 +2933,7 @@ static void _move_player(coord_def move)
         if (!in_bounds(new_targ) || !you.can_pass_through(new_targ))
         {
             you.turn_is_over = true;
+            you.prev_act = ACT_FAILED;
             if (you.digging) // no actual damage
             {
                 mprf("Your mandibles retract as you bump into %s",
@@ -3097,6 +3111,7 @@ static void _move_player(coord_def move)
                  feature_description_at(targ, false, DESC_THE, false).c_str());
             you.apply_berserk_penalty = true;
             you.turn_is_over = true;
+            you.prev_act = ACT_FAILED;
             return;
         }
 
@@ -3168,7 +3183,10 @@ static void _move_player(coord_def move)
 
         // Don't trigger traps when confusion causes no move.
         if (you.pos() != targ && targ_pass)
+        {
+            you.prev_act = ACT_MOVE;
             move_player_to_grid(targ, true);
+        }
         else if (can_wall_jump && !running)
         {
             auto wall_jump_direction = (you.pos() - targ).sgn();
@@ -3180,6 +3198,7 @@ static void _move_player(coord_def move)
                 return;
             }
             did_wall_jump = true;
+            you.prev_act = ACT_MOVE;
             move_player_to_grid(wall_jump_landing_spot, false);
             wu_jian_wall_jump_effects(initial_position);
         }
@@ -3249,6 +3268,7 @@ static void _move_player(coord_def move)
 
         move.reset();
         you.turn_is_over = true;
+        you.prev_act = ACT_MOVE;
 
         _entered_malign_portal(&you);
         return;

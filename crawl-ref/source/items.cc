@@ -1051,7 +1051,10 @@ void pickup_menu(int item_link)
     }
 
     if (n_did_pickup)
+    {
         you.turn_is_over = true;
+        you.prev_act = ACT_PICKUP;
+    }
 }
 
 bool origin_known(const item_def &item)
@@ -1822,6 +1825,7 @@ bool move_item_to_inv(int obj, int quant_got, bool quiet)
         dec_mitm_item_quantity(obj, quant_got);
 
         you.turn_is_over = true;
+        you.prev_act = ACT_PICKUP;
     }
 
     return keep_going;
@@ -2529,6 +2533,7 @@ bool drop_item(int item_dropped, int quant_drop)
 
     dec_inv_item_quantity(item_dropped, quant_drop);
     you.turn_is_over = true;
+    you.prev_act = ACT_DROP;
 
     you.last_pickup.erase(item_dropped);
 
@@ -3160,7 +3165,10 @@ static void _do_autopickup()
         mpr(pickup_warning);
 
     if (did_pickup)
+    {
         you.turn_is_over = true;
+        you.prev_act = ACT_PICKUP;
+    }
 
     if (you.last_pickup.empty())
         you.last_pickup = tmp_l_p;

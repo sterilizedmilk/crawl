@@ -694,6 +694,7 @@ void issue_orders()
     {
         yell();
         you.turn_is_over = true;
+        you.prev_act = ACT_SHOUT;
         return;
     }
 
@@ -703,6 +704,7 @@ void issue_orders()
 
     you.turn_is_over = true;
     you.pet_target = mons_targd;
+    you.prev_act = ACT_SHOUT;
     // Allow patrolling for "Stop fighting!" and "Wait here!"
     _set_friendly_foes(keyn == 's' || keyn == 'w');
 

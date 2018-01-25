@@ -98,6 +98,34 @@ enum training_status
     TRAINING_INACTIVE, ///< enabled but not used (in auto mode)
 };
 
+enum previous_action
+{
+    ACT_NONE,
+    ACT_MOVE,
+    ACT_MELEE,
+    ACT_RANGED,
+    ACT_WAIT,
+    ACT_OPEN,
+    ACT_CLOSE,
+    ACT_PICKUP,
+    ACT_DROP,
+    ACT_UPSTAIRS,
+    ACT_DOWNSTAIRS,
+    ACT_BUTCHER,
+    ACT_EAT,
+    ACT_EQUIP,
+    ACT_TAKE_OFF,
+    ACT_EVOKE,
+    ACT_CAST,
+    ACT_ABILITY,
+    ACT_QUAFF,
+    ACT_SHOUT,
+    ACT_SCROLL,
+    ACT_MEMORISE,
+    ACT_ALTAR,
+    ACT_FAILED, // remove if it bothers you.
+};
+
 // needed for assert in is_player()
 #ifdef DEBUG_GLOBALS
 #define you (*real_you)
@@ -201,6 +229,8 @@ public:
     bool pending_revival;
     int lives;
     int deaths;
+
+    previous_action prev_act;
 
     FixedVector<uint8_t, NUM_SKILLS> skills; ///< skill level
     FixedVector<training_status, NUM_SKILLS> train; ///< see enum def

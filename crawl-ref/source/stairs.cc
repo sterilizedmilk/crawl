@@ -147,6 +147,7 @@ static bool _stair_moves_pre(dungeon_feature_type stair)
          verb.c_str());
 
     you.turn_is_over = true;
+    you.prev_act = ACT_FAILED;
 
     return true;
 }
@@ -329,6 +330,7 @@ static bool _check_fall_down_stairs(const dungeon_feature_type ftype, bool going
         if (going_up)
         {
             you.turn_is_over = true;
+            you.prev_act = ACT_FAILED;
             return true;
         }
     }
@@ -748,7 +750,8 @@ void floor_transition(dungeon_feature_type how,
     if (you.where_are_you == BRANCH_ABYSS)
         generate_random_blood_spatter_on_level();
 
-    you.turn_is_over = true;
+    you.turn_is_over = true; // Shaft and banish also take turns. Is this intended?
+    you.prev_act = going_up ? ACT_UPSTAIRS : ACT_DOWNSTAIRS;
 
     save_game_state();
 

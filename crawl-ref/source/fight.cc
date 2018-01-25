@@ -173,11 +173,14 @@ bool fight_melee(actor *attacker, actor *defender, bool *did_hit, bool simu)
             // Attack was cancelled or unsuccessful...
             if (attk.cancel_attack)
                 you.turn_is_over = false;
+            else
+                you.prev_act = ACT_MELEE;
             return !attk.cancel_attack;
         }
 
         if (did_hit)
             *did_hit = attk.did_hit;
+        you.prev_act = ACT_MELEE;
 
         // A spectral weapon attacks whenever the player does
         if (!simu && you.props.exists("spectral_weapon"))

@@ -534,6 +534,7 @@ bool wield_weapon(bool auto_wield, int slot, bool show_weff_messages,
 
             // Switching to bare hands is extra fast.
             you.turn_is_over = true;
+            you.prev_act = ACT_TAKE_OFF;
             if (adjust_time_taken)
             {
                 you.time_taken *= 3;
@@ -608,9 +609,10 @@ bool wield_weapon(bool auto_wield, int slot, bool show_weff_messages,
     if (adjust_time_taken)
         you.time_taken /= 2;
 
-    you.wield_change  = true;
+    you.wield_change = true;
     you.m_quiver.on_weapon_changed();
-    you.turn_is_over  = true;
+    you.turn_is_over = true;
+    you.prev_act = ACT_EQUIP;
 
     return true;
 }
@@ -1085,6 +1087,7 @@ bool wear_armour(int item)
     }
 
     you.turn_is_over = true;
+    you.prev_act = ACT_EQUIP;
 
     // TODO: It would be nice if we checked this before taking off the item
     // currently in the slot. But doing so is not quite trivial. Also applies
@@ -1177,6 +1180,7 @@ bool takeoff_armour(int item)
     }
 
     you.turn_is_over = true;
+    you.prev_act = ACT_TAKE_OFF;
 
     const int delay = armour_equip_delay(invitem);
     start_delay<ArmourOffDelay>(delay - 1, invitem);
@@ -1810,6 +1814,7 @@ static bool _puton_item(int item_slot, bool prompt_slot)
     // Putting on jewellery is fast.
     you.time_taken /= 2;
     you.turn_is_over = true;
+    you.prev_act = ACT_EQUIP;
 
     return true;
 }
@@ -1986,6 +1991,7 @@ bool remove_ring(int slot, bool announce)
 
     you.time_taken /= 2;
     you.turn_is_over = true;
+    you.prev_act = ACT_TAKE_OFF;
 
     return true;
 }
@@ -2084,6 +2090,7 @@ void drink(item_def* potion)
     {
         simple_god_message(" petitions for your drink to fail.", GOD_GOZAG);
         you.turn_is_over = true;
+        you.prev_act = ACT_FAILED;
         return;
     }
 
@@ -2113,6 +2120,7 @@ void drink(item_def* potion)
         dec_mitm_item_quantity(potion->index(), 1);
     count_action(CACT_USE, OBJ_POTIONS);
     you.turn_is_over = true;
+    you.prev_act = ACT_QUAFF;
 
     // This got deferred from PotionExperience::effect to prevent SIGHUP abuse.
     if (was_exp)
@@ -2786,6 +2794,7 @@ void read(item_def* scroll)
 
     // Ok - now we FINALLY get to read a scroll !!! {dlb}
     you.turn_is_over = true;
+    you.prev_act = ACT_SCROLL;
 
     if (you.duration[DUR_BRAINLESS] && !one_chance_in(5))
     {

@@ -5032,6 +5032,8 @@ player::player()
     lives = 0;
     deaths = 0;
 
+    prev_act = ACT_NONE;
+
     xray_vision = false;
 
     init_skills();
@@ -7810,6 +7812,7 @@ void player_open_door(coord_def doorpos)
     update_exclusion_los(excludes);
     viewwindow();
     you.turn_is_over = true;
+    you.prev_act = ACT_OPEN;
 }
 
 void player_close_door(coord_def doorpos)
@@ -7854,7 +7857,10 @@ void player_close_door(coord_def doorpos)
                 mprf("Something is blocking the %s!", waynoun);
                 // No free detection!
                 if (mons_unseen)
+                {
                     you.turn_is_over = true;
+                    you.prev_act = ACT_FAILED;
+                }
             }
             else
                 mprf("There's a creature in the %s!", waynoun);
@@ -7964,6 +7970,7 @@ void player_close_door(coord_def doorpos)
 
     update_exclusion_los(excludes);
     you.turn_is_over = true;
+    you.prev_act = ACT_CLOSE;
 }
 
 /**

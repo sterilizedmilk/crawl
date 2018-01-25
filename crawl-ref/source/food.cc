@@ -723,6 +723,7 @@ bool eat_item(item_def &food)
         {
             count_action(CACT_EAT, -1); // subtype Corpse
             you.turn_is_over = true;
+            you.prev_act = ACT_EAT;
             return true;
         }
 
@@ -752,6 +753,7 @@ bool eat_item(item_def &food)
         dec_mitm_item_quantity(food.index(), 1);
 
     you.turn_is_over = true;
+    you.prev_act = ACT_EAT;
     return true;
 }
 

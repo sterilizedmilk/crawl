@@ -423,6 +423,7 @@ static bool _autoswitch_to_ranged()
         return false;
 
     you.turn_is_over = true;
+    you.prev_act = ACT_EQUIP;
     //XXX Hacky. Should use a delay instead.
     macro_buf_add(command_to_key(CMD_FIRE));
     return true;
@@ -952,6 +953,7 @@ bool throw_it(bolt &pbolt, int throw_2, dist *target)
     alert_nearby_monsters();
 
     you.turn_is_over = true;
+    you.prev_act = ACT_RANGED;
 
     if (pbolt.special_explosion != nullptr)
         delete pbolt.special_explosion;

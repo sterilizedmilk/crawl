@@ -89,6 +89,7 @@ static bool _pray_ecumenical_altar()
             mprf(MSGCH_GOD, "%s accepts your prayer!",
                             god_name(altar_god).c_str());
             you.turn_is_over = true;
+            you.prev_act = ACT_ALTAR;
             if (!you_worship(altar_god))
                 join_religion(altar_god);
             else
@@ -135,6 +136,7 @@ void try_god_conversion(god_type god)
     {
         // consider conversion
         you.turn_is_over = true;
+        you.prev_act = ACT_ALTAR;
         // But if we don't convert then god_pitch
         // makes it not take a turn after all.
         god_pitch(god);

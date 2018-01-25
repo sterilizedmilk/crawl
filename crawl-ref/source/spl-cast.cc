@@ -889,6 +889,10 @@ bool cast_a_spell(bool check_range, spell_type spell)
     }
 
     you.turn_is_over = true;
+    if (cast_result == SPRET_SUCCESS)
+        you.prev_act = ACT_CAST;
+    else if (cast_result == SPRET_FAIL)
+        you.prev_act = ACT_FAILED;
     alert_nearby_monsters();
 
     return true;

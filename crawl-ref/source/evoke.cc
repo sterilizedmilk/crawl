@@ -473,6 +473,7 @@ void zap_wand(int slot)
         // It's an empty wand; inscribe it that way.
         wand.used_count = ZAPCOUNT_EMPTY;
         you.turn_is_over = true;
+        you.prev_act = ACT_FAILED;
         return;
     }
 
@@ -532,6 +533,7 @@ void zap_wand(int slot)
     alert_nearby_monsters();
 
     you.turn_is_over = true;
+    you.prev_act = ACT_EVOKE;
 }
 
 int recharge_wand(bool known, const string &pre_msg, int num, int den)
@@ -1908,7 +1910,10 @@ bool evoke_item(int slot, bool check_range)
         canned_msg(MSG_NOTHING_HAPPENS);
 
     if (!unevokable)
+    {
         you.turn_is_over = true;
+        you.prev_act = ACT_EVOKE;
+    }
     else
         crawl_state.zero_turns_taken();
 
