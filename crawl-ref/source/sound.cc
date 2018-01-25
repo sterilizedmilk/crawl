@@ -4,6 +4,7 @@
 
 #include "libutil.h"
 #include "options.h"
+#include "stringutil.h"
 #include "unicode.h"
 
 #ifdef USE_SOUND
@@ -113,3 +114,17 @@ void play_sound(const char *file, bool interrupt_game)
 }
 
 #endif // USE_SOUND
+
+void sound_by_name(const char *name, int number, bool interrupt_game)
+{
+    string file = "se\\";   // TODO: make available on multiplatform
+    file += name;
+    
+    if (number)
+    {
+        file += make_stringf("%d", number);
+    }
+
+    file += ".wav";
+    play_sound(file.c_str(), interrupt_game);
+}

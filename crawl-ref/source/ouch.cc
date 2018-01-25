@@ -64,6 +64,7 @@
 #include "shopping.h"
 #include "shout.h"
 #include "skills.h"
+#include "sound.h"
 #include "spl-clouds.h"
 #include "spl-other.h"
 #include "spl-selfench.h"
@@ -926,7 +927,10 @@ void ouch(int dam, kill_method_type death_type, mid_t source, const char *aux,
         // Even if we have low HP messages off, we'll still give a
         // big hit warning (in this case, a hit for half our HPs) -- bwr
         if (dam > 0 && you.hp_max <= dam * 2)
+        {
             mprf(MSGCH_DANGER, "Ouch! That really hurt!");
+            sound_by_name("ouch");
+        }
 
         if (you.hp > 0 && dam > 0)
         {
@@ -936,6 +940,7 @@ void ouch(int dam, kill_method_type death_type, mid_t source, const char *aux,
             {
                 flash_view_delay(UA_HP, RED, 50);
                 mprf(MSGCH_DANGER, "* * * LOW HITPOINT WARNING * * *");
+                sound_by_name("lowhp");
                 dungeon_events.fire_event(DET_HP_WARNING);
             }
 

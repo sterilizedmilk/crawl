@@ -23,6 +23,7 @@
 #include "mon-death.h"
 #include "mon-tentacle.h"
 #include "religion.h"
+#include "sound.h"
 #include "state.h"
 #include "travel.h"
 
@@ -306,6 +307,8 @@ void beogh_convert_orc(monster* orc, conv_t conv)
                                     MSGCH_FRIEND_ENCHANT);
         break;
     }
+
+    sound_by_name("convert", random2(3));
 
     orc->attitude = ATT_FRIENDLY;
 

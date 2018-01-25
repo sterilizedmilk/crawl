@@ -2006,6 +2006,7 @@ void process_command(command_type cmd)
         break;
 
     case CMD_QUIT:
+        sound_by_name("quit");
         if (crawl_state.disables[DIS_CONFIRMATIONS]
             || yes_or_no("Are you sure you want to abandon this character and quit the game?"))
         {

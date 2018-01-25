@@ -1722,6 +1722,7 @@ void canned_msg(canned_message_type which_message)
             break;
         case MSG_OK:
             mprf(MSGCH_PROMPT, "Okay, then.");
+            sound_by_name("okay");
             crawl_state.cancel_cmd_repeat();
             break;
         case MSG_UNTHINKING_ACT:

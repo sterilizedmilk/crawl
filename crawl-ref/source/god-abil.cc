@@ -71,6 +71,7 @@
 #include "rot.h"
 #include "shout.h"
 #include "skill-menu.h"
+#include "sound.h"
 #include "spl-book.h"
 #include "spl-goditem.h"
 #include "spl-monench.h"
@@ -1742,6 +1743,8 @@ bool beogh_gift_item()
                                     shield ? MSLOT_SHIELD :
                               use_alt_slot ? MSLOT_ALT_WEAPON :
                                              MSLOT_WEAPON);
+    sound_by_name("gift");
+
     if (use_alt_slot)
         mons->swap_weapons();
 
@@ -5936,6 +5939,8 @@ bool ru_do_sacrifice(ability_type sac)
     }
     else
         _apply_ru_sacrifice(mut);
+
+    sound_by_name("sacrifice", random2(4));
 
     // Remove any no-longer-usable skills.
     if (is_sac_arcana)

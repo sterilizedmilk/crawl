@@ -82,3 +82,6 @@
 # include                 = 0.12_monster_glyphs.txt
 # include                 = 0.13_monster_glyphs.txt
 # include                 = 0.14_monster_glyphs.txt
+
+sound += you can't do:se\youcant.wav
+sound += You can't do:se\youcant.wav

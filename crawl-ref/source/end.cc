@@ -25,6 +25,7 @@
 #include "message.h"
 #include "prompt.h"
 #include "religion.h"
+#include "sound.h"
 #include "state.h"
 #include "stringutil.h"
 #include "view.h"
@@ -234,6 +235,7 @@ NORETURN void end_game(scorefile_entry &se, int hiscore_index)
         && se.get_death_type() != KILLED_BY_QUITTING
         && se.get_death_type() != KILLED_BY_WINNING)
     {
+        sound_by_name("death", random2(6));
         canned_msg(MSG_YOU_DIE);
         xom_death_message((kill_method_type) se.get_death_type());
 

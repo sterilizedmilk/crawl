@@ -78,6 +78,7 @@ sound_mapping check_sound_patterns(const string& message);
 
 void play_sound(sound_mapping sound_data);
 void play_sound(const char *file, bool interrupt_game = false);
+void sound_by_name(const char *name, int random = 0, bool interrupt_game = false);
 
 
 #endif  // End ifdef USE_SOUND

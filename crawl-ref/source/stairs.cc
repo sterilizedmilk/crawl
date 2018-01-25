@@ -35,6 +35,7 @@
 #include "output.h"
 #include "prompt.h"
 #include "religion.h"
+#include "sound.h"
 #include "spl-clouds.h"
 #include "spl-damage.h"
 #include "spl-other.h"
@@ -592,8 +593,11 @@ void floor_transition(dungeon_feature_type how,
         mpr("You have escaped!");
 
         if (player_has_orb())
+        {
+            sound_by_name("winning");
             ouch(INSTANT_DEATH, KILLED_BY_WINNING);
-
+        }
+        
         ouch(INSTANT_DEATH, KILLED_BY_LEAVING);
     }
 
@@ -664,6 +668,7 @@ void floor_transition(dungeon_feature_type how,
 
         mpr("To return, you must find a gate leading back.");
         mpr("Killing monsters will force the Abyss to allow you passage.");
+        sound_by_name("abyss_enter");
         if (have_passive(passive_t::slow_abyss))
         {
             mprf(MSGCH_GOD, you.religion,

@@ -60,6 +60,7 @@
 #include "religion.h"
 #include "shout.h"
 #include "skills.h"
+#include "sound.h"
 #include "spl-damage.h"
 #include "spl-transloc.h"
 #include "spl-util.h"
@@ -4132,6 +4133,7 @@ bool confuse_player(int amount, bool quiet, bool force)
             mprf(MSGCH_WARN, "You are %sconfused.",
                  old_value > 0 ? "more " : "");
         }
+        sound_by_name("confused");
 
         learned_something_new(HINT_YOU_ENCHANTED);
 

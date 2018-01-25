@@ -61,6 +61,7 @@
 #include "prompt.h"
 #include "religion.h"
 #include "skills.h"
+#include "sound.h"
 #include "spl-cast.h"
 #include "spl-clouds.h"
 #include "spl-damage.h"
@@ -2148,6 +2149,7 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
             mprf("You clear your throat and prepare to recite.");
             you.increase_duration(DUR_RECITE_COOLDOWN,
                                   3 + random2(10) + random2(30));
+            sound_by_name("recite");
         }
         else
         {
@@ -3141,6 +3143,7 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
             && yesno("Are you sure you won't change your mind later?",
                      false, 'n'))
         {
+            sound_by_name("renounce");
             excommunication(true);
         }
         else
