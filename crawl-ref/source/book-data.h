@@ -249,6 +249,7 @@ static const vector<spell_type> spellbook_templates[] =
 {   // Book of Earth
     SPELL_LEDAS_LIQUEFACTION,
     SPELL_BOLT_OF_MAGMA,
+    SPELL_SUMMON_BOULDER,
     SPELL_STATUE_FORM,
     SPELL_IRON_SHOT,
     SPELL_SHATTER,
@@ -342,6 +343,7 @@ static const vector<spell_type> spellbook_templates[] =
     SPELL_SUMMON_BUTTERFLIES,
     SPELL_CALL_CANINE_FAMILIAR,
     SPELL_SUMMON_ICE_BEAST,
+    SPELL_SUMMON_BOULDER,
     SPELL_SUMMON_MANA_VIPER,
     SPELL_SUMMON_HYDRA,
 },

@@ -1787,6 +1787,14 @@ static const mon_spellbook mspell_list[] =
       }
     },
 
+    // ('B') Beetles
+    {  MST_SCARAB,
+      {
+       { SPELL_SUMMON_BOULDER, 50, MON_SPELL_WIZARD | MON_SPELL_LONG_RANGE },
+       { SPELL_SUMMON_SCARABS, 30, MON_SPELL_WIZARD | MON_SPELL_SHORT_RANGE },
+      }
+    },
+
     // ('C') Giants.
     {  MST_POLYPHEMUS,
       {

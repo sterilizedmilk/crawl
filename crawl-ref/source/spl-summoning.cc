@@ -45,6 +45,7 @@
 #include "mon-death.h"
 #include "mon-movetarget.h"
 #include "mon-place.h"
+#include "mon-project.h"
 #include "mon-speak.h"
 #include "options.h"
 #include "player-equip.h"
@@ -3247,6 +3248,45 @@ spret_type cast_infestation(int pow, bolt &beam, bool fail)
     return SPRET_SUCCESS;
 }
 
+spret_type cast_summon_boulder(actor *caster, int pow, bolt *beam, god_type god, bool fail)
+{
+    const bool is_player = caster->is_player();
+    if (beam && is_player)
+    {
+        if (!player_tracer(ZAP_IOOD, pow, *beam))
+            return SPRET_ABORT;
+
+        ray_def ray(beam->ray);
+        ray.advance();
+        if (cell_is_solid(ray.pos()) || monster_at(ray.pos()))
+        {
+            mprf("You need space in front of you to cast this spell.");
+            return SPRET_ABORT;
+        }
+    }
+
+    fail_check();
+
+    int mtarg = !beam ? MHITNOT : beam->target == you.pos() ? MHITYOU : mgrd(beam->target);
+    beh_type beha = (is_player) ? BEH_FRIENDLY :
+                                  ((monster*)caster)->friendly() ? BEH_FRIENDLY : BEH_HOSTILE;
+
+    mgen_data boulder(MONS_BOULDER_BEETLE, beha, caster->pos(), mtarg);
+    boulder.set_summoned(caster, 2, SPELL_SUMMON_BOULDER, god);
+    boulder.hd = (5 + div_rand_round(pow, 12));
+
+    monster *mon = create_monster(boulder);
+
+    if (!mon)
+    {
+        mprf(MSGCH_ERROR, "Failed to spawn projectile. Maybe you don't have enough space?");
+        return SPRET_ABORT;
+    }
+
+    boulder_start(mon, beam);
+    return SPRET_SUCCESS;
+}
+
 struct summon_cap
 {
     int type_cap;
@@ -3263,6 +3303,7 @@ static const map<spell_type, summon_cap> summonsdata =
     { SPELL_SUMMON_ICE_BEAST,           { 3, 3 } },
     { SPELL_SUMMON_HYDRA,               { 3, 2 } },
     { SPELL_SUMMON_MANA_VIPER,          { 2, 2 } },
+    { SPELL_SUMMON_BOULDER,             { 3, 2 } },
     // Demons
     { SPELL_CALL_IMP,                   { 3, 3 } },
     { SPELL_SUMMON_DEMON,               { 3, 2 } },

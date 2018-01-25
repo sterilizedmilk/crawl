@@ -3931,6 +3931,17 @@ static const struct spell_desc spelldata[] =
 },
 
 {
+    SPELL_SUMMON_BOULDER, "Summon Boulder",
+    SPTYP_SUMMONING | SPTYP_EARTH,
+    SPFLAG_DIR_OR_TARGET | SPFLAG_NOT_SELF | SPFLAG_NEEDS_TRACER,
+    5,
+    100,
+    LOS_RADIUS, LOS_RADIUS,
+    4, 0,
+    TILEG_SUMMON_BOULDER,
+},
+
+{
     SPELL_NO_SPELL, "nonexistent spell",
     SPTYP_NONE,
     SPFLAG_TESTING,

@@ -1504,6 +1504,7 @@ bolt mons_spell_beam(const monster* mons, spell_type spell_cast, int power,
         break;
 
     case SPELL_IOOD:                  // tracer only
+    case SPELL_SUMMON_BOULDER:        // ditto
     case SPELL_PORTAL_PROJECTILE:     // for noise generation purposes
     case SPELL_GLACIATE:              // ditto
     case SPELL_CLOUD_CONE:            // ditto
@@ -6544,6 +6545,10 @@ void mons_cast(monster* mons, bolt pbolt, spell_type spell_cast,
 
     case SPELL_IOOD:
         cast_iood(mons, 6 * mons->spell_hd(spell_cast), &pbolt);
+        return;
+
+    case SPELL_SUMMON_BOULDER:
+        cast_summon_boulder(mons, 4 * mons->spell_hd(spell_cast), &pbolt, god);
         return;
 
     case SPELL_AWAKEN_FOREST:

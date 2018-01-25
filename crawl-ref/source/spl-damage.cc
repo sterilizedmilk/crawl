@@ -3249,7 +3249,9 @@ spret_type cast_typhoon(const actor *caster, int pow, coord_def aim, bool fail)
             beam.draw(entry.first);
         }
         scaled_delay(150);
+#ifdef USE_TILE
         tiles.clear_overlays();
+#endif
     }
 
     scaled_delay(100);

@@ -381,6 +381,10 @@ NAME:   uniq_khufu
 DEPTH:  Tomb, Crypt
 : place_unique(_G, "Khufu band")
 
+NAME:   uniq_golden_scarab
+DEPTH:  Tomb, Crypt
+: place_unique(_G, "Golden scarab")
+
 NAME:   uniq_tiamat
 DEPTH:  Zot
 : place_unique(_G, "Tiamat band")

@@ -181,6 +181,17 @@ electric_eel MONS_ELECTRIC_EEL
 
 %include dc-tentacles.txt
 
+## Beetles ('B')
+%sdir mon/animals
+boulder_beetle MONS_BOULDER_BEETLE
+boulder_beetle_rolling0 MONS_BOULDER_BEETLE_ROLLING
+boulder_beetle_rolling1
+boulder_beetle_rolling2
+boulder_beetle_rolling3
+
+%sdir mon/unique
+golden_scarab MONS_GOLDEN_SCARAB
+
 ## Frogs ('F')
 %sdir mon/unique
 %rim 0

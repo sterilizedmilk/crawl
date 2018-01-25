@@ -1327,6 +1327,10 @@ Summon Air Elementals spell
 
 Summons one or more air elementals.
 %%%%
+Summon Boulder spell
+
+[NEED_MESSAGE]
+%%%%
 Summon Butterflies spell
 
 Creates a shower of colourful butterflies. How pretty!

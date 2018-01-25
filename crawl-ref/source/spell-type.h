@@ -456,5 +456,6 @@ enum spell_type : int
     SPELL_RING_OF_THUNDER,
     SPELL_IGNITION,
     SPELL_TYPHOON,
+    SPELL_SUMMON_BOULDER,
     NUM_SPELLS
 };

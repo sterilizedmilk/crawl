@@ -119,6 +119,7 @@ bool confirm_attack_spectral_weapon(monster* mons, const actor *defender);
 void reset_spectral_weapon(monster* mons);
 
 spret_type cast_infestation(int pow, bolt &beam, bool fail);
+spret_type cast_summon_boulder(actor *caster, int pow, bolt *beam, god_type god, bool fail = false);
 
 void summoned_monster(const monster* mons, const actor* caster,
                       spell_type spell);
