@@ -131,6 +131,7 @@ enum channelings
 {
     CHANN_SEARING_RAY = 1,
     CHANN_CALLED_SHOT,
+    CHANN_CHANT_OF_STORM,
 };
 
 // needed for assert in is_player()

@@ -8198,6 +8198,11 @@ void end_focusing(bool moved)
         you.props.erase("searing_ray_aimed_at_spot");
         break;
     
+    case CHANN_CHANT_OF_STORM:
+        if (!moved)
+            you.attribute[ATTR_CHANNELING] = 0;
+        break;
+    
     default:
         you.attribute[ATTR_CHANNELING] = 0;
         break;

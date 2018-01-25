@@ -280,6 +280,7 @@ int gozag_gold_in_los(actor* whom);
 int qazlal_sh_boost(int piety = you.piety);
 int tso_sh_boost();
 void qazlal_storm_clouds();
+void qazlal_storm_upheaval();
 void qazlal_element_adapt(beam_type flavour, int strength);
 bool does_ru_wanna_redirect(monster* mon);
 ru_interference get_ru_attack_interference_level();

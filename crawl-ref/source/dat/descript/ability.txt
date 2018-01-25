@@ -654,6 +654,10 @@ Causes your elemental clouds to coalesce into friendly elementals. Your
 Invocations skill increases the maximum number of elementals that can be
 created with one use of the ability.
 %%%%
+Chant of Storm ability
+
+[NEED_TEXT]
+%%%%
 Disaster Area ability
 
 Blasts the entire area around you with powerful natural forces. Invocations

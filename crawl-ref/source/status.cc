@@ -735,6 +735,14 @@ bool fill_status_info(int status, status_info* inf)
         }
         break;
     
+    case STATUS_CHANT_OF_STORM:
+        if (you.attribute[ATTR_CHANNELING] == CHANN_CHANT_OF_STORM)
+        {
+            inf->light_colour = BROWN;
+            inf->light_text = "Chant";
+        }
+        break;
+
     default:
         if (!found)
         {

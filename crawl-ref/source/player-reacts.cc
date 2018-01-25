@@ -1077,7 +1077,8 @@ void player_reacts()
     if (you_worship(GOD_XOM))
         xom_tick();
     else if (you_worship(GOD_QAZLAL))
-        qazlal_storm_clouds();
+        you.attribute[ATTR_CHANNELING] == 
+            CHANN_CHANT_OF_STORM ? qazlal_storm_upheaval() : qazlal_storm_clouds();
 
     if (you.props[EMERGENCY_FLIGHT_KEY].get_bool())
         _handle_emergency_flight();

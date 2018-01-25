@@ -597,6 +597,8 @@ static const ability_def Ability_List[] =
       4, 0, 0, 3, {fail_basis::invo, 40, 5, 20}, abflag::none },
     { ABIL_QAZLAL_ELEMENTAL_FORCE, "Elemental Force",
       6, 0, 0, 6, {fail_basis::invo, 60, 5, 20}, abflag::none },
+    { ABIL_QAZLAL_CHANT_OF_STORM, "Chant of Storm",
+      5, 0, 0, 4, {fail_basis::invo, 65, 5, 20}, abflag::none },
     { ABIL_QAZLAL_DISASTER_AREA, "Disaster Area",
       7, 0, 0, 10, {fail_basis::invo, 70, 4, 25}, abflag::none },
 
@@ -2899,12 +2901,23 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
 
     case ABIL_QAZLAL_ELEMENTAL_FORCE:
         return qazlal_elemental_force(fail);
+    
+    case ABIL_QAZLAL_CHANT_OF_STORM:
+        if (you.attribute[ATTR_CHANNELING] == CHANN_CHANT_OF_STORM)
+        {
+            if(yesno("Are you sure you want to stop channeling?", true, 'n'))
+            {
+                mpr("You stop channeling.");
+                end_focusing();
+                return SPRET_NONE;
+            }
+            canned_msg(MSG_OK);
+            return SPRET_ABORT;
+        }
+        return qazlal_chant_of_storm(fail);
 
     case ABIL_QAZLAL_DISASTER_AREA:
-        fail_check();
-        if (!qazlal_disaster_area())
-            return SPRET_ABORT;
-        break;
+        return qazlal_disaster_area(fail);
 
     case ABIL_RU_SACRIFICE_PURITY:
     case ABIL_RU_SACRIFICE_WORDS:

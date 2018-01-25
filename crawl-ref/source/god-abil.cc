@@ -4829,6 +4829,9 @@ spret_type qazlal_upheaval(coord_def target, bool quiet, bool fail)
 
     for (coord_def pos : affected)
     {
+        if (pos == you.pos() && you.attribute[ATTR_CHANNELING] == CHANN_CHANT_OF_STORM)
+            continue;
+
         beam.source = pos;
         beam.target = pos;
         beam.fire();
@@ -4875,6 +4878,9 @@ spret_type qazlal_upheaval(coord_def target, bool quiet, bool fail)
 
     if (wall_count && !quiet)
         mpr("Ka-crash!");
+    
+    if (!quiet && you.attribute[ATTR_CHANNELING] == CHANN_CHANT_OF_STORM)
+        you.attribute[ATTR_CHANNELING] = -CHANN_CHANT_OF_STORM;
 
     return SPRET_SUCCESS;
 }
@@ -4942,10 +4948,42 @@ spret_type qazlal_elemental_force(bool fail)
     else
         canned_msg(MSG_NOTHING_HAPPENS); // can this ever happen?
 
+    if (you.attribute[ATTR_CHANNELING] == CHANN_CHANT_OF_STORM)
+        you.attribute[ATTR_CHANNELING] = -CHANN_CHANT_OF_STORM;
+
     return SPRET_SUCCESS;
 }
 
-bool qazlal_disaster_area()
+spret_type qazlal_chant_of_storm(bool fail)
+{
+    bool friendlies = false;
+    for (radius_iterator ri(you.pos(), LOS_RADIUS, C_SQUARE, LOS_NO_TRANS, true);
+         ri && !friendlies; ++ri)
+    {
+    if (!in_bounds(*ri) || cell_is_solid(*ri))
+        continue;
+
+    const monster_info* m = env.map_knowledge(*ri).monsterinfo();
+    if (m && mons_att_wont_attack(m->attitude) && !mons_is_projectile(m->type))
+        friendlies = true;
+    }
+
+    if (friendlies
+        && !yesno("There are friendlies around; are you sure you want to hurt "
+                  "them?", true, 'n'))
+    {
+        canned_msg(MSG_OK);
+        return SPRET_ABORT;
+    }
+
+    fail_check();
+    end_focusing();
+    mpr("You start channeling.");
+    you.attribute[ATTR_CHANNELING] = -CHANN_CHANT_OF_STORM;
+    return SPRET_SUCCESS;
+}
+
+spret_type qazlal_disaster_area(bool fail)
 {
     bool friendlies = false;
     vector<coord_def> targets;
@@ -4982,7 +5020,7 @@ bool qazlal_disaster_area()
     if (targets.empty())
     {
         mpr("There isn't enough space here!");
-        return false;
+        return SPRET_ABORT;
     }
 
     if (friendlies
@@ -4990,9 +5028,10 @@ bool qazlal_disaster_area()
                   "them?", true, 'n'))
     {
         canned_msg(MSG_OK);
-        return false;
+        return SPRET_ABORT;
     }
 
+    fail_check();
     mprf(MSGCH_GOD, "Nature churns violently around you!");
 
     int count = max(1, min((int)targets.size(),
@@ -5015,7 +5054,10 @@ bool qazlal_disaster_area()
     }
     scaled_delay(100);
 
-    return true;
+    if (you.attribute[ATTR_CHANNELING] == CHANN_CHANT_OF_STORM)
+    you.attribute[ATTR_CHANNELING] = -CHANN_CHANT_OF_STORM;
+
+    return SPRET_SUCCESS;
 }
 
 static map<ability_type, const sacrifice_def *> sacrifice_data_map;

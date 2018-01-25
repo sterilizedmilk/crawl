@@ -2806,6 +2806,7 @@ static void _do_channeling()
 
     bool skip = false;
     bool waiting = you.prev_act == ACT_WAIT;
+    bool moving = you.prev_act == ACT_MOVE;
 
     if (you.attribute[ATTR_CHANNELING] < 0)
     {
@@ -2832,6 +2833,16 @@ static void _do_channeling()
     case CHANN_CALLED_SHOT:
         if (!waiting && !skip)
             you.attribute[ATTR_CHANNELING] = 0;
+        break;
+    
+    case CHANN_CHANT_OF_STORM:
+        if (!moving && !waiting && !skip)
+            you.attribute[ATTR_CHANNELING] = 0;
+        if (piety_rank() < 4)
+        {
+            mprf(MSGCH_WARN, "You can't keep channeling because of low piety.");
+            you.attribute[ATTR_CHANNELING] = 0;
+        }
         break;
 
     default:

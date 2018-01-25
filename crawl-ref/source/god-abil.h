@@ -160,7 +160,8 @@ bool gozag_bribe_branch();
 spret_type qazlal_upheaval(coord_def target, bool quiet = false,
                            bool fail = false);
 spret_type qazlal_elemental_force(bool fail);
-bool qazlal_disaster_area();
+spret_type qazlal_chant_of_storm(bool fail);
+spret_type qazlal_disaster_area(bool fail);
 
 void init_sac_index();
 int get_sacrifice_piety(ability_type sac, bool include_skill = true);

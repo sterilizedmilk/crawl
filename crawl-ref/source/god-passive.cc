@@ -1150,6 +1150,38 @@ void qazlal_storm_clouds()
     }
 }
 
+// called instead of qazlal_storm_cloud if you're channeling chant of storm
+void qazlal_storm_upheaval()
+{
+    noisy(div_rand_round(you.piety, 8), you.pos());
+
+    const int radius = 2;
+
+    vector<coord_def> candidates;
+    for (radius_iterator ri(you.pos(), radius, C_SQUARE, LOS_SOLID, true);
+         ri; ++ri)
+    {
+        if (!in_bounds(*ri) && cell_is_solid(*ri))
+            continue;
+
+        candidates.push_back(*ri);
+    }
+    const int count = div_rand_round(you.piety * candidates.size() * you.time_taken,
+                       1600 * BASELINE_DELAY);
+    if (count <= 0)
+        return;
+
+    shuffle_array(candidates);
+    int placed = 0;
+    for (unsigned int i = 0; placed < count && i < candidates.size(); i++)
+    {
+        qazlal_upheaval(candidates[i], true);
+        placed++;
+    }
+
+    lose_piety(div_rand_round(you.time_taken + random2(you.time_taken), 5)); // 2.5 piety per 10aut
+}
+
 /**
  * Handle Qazlal's elemental adaptation.
  * This should be called (exactly once) for physical, fire, cold, and electrical damage.

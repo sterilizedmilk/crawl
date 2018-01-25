@@ -693,3 +693,7 @@ Called shot status
 
 [NEED_TEXT]
 %%%%
+Chant status
+
+[NEED_TEXT]
+%%%%
