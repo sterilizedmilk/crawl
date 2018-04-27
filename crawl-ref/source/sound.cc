@@ -4,6 +4,8 @@
 
 #include "libutil.h"
 #include "options.h"
+#include "random.h"
+#include "stringutil.h"
 #include "unicode.h"
 
 #ifdef USE_SOUND
@@ -108,6 +110,54 @@ void play_sound(const char *file, bool interrupt_game)
         last_channel = Mix_PlayChannel(-1, sdl_sound_to_play, 0);
 #endif
     } // End if (Options.sounds_on)
+}
+
+/**
+ * maybe you should manage channel like this:
+ * 0: bgm
+ * 1: hitting sound
+ * 2: yelling, giggling, talking
+ * 3: magic/explosion
+ * 4: soft sound?
+ * ...
+ * 
+ * TODO: disable while silenced
+ * 
+ * @param random    If true, search sounds with same basename. in order of sound.wav, sound1.wav, sound2.wav ...
+ *                  Until there is no matching file. Then play random one.
+ * @param channel   Assign channel, Use this to avoid noise pollution. default is auto assign.
+ */
+void random_sound(string file, bool random, int channel)
+{
+    string path = "sounds\\";
+    path += file;
+
+    if (random)
+    {
+        int count = 0;
+        Mix_Chunk* check = Mix_LoadWAV(OUTS(path + ".wav"));
+
+        while (check)
+            check = Mix_LoadWAV(OUTS(path + make_stringf("%d", ++count) + ".wav"));
+
+        if (count > 1)
+        {
+            count = random2(count);
+            if (count)
+                path += make_stringf("%d", count);
+        }
+    }
+    path += ".wav";
+
+    sdl_sound_to_play = Mix_LoadWAV(OUTS(path));
+    Mix_PlayChannel(channel, sdl_sound_to_play, 0);         
+}
+
+void play_bgm()
+{
+    sdl_sound_to_play = Mix_LoadWAV("sounds\\bgm.wav");
+    if (sdl_sound_to_play)
+        Mix_PlayChannel(0, sdl_sound_to_play, -1);
 }
 
 #endif // USE_SOUND

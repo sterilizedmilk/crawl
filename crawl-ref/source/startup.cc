@@ -45,6 +45,7 @@
 #include "player-save-info.h"
 #include "shopping.h"
 #include "skills.h"
+#include "sound.h"
 #include "spl-book.h"
 #include "spl-util.h"
 #include "stairs.h"
@@ -360,6 +361,7 @@ static void _post_init(bool newc)
 
     // Sanitize skills, init can_train[].
     fixup_skills();
+    play_bgm();
 }
 
 #ifndef DGAMELAUNCH
