@@ -206,13 +206,11 @@ ifdef msys
 	BUILD_PCRE = YesPlease
 	BUILD_ZLIB = YesPlease
 	SOUND = YesPlease
-	DEFINES_L += -DWINMM_PLAY_SOUNDS -D__USE_MINGW_ANSI_STDIO
+	DEFINES_L += -D__USE_MINGW_ANSI_STDIO
 	EXTRA_LIBS += -lwinmm
 	ifdef TILES
-		EXTRA_LIBS += -lmingw32 -lgdi32 -lwinmm -limm32 -lole32 -loleaut32 -lversion contrib/install/$(ARCH)/lib/libSDL2main.a -mwindows
+		EXTRA_LIBS += -lmingw32 -lSDL2_image -lSDL2_mixer -lSDL2main -lSDL2 -lmad -lgdi32 -lwinmm -limm32 -lole32 -loleaut32 -lversion -mwindows -ltiff -llzma -ljpeg -lwebp
 		BUILD_FREETYPE = YesPlease
-		BUILD_SDL2 = YesPlease
-		BUILD_SDL2IMAGE = YesPlease
 		BUILD_LIBPNG = YesPlease
 		COPY_FONTS = yes
 	endif
