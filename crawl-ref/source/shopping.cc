@@ -38,6 +38,7 @@
 #include "player.h"
 #include "prompt.h"
 #include "rot.h"
+#include "sound.h"
 #include "spl-book.h"
 #include "stash.h"
 #include "state.h"
@@ -1161,6 +1162,8 @@ void ShopMenu::purchase_selected()
                    col.c_str(),
                    col.c_str()));
         more += old_more;
+
+        random_sound("shop_short_money");
         draw_more();
         return;
     }
@@ -1435,9 +1438,17 @@ void shop()
         destroy_shop_at(you.pos());
     redraw_screen();
     if (menu.bought_something)
+    {
+        random_sound("shop_bought");
         mprf("Thank you for shopping at %s!", shopname.c_str());
+    }
     if (any_on_list)
+    {
+        random_sound("shop_shopping_list");
         mpr("You can access your shopping list by pressing '$'.");
+    }
+    else
+        random_sound("shop_exit");
 }
 
 void shop(shop_struct& shop, const level_pos& pos)

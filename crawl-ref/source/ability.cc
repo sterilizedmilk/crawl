@@ -61,6 +61,7 @@
 #include "prompt.h"
 #include "religion.h"
 #include "skills.h"
+#include "sound.h"
 #include "spl-cast.h"
 #include "spl-clouds.h"
 #include "spl-damage.h"
@@ -2527,9 +2528,18 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
         fail_check();
         int pow = 0;
         if (abil.ability == ABIL_ELYVILON_LESSER_HEALING)
+        {
             pow = 3 + you.skill_rdiv(SK_INVOCATIONS, 1, 6);
+            random_sound("ely_lesser");
+        }
         else
+        {
+            if (you.hp <= you.hp_max / 5)
+                random_sound("ely_greater_lowhp");
+            else
+                random_sound("ely_greater");
             pow = 10 + you.skill_rdiv(SK_INVOCATIONS, 1, 3);
+        }
         pow = min(50, pow);
         const int healed = pow + roll_dice(2, pow) - 2;
         mpr("You are healed.");

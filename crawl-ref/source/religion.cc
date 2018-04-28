@@ -62,6 +62,7 @@
 #include "randbook.h"
 #include "shopping.h"
 #include "skills.h"
+#include "sound.h"
 #include "spl-book.h"
 #include "spl-miscast.h"
 #include "sprint.h"
@@ -3605,6 +3606,19 @@ void join_religion(god_type which_god)
     const bool returning = you.worshipped[which_god]
                            || is_good_god(which_god)
                               && you.species == SP_BARACHI;
+
+    switch (which_god)
+    {
+    case GOD_ELYVILON:
+        random_sound("ely_join");
+        break;
+    case GOD_BEOGH:
+        random_sound("beogh_join");
+        break;
+    default:
+        break;
+    }
+    
     simple_god_message(
         make_stringf(" welcomes you%s!",
                      returning ? " back" : "").c_str());

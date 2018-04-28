@@ -13,6 +13,7 @@
 #include "view.h"
 #include "religion.h"
 #include "message.h"
+#include "sound.h"
 #include "xom.h"
 
 
@@ -88,6 +89,7 @@ void start_orb_run(game_chapter chapter, const char* message)
 {
     if (you.chapter != CHAPTER_ANGERED_PANDEMONIUM)
     {
+        random_sound("orb_stealed");
         mprf(MSGCH_WARN, "The lords of Pandemonium are not amused. Beware!");
         if (have_passive(passive_t::slow_orb_run))
             simple_god_message(" tells them not to hurry.");

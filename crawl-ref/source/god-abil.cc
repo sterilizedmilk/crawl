@@ -72,6 +72,7 @@
 #include "rot.h"
 #include "shout.h"
 #include "skill-menu.h"
+#include "sound.h"
 #include "spl-book.h"
 #include "spl-goditem.h"
 #include "spl-monench.h"
@@ -1739,6 +1740,7 @@ bool beogh_gift_item()
                               && is_range_weapon(gift) !=
                                  is_range_weapon(*mons_weapon);
 
+    random_sound("beogh_gift");
     mons->take_item(item_slot, body_armour ? MSLOT_ARMOUR :
                                     shield ? MSLOT_SHIELD :
                               use_alt_slot ? MSLOT_ALT_WEAPON :
@@ -5714,6 +5716,9 @@ static const string _piety_asterisks(int piety)
 
 static void _apply_ru_sacrifice(mutation_type sacrifice)
 {
+    if (sacrifice == MUT_NO_LOVE)
+        random_sound("ru_sac_love");
+
     perma_mutate(sacrifice, 1, "Ru sacrifice");
     you.sacrifices[sacrifice] += 1;
 }

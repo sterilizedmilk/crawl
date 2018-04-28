@@ -12,6 +12,7 @@
 #include "initfile.h"
 #include "libutil.h"
 #include "options.h"
+#include "sound.h"
 #include "stringutil.h"
 #include "unicode.h"
 #include "version.h"
@@ -145,6 +146,7 @@ void enter_player_name(newgame_def& ng)
     {
         // Prompt for a new name if current one unsatisfactory {dlb}:
         _show_name_prompt(prompt_start);
+        random_sound("enter_name");
 
         // If the player wants out, we bail out.
         if (!_read_player_name(ng.name))

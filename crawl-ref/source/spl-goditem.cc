@@ -32,6 +32,7 @@
 #include "mutation.h"
 #include "religion.h"
 #include "spl-util.h"
+#include "sound.h"
 #include "state.h"
 #include "status.h"
 #include "stringutil.h"
@@ -962,6 +963,7 @@ bool cast_smiting(int pow, monster* mons)
         set_attack_conducts(conducts, mons);
 
         mprf("You smite %s!", mons->name(DESC_THE).c_str());
+        random_sound("beogh_smite");
 
         behaviour_event(mons, ME_ANNOY, &you);
     }

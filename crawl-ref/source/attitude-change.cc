@@ -23,6 +23,7 @@
 #include "mon-death.h"
 #include "mon-tentacle.h"
 #include "religion.h"
+#include "sound.h"
 #include "state.h"
 #include "travel.h"
 
@@ -307,6 +308,7 @@ void beogh_convert_orc(monster* orc, conv_t conv)
         break;
     }
 
+    random_sound("beogh_convert");
     orc->attitude = ATT_FRIENDLY;
 
     // The monster is not really *created* friendly, but should it

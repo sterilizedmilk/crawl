@@ -58,6 +58,7 @@
 #include "output.h"
 #include "religion.h"
 #include "rot.h"
+#include "sound.h"
 #include "spl-damage.h"
 #include "spl-goditem.h"
 #include "spl-miscast.h"
@@ -3433,10 +3434,14 @@ void elven_twin_died(monster* twin, bool in_transit, killer_type killer, int kil
 void elven_twin_energize(monster* mons)
 {
     if (mons_is_mons_class(mons, MONS_DUVESSA))
+    {
+        random_sound("duvessa_mad");
         mons->go_berserk(true);
+    }
     else
     {
         ASSERT(mons_is_mons_class(mons, MONS_DOWAN));
+        random_sound("dowan_mad");
         if (mons->observable())
             simple_monster_message(*mons, " seems to find hidden reserves of power!");
 

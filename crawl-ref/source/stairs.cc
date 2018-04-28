@@ -35,6 +35,7 @@
 #include "output.h"
 #include "prompt.h"
 #include "religion.h"
+#include "sound.h"
 #include "spl-clouds.h"
 #include "spl-damage.h"
 #include "spl-other.h"
@@ -513,6 +514,7 @@ static level_id _travel_destination(const dungeon_feature_type how,
         mprf("You %s a shaft%s!", you.airborne() ? "are sucked into"
                                                  : "fall through",
                                   howfar.c_str());
+        random_sound("shaft");
 
         // Shafts are one-time-use.
         mpr("The shaft crumbles and collapses.");
@@ -607,8 +609,12 @@ void floor_transition(dungeon_feature_type how,
         mpr("You have escaped!");
 
         if (player_has_orb())
+        {
+            random_sound("winning");
             ouch(INSTANT_DEATH, KILLED_BY_WINNING);
-
+        }
+        
+        random_sound("escape");
         ouch(INSTANT_DEATH, KILLED_BY_LEAVING);
     }
 

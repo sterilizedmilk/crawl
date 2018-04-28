@@ -2029,6 +2029,7 @@ void process_command(command_type cmd)
                                             ? " and return to the main menu"
                                             : " and quit the game")))
         {
+            random_sound("quit");
             ouch(INSTANT_DEATH, KILLED_BY_QUITTING);
         }
         else
