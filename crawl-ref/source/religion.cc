@@ -3607,6 +3607,8 @@ void join_religion(god_type which_god)
                            || is_good_god(which_god)
                               && you.species == SP_BARACHI;
 
+    random_sound("join_" + replace_all(lowercase_string(god_name(you.religion)), " ", "_"));
+
     switch (which_god)
     {
     case GOD_ELYVILON:

@@ -150,7 +150,7 @@ void random_sound(string file, bool random, int channel)
     path += ".wav";
 
     sdl_sound_to_play = Mix_LoadWAV(OUTS(path));
-    Mix_PlayChannel(channel, sdl_sound_to_play, 0);         
+    Mix_PlayChannel(channel, sdl_sound_to_play, 0);
 }
 
 void play_bgm()

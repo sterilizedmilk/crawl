@@ -963,7 +963,6 @@ bool cast_smiting(int pow, monster* mons)
         set_attack_conducts(conducts, mons);
 
         mprf("You smite %s!", mons->name(DESC_THE).c_str());
-        random_sound("beogh_smite");
 
         behaviour_event(mons, ME_ANNOY, &you);
     }

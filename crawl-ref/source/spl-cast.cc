@@ -55,6 +55,7 @@
 #include "religion.h"
 #include "shout.h"
 #include "skills.h"
+#include "sound.h"
 #include "spl-book.h"
 #include "spl-clouds.h"
 #include "spl-damage.h"
@@ -1493,6 +1494,7 @@ spret_type your_spells(spell_type spell, int powc, bool allow_fail,
     {
     case SPRET_SUCCESS:
     {
+        random_sound(replace_all(lowercase_string(spell_title(spell)), " ", "_"));
         if (you.props.exists("battlesphere") && allow_fail)
             trigger_battlesphere(&you, beam);
         actor* victim = actor_at(beam.target);
