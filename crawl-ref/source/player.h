@@ -668,6 +668,8 @@ public:
 
     string name(description_level_type type, bool force_visible = false,
                 bool force_article = false) const override;
+    string name(string postposition = "", description_level_type type = DESC_PLAIN, bool force_visible = false,
+                bool force_article = false) const override;
     string pronoun(pronoun_type pro, bool force_visible = false) const override;
     string conj_verb(const string &verb) const override;
     string hand_name(bool plural, bool *can_plural = nullptr) const override;

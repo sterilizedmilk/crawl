@@ -13,6 +13,7 @@
 #include <string>
 
 #include "stringutil.h"
+#include "unicode.h"
 
 const char * const standard_plural_qualifiers[] =
 {
@@ -264,11 +265,11 @@ string conjugate_verb(const string &verb, bool plural)
 
 static const char * const _pronoun_declension[][NUM_PRONOUN_CASES] =
 {
-    // subj  poss    refl        obj
-    { "it",  "its",  "itself",   "it"  }, // neuter
-    { "he",  "his",  "himself",  "him" }, // masculine
-    { "she", "her",  "herself",  "her" }, // feminine
-    { "you", "your", "yourself", "you" }, // 2nd person
+    // subj   poss     refl         obj
+    { "그것", "그것의", "자신",      "그것"  }, // neuter
+    { "그",   "그의",   "그 자신",   "그를" }, // masculine
+    { "그녀", "그녀의", "그녀 자신", "그녀를" }, // feminine
+    { "당신", "당신의", "당신 자신", "당신을" }, // 2nd person
 };
 
 const char *decline_pronoun(gender_type gender, pronoun_type variant)
@@ -442,4 +443,53 @@ string get_desc_quantity(const int quant, const int total, string whose)
         return "Most of " + whose;
     else
         return "Some of " + whose;
+}
+
+// find correct josa for name
+static string _josa(string name, string postposition)
+{
+    if (postposition.length() != 3)
+        return "";
+
+    static const string array = "은는이가을를과와아야";
+    int num = -1;
+    
+    for (int i = 0; i < 10; ++i)
+    {
+        if (array.substr(3 * i, 3) == postposition)
+            {
+                num = i / 2;
+                break;
+            }
+    }
+
+    if (num < 0)
+        return "";
+
+    wstring name_16 = utf8_to_16(name);
+    wstring word = name_16.substr(name_16.length() - 1);
+    unsigned short last = *(unsigned short*)word.c_str();
+    int jongsung = (last - 0xAC00) % 28;
+
+    switch (num)
+    {
+    case 0:
+        return jongsung ? "은" : "는";
+    case 1:
+        return jongsung ? "이" : "가";
+    case 2:
+        return jongsung ? "을" : "를";
+    case 3:
+        return jongsung ? "과" : "와";
+    case 4:
+        return jongsung ? "아" : "야";
+    
+    default:
+        return "";
+    }
+}
+
+string josa(string name, string postposition)
+{
+    return name + _josa(name, postposition);
 }

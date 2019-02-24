@@ -1113,13 +1113,13 @@ void do_message_print(msg_channel_type channel, int param, bool cap,
     va_list ap;
     va_copy(ap, argp);
     char buff[200];
-    size_t len = vsnprintf(buff, sizeof(buff), format, argp);
+    size_t len = _vsprintf_p(buff, sizeof(buff), format, argp);
     if (len < sizeof(buff))
         _mpr(buff, channel, param, nojoin, cap);
     else
     {
         char *heapbuf = (char*)malloc(len + 1);
-        vsnprintf(heapbuf, len + 1, format, ap);
+        _vsprintf_p(heapbuf, len + 1, format, ap);
         _mpr(heapbuf, channel, param, nojoin, cap);
         free(heapbuf);
     }
@@ -1920,7 +1920,7 @@ bool simple_monster_message(const monster& mons, const char *event,
         && (channel == MSGCH_MONSTER_SPELL || channel == MSGCH_FRIEND_SPELL
             || mons.visible_to(&you)))
     {
-        string msg = mons.name(descrip);
+        string msg = josa(mons.name(descrip), string(event).substr(0, 3));
         msg += event;
 
         if (channel == MSGCH_PLAIN && mons.wont_attack())
@@ -1938,9 +1938,9 @@ void simple_god_message(const char *event, god_type which_deity)
 {
     string msg;
     if (which_deity == GOD_WU_JIAN)
-       msg = uppercase_first(string("The Council") + event);
+       msg = string("The Council") + event;
     else
-       msg = uppercase_first(god_name(which_deity)) + event;
+       msg = josa(god_name(which_deity), string(event).substr(0, 3)) + event;
 
     god_speaks(which_deity, msg.c_str());
 }
