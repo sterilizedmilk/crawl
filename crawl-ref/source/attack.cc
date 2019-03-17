@@ -476,13 +476,13 @@ bool attack::distortion_affects_defender()
         special_damage += 1 + random2avg(7, 2);
         // No need to call attack_strength_punctuation here,
         // since special damage < 7, so it will always return "."
-        special_damage_message = make_stringf("Space bends around %s.",
+        special_damage_message = make_stringf("%s 주위의 공간이 휘었다.",
                                               defender_name(false).c_str());
         break;
     case BIG_DMG:
         special_damage += 3 + random2avg(24, 2);
         special_damage_message =
-            make_stringf("Space warps horribly around %s%s",
+            make_stringf("%s 주위의 공간이 끔찍하게 뒤틀렸다%s",
                          defender_name(false).c_str(),
                          attack_strength_punctuation(special_damage).c_str());
         break;
@@ -556,9 +556,9 @@ void attack::pain_affects_defender()
         if (special_damage && defender_visible)
         {
             special_damage_message =
-                make_stringf("%s %s in agony%s",
-                             defender->name(DESC_THE).c_str(),
-                             defender->conj_verb("writhe").c_str(),
+                make_stringf("%s 고통속에 %s%s",
+                             defender->name("는").c_str(),
+                             "몸부림쳤다",
                            attack_strength_punctuation(special_damage).c_str());
         }
     }
@@ -934,10 +934,10 @@ void attack::drain_defender()
         {
             special_damage_message =
                 make_stringf(
-                    "%s %s %s%s",
-                    atk_name(DESC_THE).c_str(),
-                    attacker->conj_verb("drain").c_str(),
-                    defender_name(true).c_str(),
+                    "%1$s %3$s %2$s%4$s",
+                    atk_name("가").c_str(),
+                    "흡수했다",
+                    defender_name(true, "을").c_str(),
                     attack_strength_punctuation(special_damage).c_str());
         }
     }
@@ -947,9 +947,9 @@ void attack::drain_defender_speed()
 {
     if (needs_message)
     {
-        mprf("%s %s %s vigour!",
+        mprf("%1$s %3$s의 활력을 %2$s!",
              atk_name(DESC_THE).c_str(),
-             attacker->conj_verb("drain").c_str(),
+             "빨아들였다",
              def_name(DESC_ITS).c_str());
     }
     defender->slow_down(attacker, 5 + random2(7));
@@ -1005,10 +1005,10 @@ string attack_strength_punctuation(int dmg)
  */
 string attack::evasion_margin_adverb()
 {
-    return (ev_margin <= -20) ? " completely" :
+    return (ev_margin <= -20) ? " 완전히" :
            (ev_margin <= -12) ? "" :
-           (ev_margin <= -6)  ? " closely"
-                              : " barely";
+           (ev_margin <= -6)  ? " 가깝게"
+                              : " 간신히";
 }
 
 void attack::stab_message()
@@ -1020,45 +1020,46 @@ void attack::stab_message()
     case 6:     // big melee, monster surrounded/not paying attention
         if (coinflip())
         {
-            mprf("You %s %s from a blind spot!",
-                  (you.species == SP_FELID) ? "pounce on" : "strike",
-                  defender->name(DESC_THE).c_str());
+            mprf("당신은 %2$s 사각지대에서 %1$s!",
+                  (you.species == SP_FELID) ? "덮쳤다" : "후려쳤다",
+                  defender->name("을").c_str());
         }
         else
         {
-            mprf("You catch %s momentarily off-guard.",
-                  defender->name(DESC_THE).c_str());
+            mprf("당신은 %s 경계를 푼 순간을 포착했다.",
+                  defender->name("가").c_str());
         }
         break;
     case 4:     // confused/fleeing
         if (!one_chance_in(3))
         {
-            mprf("You catch %s completely off-guard!",
-                  defender->name(DESC_THE).c_str());
+            mprf("당신은 %s 완전히 무방비한 순간을 노렸다!",
+                  defender->name("가").c_str());
         }
         else
         {
-            mprf("You %s %s from behind!",
-                  (you.species == SP_FELID) ? "pounce on" : "strike",
-                  defender->name(DESC_THE).c_str());
+            mprf("당신은 %2$s 뒤에서 %1$s!",
+                  (you.species == SP_FELID) ? "덮쳤다" : "후려쳤다",
+                  defender->name("을").c_str());
         }
         break;
     case 2:
     case 1:
         if (you.species == SP_FELID && coinflip())
         {
-            mprf("You pounce on the unaware %s!",
-                 defender->name(DESC_PLAIN).c_str());
+            mprf("당신은 눈치 채지 못 한 %s 덮쳤다!",
+                 defender->name("을").c_str());
             break;
         }
-        mprf("%s fails to defend %s.",
-              defender->name(DESC_THE).c_str(),
-              defender->pronoun(PRONOUN_REFLEXIVE).c_str());
+        mprf("%1$s %2$s 방어하지 못 했다.",
+              defender->name("는").c_str(),
+              josa(defender->pronoun(PRONOUN_REFLEXIVE), "을").c_str());
         break;
     }
 
     defender->props.erase("helpless");
 }
+
 
 /* Returns the attacker's name
  *
@@ -1069,6 +1070,12 @@ string attack::atk_name(description_level_type desc)
     return actor_name(attacker, desc, attacker_visible);
 }
 
+
+string attack::atk_name(string postposition, description_level_type desc)
+{
+    return josa(actor_name(attacker, desc, attacker_visible), postposition);
+}
+
 /* Returns the defender's name
  *
  * Helper method to easily access the defender's name
@@ -1076,6 +1083,11 @@ string attack::atk_name(description_level_type desc)
 string attack::def_name(description_level_type desc)
 {
     return actor_name(defender, desc, defender_visible);
+}
+
+string attack::def_name(string postposition, description_level_type desc)
+{
+    return josa(actor_name(defender, desc, defender_visible), postposition);
 }
 
 /* Returns the attacking weapon's name
@@ -1118,6 +1130,11 @@ string attack::defender_name(bool allow_reflexive)
         return actor_pronoun(attacker, PRONOUN_REFLEXIVE, attacker_visible);
     else
         return def_name(DESC_THE);
+}
+
+string attack::defender_name(bool allow_reflexive, string postposition)
+{
+    return josa(defender_name(allow_reflexive), postposition);
 }
 
 int attack::player_stat_modify_damage(int damage)
@@ -1396,10 +1413,10 @@ bool attack::attack_shield_blocked(bool verbose)
 
         if (needs_message && verbose)
         {
-            mprf("%s %s %s attack.",
-                 defender_name(false).c_str(),
-                 defender->conj_verb("block").c_str(),
-                 attacker == defender ? "its own"
+            mprf("%1$s %3$s 공격을 %2$s.",
+                 defender_name(false, "가").c_str(),
+                 "막았다",
+                 attacker == defender ? "스스로의"
                                       : atk_name(DESC_ITS).c_str());
         }
 
@@ -1504,8 +1521,8 @@ bool attack::apply_damage_brand(const char *what)
             special_damage_message =
                 make_stringf(
                     "%s %s%s",
-                    defender_name(false).c_str(),
-                    defender->conj_verb("convulse").c_str(),
+                    defender_name(false, "는").c_str(),
+                    "경련했다",
                     attack_strength_punctuation(special_damage).c_str());
         }
         break;
@@ -1520,9 +1537,9 @@ bool attack::apply_damage_brand(const char *what)
                     attack_strength_punctuation(special_damage);
             special_damage_message =
                 defender->is_player()
-                ? make_stringf("You are electrocuted%s", punctuation.c_str())
-                : make_stringf("Lightning courses through %s%s",
-                               defender->name(DESC_THE).c_str(),
+                ? make_stringf("당신은 감전되었다%s", punctuation.c_str())
+                : make_stringf("번개가 %s 관통했다%s",
+                               defender->name("을").c_str(),
                                punctuation.c_str());
             special_damage_flavour = BEAM_ELECTRICITY;
             defender->expose_to_element(BEAM_ELECTRICITY, 2);
@@ -1570,13 +1587,13 @@ bool attack::apply_damage_brand(const char *what)
             {
                 if (defender->is_player())
                 {
-                    mprf("%s draws strength from your wounds!",
-                         attacker->name(DESC_THE).c_str());
+                    mprf("%s 당신의 상처로부터 기력을 빨아들였다!",
+                         attacker->name("가").c_str());
                 }
                 else
                 {
-                    mprf("%s is healed.",
-                         attacker->name(DESC_THE).c_str());
+                    mprf("%s 치료되었다.",
+                         attacker->name("은").c_str());
                 }
             }
 
@@ -1723,12 +1740,12 @@ void attack::calc_elemental_brand_damage(beam_type flavour,
     {
         // XXX: assumes "what" is singular
         special_damage_message = make_stringf(
-            "%s %s %s%s",
-            what ? what : atk_name(DESC_THE).c_str(),
+            "%1$s %3$s %2$s%4$s",
+            what ? what : atk_name("가").c_str(),
             what ? conjugate_verb(verb, false).c_str()
                  : attacker->conj_verb(verb).c_str(),
             // Don't allow reflexive if the subject wasn't the attacker.
-            defender_name(!what).c_str(),
+            defender_name(!what, "을").c_str(),
             attack_strength_punctuation(special_damage).c_str());
     }
 }
