@@ -384,12 +384,12 @@ string apply_description(description_level_type desc, const string &name,
     switch (desc)
     {
     case DESC_THE:
-        return "the " + name;
+        return name;
     case DESC_A:
         return quantity > 1 ? _number_to_string(quantity, in_words) + name
                             : article_a(name, true);
     case DESC_YOUR:
-        return "your " + name;
+        return "당신의 " + name;
     case DESC_PLAIN:
     default:
         return name;
