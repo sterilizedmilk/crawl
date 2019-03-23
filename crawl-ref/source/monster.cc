@@ -807,9 +807,9 @@ bool monster::likes_wand(const item_def &item) const
 
 void monster::equip_weapon_message(item_def &item)
 {
-    const string str = " wields " +
+    const string str = "는 " +
                        item.name(DESC_A, false, false, true, false,
-                                 ISFLAG_CURSED) + ".";
+                                 ISFLAG_CURSED) + "을(를) 들었다.";
     simple_monster_message(*this, str.c_str());
 
     const int brand = get_weapon_brand(item);
@@ -818,49 +818,48 @@ void monster::equip_weapon_message(item_def &item)
     switch (brand)
     {
     case SPWPN_FLAMING:
-        mpr("It bursts into flame!");
+        mpr("그 무기가 화염에 휩싸였다!");
         break;
     case SPWPN_FREEZING:
-        mpr(is_range_weapon(item) ? "It is covered in frost."
-                                  : "It glows with a cold blue light!");
+        mpr(is_range_weapon(item) ? "그 무기가 서리로 뒤덮혔다."
+                                    : "그 무기가 차고 푸른빛을 발산했다!");
         break;
     case SPWPN_HOLY_WRATH:
-        mpr("It softly glows with a divine radiance!");
+        mpr("그 무기가 신성한 광채로 은은히 빛났다!");
         break;
     case SPWPN_ELECTROCUTION:
-        mprf(MSGCH_SOUND, "You hear the crackle of electricity.");
+        mprf(MSGCH_SOUND, "당신은 전기가 파지직하는 소리를 들었다.");
         break;
     case SPWPN_VENOM:
-        mpr("It begins to drip with poison!");
+        mpr("그 무기는 독액을 떨어트리기 시작했다!");
         break;
     case SPWPN_DRAINING:
-        mpr("You sense an unholy aura.");
+        mpr("당신은 사악한 기운를 느꼈다.");
         break;
     case SPWPN_DISTORTION:
-        mpr("Its appearance distorts for a moment.");
+        mpr("그 무기의 모습이 순간 일그러져 보였다.");
         break;
     case SPWPN_CHAOS:
-        mpr("It is briefly surrounded by a scintillating aura of "
-            "random colours.");
+        mpr("무기가 잠시 동안 형형색색의 우스꽝스러운 빛을 내었다.");
         break;
     case SPWPN_PENETRATION:
     {
         bool plural = true;
         string hand = hand_name(true, &plural);
-        mprf("%s %s briefly %s through it before %s manages to get a "
-             "firm grip on it.",
+        mprf("무기를 제대로 쥐려는 순간, %1$s %2$s 잠시 %4$s %3$s"
+             " 지나갔다.",
              pronoun(PRONOUN_POSSESSIVE).c_str(),
-             hand.c_str(),
+             josa(hand, "이").c_str(),
              // Not conj_verb: the monster isn't the subject.
-             conjugate_verb("pass", plural).c_str(),
-             pronoun(PRONOUN_SUBJECTIVE).c_str());
+             "통과해",
+             josa(pronoun(PRONOUN_SUBJECTIVE), "을").c_str());
     }
         break;
     case SPWPN_REAPING:
-        mpr("It is briefly surrounded by shifting shadows.");
+        mpr("그 무기는 잠시 요동치는 그림자에 휩싸였다.");
         break;
     case SPWPN_ACID:
-        mprf("It begins to drip corrosive slime!");
+        mprf("그 무기는 부식성의 점액질을 떨어트리기 시작했다!");
         break;
 
     default:
@@ -903,8 +902,8 @@ int monster::armour_bonus(const item_def &item, bool calc_unid) const
 
 void monster::equip_armour_message(item_def &item)
 {
-    const string str = " wears " +
-                       item.name(DESC_A) + ".";
+    const string str = "은 " +
+                       item.name("을") + " 입었다.";
     simple_monster_message(*this, str.c_str());
 }
 
@@ -912,8 +911,8 @@ void monster::equip_jewellery_message(item_def &item)
 {
     ASSERT(item.base_type == OBJ_JEWELLERY);
 
-    const string str = " puts on " +
-                       item.name(DESC_A) + ".";
+    const string str = "는 " +
+                       item.name("을") + " 끼웠다.";
     simple_monster_message(*this, str.c_str());
 }
 
@@ -943,9 +942,9 @@ void monster::unequip_weapon(item_def &item, bool msg)
 {
     if (msg)
     {
-        const string str = " unwields " +
+        const string str = "는 " +
                            item.name(DESC_A, false, false, true, false,
-                                     ISFLAG_CURSED) + ".";
+                                     ISFLAG_CURSED) + "을(를) 내려놓았다.";
         msg = simple_monster_message(*this, str.c_str());
     }
 
@@ -956,23 +955,23 @@ void monster::unequip_weapon(item_def &item, bool msg)
         switch (brand)
         {
         case SPWPN_FLAMING:
-            mpr("It stops flaming.");
+            mpr("그 무기가 불타오르던 것이 멈추었다.");
             break;
 
         case SPWPN_HOLY_WRATH:
-            mpr("It stops glowing.");
+            mpr("그 무기의 광채가 사라졌다.");
             break;
 
         case SPWPN_ELECTROCUTION:
-            mpr("It stops crackling.");
+            mpr("그 무기의 치직소리가 멈췄다.");
             break;
 
         case SPWPN_VENOM:
-            mpr("It stops dripping with poison.");
+            mpr("그 무기가 독액을 떨어트리던 것이 멈추었다.");
             break;
 
         case SPWPN_DISTORTION:
-            mpr("Its appearance distorts for a moment.");
+            mpr("그 무기의 모습이 순간 일그러져 보였다.");
             break;
 
         default:
@@ -996,8 +995,8 @@ void monster::unequip_armour(item_def &item, bool msg)
 {
     if (msg)
     {
-        const string str = " takes off " +
-                           item.name(DESC_A) + ".";
+        const string str = "는 " +
+                           item.name(DESC_A) + "을(를) 벗었다.";
         simple_monster_message(*this, str.c_str());
     }
 }
@@ -1008,8 +1007,8 @@ void monster::unequip_jewellery(item_def &item, bool msg)
 
     if (msg)
     {
-        const string str = " takes off " +
-                           item.name(DESC_A) + ".";
+        const string str = "는 " +
+                           item.name(DESC_A) + "을(를) 벗었다.";
         simple_monster_message(*this, str.c_str());
     }
 }
@@ -1071,9 +1070,9 @@ void monster::pickup_message(const item_def &item)
         flags |= MF_SEEN_RANGED;
     }
 
-    mprf("%s picks up %s.",
+    mprf("%s은(는) %s을(를) 주웠다.",
          name(DESC_THE).c_str(),
-         item.base_type == OBJ_GOLD ? "some gold"
+         item.base_type == OBJ_GOLD ? "골드"
                                     : item.name(DESC_A).c_str());
 }
 
@@ -1089,33 +1088,31 @@ bool monster::pickup(item_def &item, mon_inv_type slot, bool msg)
         {
             if (inv[slot] == item.index())
             {
-                mprf(MSGCH_DIAGNOSTICS, "Monster %s already holding item %s.",
+                mprf(MSGCH_DIAGNOSTICS, "%s은(는) 이미 %s을(를) 가지고 있다.",
                      name(DESC_PLAIN, true).c_str(),
                      item.name(DESC_PLAIN, false, true).c_str());
                 return false;
             }
             else
             {
-                mprf(MSGCH_DIAGNOSTICS, "Item %s thinks it's already held by "
-                                        "monster %s.",
+                mprf(MSGCH_DIAGNOSTICS, "%s은(는) 이미 %s가 가지고 있는것 같다.",
                      item.name(DESC_PLAIN, false, true).c_str(),
                      name(DESC_PLAIN, true).c_str());
             }
         }
         else if (other_mon->type == MONS_NO_MONSTER)
         {
-            mprf(MSGCH_DIAGNOSTICS, "Item %s, held by dead monster, being "
-                                    "picked up by monster %s.",
-                 item.name(DESC_PLAIN, false, true).c_str(),
-                 name(DESC_PLAIN, true).c_str());
+            mprf(MSGCH_DIAGNOSTICS, "죽은 몬스터가 가지고 있던 %s "
+                                    "%s 주웠다.",
+                 item.name("을", DESC_PLAIN, false, true).c_str(),
+                 name("이", DESC_PLAIN, true).c_str());
         }
         else
         {
-            mprf(MSGCH_DIAGNOSTICS, "Item %s, held by monster %s, being "
-                                    "picked up by monster %s.",
-                 item.name(DESC_PLAIN, false, true).c_str(),
-                 other_mon->name(DESC_PLAIN, true).c_str(),
-                 name(DESC_PLAIN, true).c_str());
+            mprf(MSGCH_DIAGNOSTICS, "%2$s 가지고 있던 %1$s %3$s 주웠다.",
+                 item.name("을", DESC_PLAIN, false, true).c_str(),
+                 other_mon->name("이", DESC_PLAIN, true).c_str(),
+                 name("이", DESC_PLAIN, true).c_str());
         }
     }
 
@@ -1215,11 +1212,11 @@ bool monster::drop_item(mon_inv_type eslot, bool msg)
     {
         if (msg)
         {
-            mprf("%s %s as %s drops %s!",
-                 pitem.name(DESC_THE).c_str(),
+            mprf("%3$s 그것%4$s을 떨어트리자 %1$s %2$s!",
+                 pitem.name("이").c_str(),
                  summoned_poof_msg(this, pitem).c_str(),
-                 name(DESC_THE).c_str(),
-                 pitem.quantity > 1 ? "them" : "it");
+                 name("이").c_str(),
+                 pitem.quantity > 1 ? "들" : "");
         }
 
         item_was_destroyed(pitem);
@@ -1229,8 +1226,8 @@ bool monster::drop_item(mon_inv_type eslot, bool msg)
     {
         if (msg)
         {
-            mprf("%s drops %s.", name(DESC_THE).c_str(),
-                 pitem.name(DESC_A).c_str());
+            mprf("%s %s 떨어트렸다.", name("이").c_str(),
+                 pitem.name("을").c_str());
         }
         pitem.props[DROPPER_MID_KEY].get_int() = mid;
 
@@ -2730,12 +2727,12 @@ bool monster::fumbles_attack()
     {
         if (you.can_see(*this))
         {
-            mprf("%s %s", name(DESC_THE).c_str(), liquefied(pos())
-                 ? "becomes momentarily stuck in the liquid earth."
-                 : "splashes around in the water.");
+            mprf("%s %s", name("은").c_str(), liquefied(pos())
+                 ? "잠시 끈적끈적한 지면에 갇혔다."
+                 : "물 위에서 첨벙거린다.");
         }
         else if (player_can_hear(pos(), LOS_RADIUS))
-            mprf(MSGCH_SOUND, "You hear a splashing noise.");
+            mprf(MSGCH_SOUND, "당신은 첨벙거리는 소리를 들었다.");
 
         return true;
     }
@@ -2759,9 +2756,7 @@ bool monster::go_frenzy(actor *source)
     if (has_ench(ENCH_SLOW))
     {
         del_ench(ENCH_SLOW, true); // Give no additional message.
-        simple_monster_message(*this,
-            make_stringf(" shakes off %s lethargy.",
-                         pronoun(PRONOUN_POSSESSIVE).c_str()).c_str());
+        simple_monster_message(*this, "는 무기력함을 떨쳐냈다.");
     }
     del_ench(ENCH_HASTE, true);
     del_ench(ENCH_FATIGUE, true); // Give no additional message.
@@ -2780,7 +2775,7 @@ bool monster::go_frenzy(actor *source)
     }
     mons_att_changed(this);
 
-    if (simple_monster_message(*this, " flies into a frenzy!"))
+    if (simple_monster_message(*this, "가 격분하기 시작했다!"))
         // Xom likes monsters going insane.
         xom_is_stimulated(friendly() ? 25 : 100);
 
@@ -2798,9 +2793,7 @@ bool monster::go_berserk(bool intentional, bool /* potion */)
     if (has_ench(ENCH_SLOW))
     {
         del_ench(ENCH_SLOW, true); // Give no additional message.
-        simple_monster_message(*this,
-            make_stringf(" shakes off %s lethargy.",
-                         pronoun(PRONOUN_POSSESSIVE).c_str()).c_str());
+        simple_monster_message(*this, "는 무기력함을 떨쳐냈다.");
     }
     del_ench(ENCH_FATIGUE, true); // Give no additional message.
     del_ench(ENCH_FEAR, true);    // Going berserk breaks fear.
@@ -2812,7 +2805,7 @@ bool monster::go_berserk(bool intentional, bool /* potion */)
         wield_melee_weapon();
 
     add_ench(ENCH_BERSERK);
-    if (simple_monster_message(*this, " goes berserk!"))
+    if (simple_monster_message(*this, "는 광폭해졌다!"))
         // Xom likes monsters going berserk.
         xom_is_stimulated(friendly() ? 25 : 100);
 
@@ -2854,7 +2847,7 @@ void monster::expose_to_element(beam_type flavour, int strength,
                                   amount * BASELINE_DELAY, true)
                 && you.can_see(*this))
             {
-                mprf("The heat melts %s icy armour.",
+                mprf("열기가 %s 얼음갑옷을 녹인다.",
                      apostrophise(name(DESC_THE)).c_str());
             }
         }
@@ -2876,7 +2869,7 @@ void monster::banish(actor *agent, const string &, const int, bool force)
     if (!force && player_in_branch(BRANCH_ABYSS)
         && x_chance_in_y(you.depth, brdepth[BRANCH_ABYSS]))
     {
-        simple_monster_message(*this, " wobbles for a moment.");
+        simple_monster_message(*this, "는 잠시 불안정하게 흔들렸다.");
         return;
     }
 
@@ -2890,7 +2883,7 @@ void monster::banish(actor *agent, const string &, const int, bool force)
         }
     }
 
-    simple_monster_message(*this, " is devoured by a tear in reality.",
+    simple_monster_message(*this, "는 공간의 균열에 집어삼켜졌다.",
                            MSGCH_BANISHMENT);
     if (agent && mons_gives_xp(*this, *agent))
     {
@@ -4303,7 +4296,7 @@ bool monster::drain_exp(actor *agent, bool quiet, int pow)
         return false;
 
     if (!quiet && you.can_see(*this))
-        mprf("%s is drained!", name(DESC_THE).c_str());
+        mprf("%s 흡수되었다!", name("이").c_str());
 
     // If quiet, don't clean up the monster in order to credit properly.
     hurt(agent, 2 + random2(3), BEAM_NEG, KILLED_BY_DRAINING, "", "", !quiet);
@@ -4328,9 +4321,8 @@ bool monster::rot(actor *agent, int amount, bool quiet, bool no_cleanup)
 {
     if (res_rotting() || amount <= 0)
         return false;
-
     if (!quiet && you.can_see(*this))
-        mprf("%s looks less resilient!", name(DESC_THE).c_str());
+        mprf("%s의 회복력이 약해진듯 보인다!", name(DESC_THE).c_str());
 
     // If requested, don't clean up the monster in order to credit properly.
     hurt(agent, amount, BEAM_MISSILE, KILLED_BY_BEAM, "", "", !no_cleanup);
@@ -4370,9 +4362,9 @@ bool monster::corrode_equipment(const char* corrosion_source, int degree)
 
     if (you.see_cell(pos()))
     {
-        mprf("%s corrodes %s!",
-             corrosion_source,
-             name(DESC_THE).c_str());
+        mprf("%s %s 부식시켰다!",
+             josa(corrosion_source, "이").c_str(),
+             name("를").c_str());
     }
 
     add_ench(mon_enchant(ENCH_CORROSION, 0));
@@ -4394,7 +4386,7 @@ void monster::splash_with_acid(const actor* evildoer, int /*acid_strength*/,
 
     if (this->observable())
     {
-        mprf("%s is splashed with acid%s", this->name(DESC_THE).c_str(),
+        mprf("%s에게 산성액이 튀었다%s", this->name(DESC_THE).c_str(),
              attack_strength_punctuation(post_res_dam).c_str());
     }
 
@@ -4570,7 +4562,7 @@ void monster::petrify(actor *atk, bool force)
 bool monster::fully_petrify(actor *atk, bool quiet)
 {
     bool msg = !quiet && simple_monster_message(*this, mons_is_immotile(*this) ?
-                         " turns to stone!" : " stops moving altogether!");
+                         "가 돌로 변했다!" : "가 움직임을 완전히 멈췄다!");
 
     add_ench(ENCH_PETRIFIED);
     return msg;
@@ -5049,7 +5041,7 @@ bool monster::sicken(int amount)
     if (!has_ench(ENCH_SICK) && you.can_see(*this))
     {
         // Yes, could be confused with poisoning.
-        mprf("%s looks sick.", name(DESC_THE).c_str());
+        simple_monster_message(*this, "의 상태가 안 좋아 보인다.");
     }
 
     add_ench(mon_enchant(ENCH_SICK, 0, 0, amount * BASELINE_DELAY));
@@ -5323,7 +5315,7 @@ bool monster::malmutate(const string &/*reason*/)
         return true;
     }
 
-    simple_monster_message(*this, " twists and deforms.");
+    simple_monster_message(*this, "가 뒤틀려 변이되었다.");
     add_ench(mon_enchant(ENCH_WRETCHED, 1));
     return true;
 }
@@ -5495,12 +5487,12 @@ void monster::apply_location_effects(const coord_def &oldpos,
     if (alive() && has_ench(ENCH_AQUATIC_LAND))
     {
         if (!monster_habitable_grid(this, grd(pos())))
-            simple_monster_message(*this, " flops around on dry land!");
+            simple_monster_message(*this, "은 마른 땅 위에서 !");
         else if (!monster_habitable_grid(this, grd(oldpos)))
         {
             if (you.can_see(*this))
             {
-                mprf("%s dives back into the %s!", name(DESC_THE).c_str(),
+                mprf("%s %s 속으로 뛰어들었다!", name("이").c_str(),
                                                    feat_type_name(grd(pos())));
             }
             del_ench(ENCH_AQUATIC_LAND);
@@ -5540,7 +5532,7 @@ void monster::apply_location_effects(const coord_def &oldpos,
             {
                 string desc =
                     feature_description_at(pos(), false, DESC_THE, false);
-                mprf("The bloodstain on %s disappears!", desc.c_str());
+                mprf("%s에 있던 핏자국이 사라졌다!", desc.c_str());
             }
         }
     }
@@ -5649,9 +5641,9 @@ bool monster::do_shaft()
     if (!pacified() && !mons_is_conjured(type))
         set_transit(lev);
 
-    string msg = make_stringf(" %s a shaft!",
-                              !ground_level() ? "is sucked into"
-                                              : "falls through");
+    string msg = make_stringf("가 구덩이 속으로 %s!",
+                              !ground_level() ? "빨려들어 갔다"
+                                              : "떨어졌다");
 
     const bool reveal = simple_monster_message(*this, msg.c_str());
 
@@ -5680,7 +5672,7 @@ void monster::put_to_sleep(actor *attacker, int strength, bool hibernate)
 void monster::weaken(actor *attacker, int pow)
 {
     if (!has_ench(ENCH_WEAK))
-        simple_monster_message(*this, " looks weaker.");
+        simple_monster_message(*this, "는 약해진 듯 보인다.");
 
     add_ench(mon_enchant(ENCH_WEAK, 1, attacker,
                          (pow + random2(pow + 3)) * BASELINE_DELAY));
@@ -5885,14 +5877,14 @@ bool monster::should_drink_potion(potion_type ptype) const
 bool monster::drink_potion_effect(potion_type pot_eff, bool card)
 {
     if (!card)
-        simple_monster_message(*this, " drinks a potion.");
+        simple_monster_message(*this, "는 물약을 마셨다.");
 
     switch (pot_eff)
     {
     case POT_CURING:
     {
         if (heal(5 + random2(7)))
-            simple_monster_message(*this, " is healed!");
+            simple_monster_message(*this, "가 치유되었다!");
 
         static const enchant_type cured_enchants[] =
         {
@@ -5906,7 +5898,7 @@ bool monster::drink_potion_effect(potion_type pot_eff, bool card)
 
     case POT_HEAL_WOUNDS:
         if (heal(10 + random2avg(28, 3)))
-            simple_monster_message(*this, " is healed!");
+            simple_monster_message(*this, "가 치유되었다!");
         break;
 
     case POT_BLOOD:
@@ -5916,7 +5908,7 @@ bool monster::drink_potion_effect(potion_type pot_eff, bool card)
         if (mons_species() == MONS_VAMPIRE)
         {
             heal(10 + random2avg(28, 3));
-            simple_monster_message(*this, " is healed!");
+            simple_monster_message(*this, "가 치유되었다!");
         }
         break;
 
@@ -5993,9 +5985,9 @@ bool monster::evoke_jewellery_effect(jewellery_type jtype)
     if (jtype == AMU_RAGE)
         wield_melee_weapon();
 
-    mprf("%s evokes %s %s.", name(DESC_THE).c_str(),
+    mprf("%s %s %s를 발동시켰다.", name("은").c_str(),
          pronoun(PRONOUN_POSSESSIVE).c_str(),
-         jewellery_is_amulet(jtype) ? "amulet" : "ring");
+         jewellery_is_amulet(jtype) ? "목걸이" : "반지");
 
     switch (jtype)
     {
@@ -6051,12 +6043,12 @@ void monster::react_to_damage(const actor *oppressor, int damage,
             if (shared_damage > 0)
             {
                 if (owner->is_player())
-                    mpr("Your spectral weapon shares its damage with you!");
+                    mpr("당신의 스펙트럴 웨폰이 그 대미지를 당신과 공유한다.");
                 else if (owner->alive() && you.can_see(*owner))
                 {
-                    string buf = " shares ";
+                    string buf = "는 ";
                     buf += owner->pronoun(PRONOUN_POSSESSIVE);
-                    buf += " spectral weapon's damage!";
+                    buf += " 스펙트럴 웨폰과 대미지를 공유했다!";
                     simple_monster_message(*owner->as_monster(), buf.c_str());
                 }
 
@@ -6132,18 +6124,18 @@ void monster::react_to_damage(const actor *oppressor, int damage,
                 hit_points = 0;
                 if (observable())
                 {
-                    mprf("As %s mount dies, %s plunges down into %s!",
+                    mprf("%s 탈것이 죽은 %s %s!",
                          pronoun(PRONOUN_POSSESSIVE).c_str(),
-                         name(DESC_THE).c_str(),
+                         name("은").c_str(),
                          grd(pos()) == DNGN_LAVA ?
-                             "lava and is incinerated" :
-                             "deep water and drowns");
+                             "용암속으로 떨어져 불타올랐다" :
+                             "깊은 물 속으로 떨어져 익사했다");
                 }
             }
             else if (fly_died && observable())
             {
-                mprf("%s falls from %s now dead mount.",
-                     name(DESC_THE).c_str(),
+                mprf("%s %s 죽은 탈것에서 떨어졌다.",
+                     name("은").c_str(),
                      pronoun(PRONOUN_POSSESSIVE).c_str());
             }
         }
@@ -6184,8 +6176,8 @@ void monster::react_to_damage(const actor *oppressor, int damage,
         if (observable())
         {
             mprf(MSGCH_WARN,
-                "%s roars in fury and transforms into a fierce dragon!",
-                name(DESC_THE).c_str());
+                "%s 성난 울부짖음을 내뱉고는 무시무시한 용으로 변신했다!",
+                name("은").c_str());
         }
         if (caught())
             check_net_will_hold_monster(this);
@@ -6347,16 +6339,16 @@ void monster::steal_item_from_player()
             inv[MSLOT_GOLD] = idx;
             new_item.set_holding_monster(*this);
         }
-        mprf("%s steals %d gold piece%s!",
-             name(DESC_THE).c_str(),
+        mprf("%s %d 골드를 훔쳤다!%s",
+             name("가").c_str(),
              stolen_amount,
-             stolen_amount != 1 ? "s" : "");
+             stolen_amount != 1 ? "" : "");
 
         you.attribute[ATTR_GOLD_FOUND] -= stolen_amount;
 
         you.del_gold(stolen_amount);
-        mprf("You now have %d gold piece%s.",
-             you.gold, you.gold != 1 ? "s" : "");
+        mprf("당신은 이제 %d골드를 가지고 있다.%s.",
+             you.gold, you.gold != 1 ? "" : "");
 
         return;
     }
@@ -6585,7 +6577,7 @@ bool monster::shove(const char* feat_name)
         {
             move_to_pos(*di);
             simple_monster_message(*this,
-                make_stringf(" is pushed out of the %s.", feat_name).c_str());
+                make_stringf("는 %s에서 밀려나갔다.", feat_name).c_str());
             dprf("Moved to (%d, %d).", pos().x, pos().y);
 
             return true;
