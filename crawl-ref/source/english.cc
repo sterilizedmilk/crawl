@@ -446,7 +446,7 @@ string get_desc_quantity(const int quant, const int total, string whose)
 }
 
 // find correct josa for name
-static string _josa(string name, string postposition)
+static string _josa(const string &name, const string &postposition)
 {
     if (postposition.length() != 3 || name == "")
         return "";
@@ -489,7 +489,16 @@ static string _josa(string name, string postposition)
     }
 }
 
-string josa(string name, string postposition)
+string josa(const string &name, const string &postposition)
 {
     return name + _josa(name, postposition);
+}
+
+string combine_with_josa(const string &name, const string &sentence)
+{
+    string josa = _josa(name, sentence.substr(0, 3));
+    if (josa == "")
+        return name + sentence;
+    else
+        return name + josa + sentence.substr(3);
 }

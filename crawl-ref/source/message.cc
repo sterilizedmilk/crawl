@@ -1920,8 +1920,7 @@ bool simple_monster_message(const monster& mons, const char *event,
         && (channel == MSGCH_MONSTER_SPELL || channel == MSGCH_FRIEND_SPELL
             || mons.visible_to(&you)))
     {
-        string msg = josa(mons.name(descrip), string(event).substr(0, 3));
-        msg += event;
+        string msg = combine_with_josa(mons.name(descrip), event);
 
         if (channel == MSGCH_PLAIN && mons.wont_attack())
             channel = MSGCH_FRIEND_ACTION;
@@ -1938,9 +1937,9 @@ void simple_god_message(const char *event, god_type which_deity)
 {
     string msg;
     if (which_deity == GOD_WU_JIAN)
-       msg = string("The Council") + event;
+       msg = combine_with_josa(string("협의회"), event);
     else
-       msg = josa(god_name(which_deity), string(event).substr(0, 3)) + event;
+       msg = combine_with_josa(god_name(which_deity), event);
 
     god_speaks(which_deity, msg.c_str());
 }
