@@ -4,6 +4,7 @@
 **/
 
 #pragma once
+#pragma GCC diagnostic ignored "-Wformat"
 
 #include <iostream>
 #include <streambuf>
