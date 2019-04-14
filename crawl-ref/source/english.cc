@@ -188,33 +188,33 @@ string apostrophise(const string &name)
     if (name.empty())
         return name;
 
-    if (name == "you" || name == "You")
-        return name + "r";
+    if (name == "당신" || name == "당신")
+        return name + "의";
 
-    if (name == "it" || name == "It")
-        return name + "s";
+    if (name == "그것" || name == "그것")
+        return name + "의";
 
-    if (name == "itself")
-        return "its own";
+    if (name == "자신")
+        return "그것의";
 
-    if (name == "himself")
-        return "his own";
+    if (name == "그 자신")
+        return "그의";
 
-    if (name == "herself")
-        return "her own";
+    if (name == "그녀 자신")
+        return "그녀의";
 
-    if (name == "themselves")
-        return "their own";
+    if (name == "그들")
+        return "그들의";
 
-    if (name == "yourself")
-        return "your own";
+    if (name == "당신 자신")
+        return "당신의";
 
     // We're going with the assumption that we're finding the possessive of
     // singular nouns ending in 's' more often than that of plural nouns.
     // No matter what, we're going to get some cases wrong.
 
     // const char lastc = name[name.length() - 1];
-    return name + /*(lastc == 's' ? "'" :*/ "'s" /*)*/;
+    return name + /*(lastc == 's' ? "'" :*/ "의" /*)*/;
 }
 
 /**
